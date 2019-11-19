@@ -1,0 +1,41 @@
+<head>
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+
+<body>
+	<h1>
+		<bac>
+			current bac is <total id = "total"><b>___</b></total><b>%</b>
+		</bac>
+	</h1>
+	<h2>
+		<beer>Total amount of beer consumed: <input id = "beer"></input></beer><br>
+		<wine>Total amount of wine consumed: <input id = "wine"></input></wine><br>
+		<other>Total amount of alcohol consumed: <input id = "alcohol"></input> </other>
+	</h2>
+	<h3>
+		<weight>Enter Weight <input id = "weight"></input></weight><br>
+		<time> Enter amount of hours since first drink<input id ="time"></input></time>
+		<br><button id = "calc">calculate</button>
+	</h3>
+</body>
+<script>
+	beer = 0;
+	wine = 0;
+	other = 0;
+	total = 0;
+	weight = 0;
+	time = 0;
+	$('#calc').on("click",calc);
+    function calc(){
+	beer = $("#beer").val() *12;   
+	wine = $("#wine").val()*5;
+	other = $("#alcohol").val() *1.5; 
+	weight = $("#weight").val();
+	time = $("#time").val();
+	total = ((beer+wine+other))/weight; 
+	total = total-(time*.017);
+	$("total").text(total);
+    }
+</script>
