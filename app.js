@@ -3,18 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-
-var mysqlAdmin = require('node-mysql-admin');
-
+//var mysqlAdmin = require('node-mysql-admin');
 var session = require('express-session');
+
+var indexRouter = require('./routes/router');
+
 
 var app = express();
 
-app.use(session({
-  secret: 'keyboard cat'
-}));
+// app.use(session({
+//   secret: 'keyboard cat'
+// }));
 
 
 // view engine setup
@@ -29,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
-app.use(mysqlAdmin(app));
+//app.use(mysqlAdmin(app));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
