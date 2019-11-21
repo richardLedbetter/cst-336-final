@@ -1,0 +1,20 @@
+		.login{
+			top: 0;
+			right: 0;
+			position: fixed;
+		}
+		.btn{
+			height: 50px;
+			width: 100px;
+		}
+		.minus{
+			height: 50px;
+			width: 75px;
+		}
+		.add{
+			height: 50px;
+			width: 75px;
+		}
+		body { 
+			background:grey;
+		}
