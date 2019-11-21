@@ -1,18 +1,63 @@
 <head>
  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+	<style>
+		.login{
+			top: 0;
+			right: 0;
+			position: fixed;
+		}
+		.btn{
+			height: 50px;
+			width: 100px;
+		}
+		.minus{
+			height: 50px;
+			width: 75px;
+		}
+		.add{
+			height: 50px;
+			width: 75px;
+		}
+		body { 
+			background:grey;
+		}
+	</style>
 </head>
 
 <body>
-	<h1>
-		<bac>
-			current bac is <total id = "total"><b>___</b></total><b>%</b>
+	<login class = "login">
+		<button type="button" class='btn pull-right'>
+			Login
+		</button>
+	</login>
+	<h1 class="jumbotron text-center">
+		<bac >
+			current bac is 
+			<total id = "total"><b>___</b></total><b>%</b>
 		</bac>
 	</h1>
-	<h2>
-		<beer>Total amount of beer consumed: <input id = "beer"></input></beer><br>
-		<wine>Total amount of wine consumed: <input id = "wine"></input></wine><br>
-		<other>Total amount of alcohol consumed: <input id = "alcohol"></input> </other>
+	<h2 class="container">
+		<div class = "col">
+			<beer class="row">
+				Total amount of beer consumed: 
+				<button class = "minus" id ="minus_beer">-</button>
+				<input id = "beer"> </input>
+				<button class = "add" id ="add_beer">+</button>
+			</beer><br>
+			<wine class="row top-buffer">
+				Total amount of wine consumed: 
+				<button class = "minus" id ="minus_wine">-</button>
+				<input id = "wine"></input>
+				<button class = "add" id ="add_wine">+</button>
+			</wine><br>
+			<other class="row top-buffer">
+				Total amount of alcohol consumed:
+				<button class = "minus" id ="minus_other">-</button>
+				<input id = "alcohol"></input>
+				<button class = "add" id ="add_other">-</button>
+			</other>
+		</div> 
 	</h2>
 	<h3>
 		<weight>Enter Weight <input id = "weight"></input></weight><br>
