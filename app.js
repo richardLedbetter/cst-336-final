@@ -11,9 +11,9 @@ var indexRouter = require('./routes/router');
 
 var app = express();
 
-// app.use(session({
-//   secret: 'keyboard cat'
-// }));
+app.use(session({
+  secret: '6wOBwJBStY'
+}));
 
 var listener = app.listen(8888, function(){
     console.log('Listening on port ' + listener.address().port); //Listening on port 8888
