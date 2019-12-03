@@ -102,7 +102,7 @@
 </head>
 <body class="text-center">
 <div class="signup-form">
-    <form action="/examples/actions/confirmation.php" method="post">
+    <form method="post">
 		<h2>Register</h2>
 		<p class="hint-text">Create a free account now! Takes just a minute.</p>
         <div class="form-group">
@@ -126,3 +126,43 @@
 </div>
 </body>
 </html>
+<script>
+	$(document).ready(function() {
+        
+        // $('#message').hide();
+        $('#registerButton').on('click', function(e) {
+            // Do not submit until I am ready
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/register",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "username": $("#login").val(),
+                    "password": $("#password").val(),
+                    "email": $("#email").val()
+                }),
+                success: function(result, status) {
+                    console.log("got login status back", result);
+                    if (result.successful) {
+                        // This will navigate to wherever i say...
+                        window.location.href = '/index';
+                    }
+                    else {
+                        // Show an error message or something and stay here
+                        $('#message').html(result.message);
+                        $('#message').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    err = eval("error: (" + xhr.responseText + ")");
+                    console.error(err);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    console.log(status);
+                }
+            });
+        })
+    });
+</script>
