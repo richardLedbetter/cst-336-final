@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const mysql   = require("mysql");
+const mysql = require("mysql");
+var bodyParser = require('body-parser');
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true })); //use to parse data sent using the POST method
+
 
 router.get('/', function(req, res) {
 
@@ -82,7 +87,7 @@ function insertUser(body){
                     VALUES (?,?,?)    
                          `;
         
-           let params = [body.username, body.password];
+           let params = [body.username, body.password, body.email];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -106,6 +111,30 @@ function dbConnection(){
 
 return conn;
 
+}
+
+function getUserInfo(userId){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                      FROM auth
+                      WHERE userId = ?`;
+        
+           conn.query(sql, [userId], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows[0]); //Query returns only ONE record
+           });
+        
+        });//connect
+    });//promise 
 }
 
 
