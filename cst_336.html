@@ -3,6 +3,7 @@
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
 	<style>
 		.login{
+			color: black;
 			top: 0;
 			right: 0;
 			position: fixed;
@@ -12,24 +13,49 @@
 			width: 100px;
 		}
 		.minus{
+			color: black;
 			height: 50px;
 			width: 75px;
+		}
+		button{
+			color: black;
 		}
 		.add{
+			color:black;
 			height: 50px;
 			width: 75px;
 		}
-		body { 
-			background:url("beer_img.jpg");
-			color: white;
+		.background{
+			background-image: url("beer_img.jpg");
+			color: blue;
+			filter: blur(9px) !important;
+			 height: 100%; 
+			  /* Center and scale the image nicely */
+			  background-position: center;
+			  background-repeat: no-repeat;
+			  background-size: cover;
 		}
-		.jumbotron{
-			filter: alpha(opacity=50) !important;
+		.non_background { 
+			 
+			  color: white;
+			  font-weight: bold;
+			  border: 3px solid #f1f1f1;
+			  position: absolute;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%);
+			  z-index: 2;
+			  width: 80%;
+			  padding: 20px;
+			  text-align: center;
 		}
+		
 	</style>
 </head>
 
 <body>
+	<div class = "background"></div>
+	<div class = "non_background">
 	<login class = "login">
 		<button type="button" class='btn pull-right'>
 			Login
@@ -60,14 +86,20 @@
 				<button class = "minus" id ="minus_other">-</button>
 				<input id = "alcohol" size="4"></input>
 				<button class = "add" id ="add_other">-</button>
-			</other>
+			</other><br>
+			
+			<weight class="row top-buffer">
+				Enter Weight 
+				<input id = "weight"></input>
+			</weight><br>
+			<time> 
+				Enter amount of hours since first drink
+				<input id ="time"></input>
+			</time>
+			<br><button id = "calc">calculate</button>
 		</div> 
 	</h2>
-	<h3>
-		<weight>Enter Weight <input id = "weight"></input></weight><br>
-		<time> Enter amount of hours since first drink<input id ="time"></input></time>
-		<br><button id = "calc">calculate</button>
-	</h3>
+	</div>
 </body>
 <script>
 	beer = 0;
@@ -78,13 +110,13 @@
 	time = 0;
 	$('#calc').on("click",calc);
     function calc(){
-	beer = $("#beer").val() *12;   
-	wine = $("#wine").val()*5;
-	other = $("#alcohol").val() *1.5; 
-	weight = $("#weight").val();
-	time = $("#time").val();
-	total = ((beer+wine+other))/weight; 
-	total = total-(time*.017);
-	$("total").text(total);
+		beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		other = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		time = $("#time").val();
+		total = ((beer+wine+other))/weight; 
+		total = total-(time*.017);
+		$("total").text(total);
     }
 </script>
