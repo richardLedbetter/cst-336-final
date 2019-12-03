@@ -103,8 +103,8 @@
 <body class="text-center">
 <div class="signup-form">
     <form action="/examples/actions/confirmation.php" method="post">
-		<h2>Login</h2>
-		<p class="hint-text">Member Login</p>
+		<h2>Register</h2>
+		<p class="hint-text">Create a free account now! Takes just a minute.</p>
         <div class="form-group">
 			<div class="row">
 				<div class="col-xs-6"><input type="text" id="login" class="form-control" name="login" placeholder="Username" required="required"></div>
@@ -113,50 +113,16 @@
 		<div class="form-group">
             <input type="password" class="form-control" id="password" name="login" placeholder="Password" required="required">
         </div>
-		<div class="form-group">
-            <button type="submit" id="loginButton" class="btn btn-success btn-lg btn-block">Login</button>
+        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6"><input type="text" id="email" class="form-control" name="email" placeholder="Email" required="required"></div>
+			</div>        	
         </div>
-        Not a member yet? <a href='/register'> Sign up now </a>
+		<div class="form-group">
+            <button type="submit" id="registerButton" class="btn btn-success btn-lg btn-block">Register</button>
+        </div>
+        If you already have an account,  <a href='/login'> Login </a>
     </form>
 </div>
 </body>
 </html>
-<script>
-	$(document).ready(function() {
-        
-        // $('#message').hide();
-        $('#loginButton').on('click', function(e) {
-            // Do not submit until I am ready
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "/login",
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "username": $("#login").val(),
-                    "password": $("#password").val()
-                }),
-                success: function(result, status) {
-                    console.log("got login status back", result);
-                    if (result.successful) {
-                        // This will navigate to wherever i say...
-                        window.location.href = '/';
-                    }
-                    else {
-                        // Show an error message or something and stay here
-                        $('#message').html(result.message);
-                        $('#message').show();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    err = eval("error: (" + xhr.responseText + ")");
-                    console.error(err);
-                },
-                complete: function(data, status) { //optional, used for debugging purposes
-                    console.log(status);
-                }
-            });
-        })
-    });
-</script>

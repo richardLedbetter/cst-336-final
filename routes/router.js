@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const mysql   = require("mysql");
 
 router.get('/', function(req, res) {
 
@@ -50,6 +50,63 @@ router.post('/login', function(req, res, next) {
     });
 
 });
+
+router.get("/register", function(req, res){
+        res.render("../routes/views/newUser");
+
+});
+
+router.post("/register", async function(req, res){
+  //res.render("newAuthor");
+  let rows = await insertUser(req.body);
+  console.log(rows);
+  //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
+  let message = "User WAS NOT added to the database!";
+  if (rows.affectedRows > 0) {
+      message= "User successfully added!";
+  }
+  res.render("../routes/views/newUser", {"message":message});
+    
+});
+
+function insertUser(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO auth (username, password, email)
+                    VALUES (?,?,?)    
+                         `;
+        
+           let params = [body.username, body.password];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function dbConnection(){
+
+   let conn = mysql.createConnection({
+            host: 'gmgcjwawatv599gq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+            user: 'vfm9xud3bujugz4m',
+            password: 'lejefickxq2gb25k',
+            database: 'wn3abfps8rizmpki'
+       }); //createConnection
+
+return conn;
+
+}
 
 
 module.exports = router;
