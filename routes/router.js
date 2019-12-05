@@ -7,7 +7,7 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); //use to parse data sent using the POST method
 
 
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
 
     if (req.session && req.session.username && req.session.username.length) {
         res.render('../routes/views/index');
@@ -21,28 +21,28 @@ router.get('/', function(req, res) {
 
 });
 
-router.get('/login', function(req, res) {
+router.get('/login', async function(req, res) {
 
     res.render('../routes/views/login');
 });
 
-router.post('/login', function(req, res, next) {
+router.post('/login', async function(req, res, next) {
 
-    // console.log('inside login post');
-
+    console.log('inside login post');
+    let check = getUserInfo(req.body.username);
     let successful = false;
     let message = '';
-
+    console.log("here",check);
     // TODO: replace with MySQL SELECT and hashing/salting...
-    if (req.body.username === 'admin' && req.body.password === 'admin') {
-        successful = true;
-        req.session.username = req.body.username;
-    }
-    else {
-        // delete the user as punishment!
-        delete req.session.username;
-        message = 'Wrong username or password!'
-    }
+    // if (req.body.username === 'admin' && req.body.password === 'admin') {
+    //     successful = true;
+    //     req.session.username = req.body.username;
+    // }
+    // else {
+    //     // delete the user as punishment!
+    //     delete req.session.username;
+    //     message = 'Wrong username or password!';
+    // }
 
     console.log('session username', req.session.username);
 
@@ -51,7 +51,6 @@ router.post('/login', function(req, res, next) {
     // Return success or failure
     res.json({
         successful: successful,
-        message: message
     });
 
 });
@@ -113,7 +112,7 @@ return conn;
 
 }
 
-function getUserInfo(userId){
+function getUserInfo(username){
    
    let conn = dbConnection();
     
@@ -124,9 +123,9 @@ function getUserInfo(userId){
         
            let sql = `SELECT *
                       FROM auth
-                      WHERE userId = ?`;
-        
-           conn.query(sql, [userId], function (err, rows, fields) {
+                      WHERE username = ?`;
+                      
+           conn.query(sql, username, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
@@ -136,6 +135,8 @@ function getUserInfo(userId){
         });//connect
     });//promise 
 }
+
+
 
 
 module.exports = router;

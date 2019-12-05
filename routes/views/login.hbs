@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>Bootstrap Simple Registration Form</title>
+<title>Login</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -116,7 +116,7 @@
 		<div class="form-group">
             <button type="submit" id="loginButton" class="btn btn-success btn-lg btn-block">Login</button>
         </div>
-        Not a member yet? <a href='/register'> Sign up now </a>
+        <div id="errorMessage">Incorrect Username or Password</div>
     </form>
 </div>
 </body>
@@ -124,6 +124,8 @@
 <script>
 	$(document).ready(function() {
         
+        $('#errorMessage').hide();
+
         $('#loginButton').on('click', function(e) {
             e.preventDefault();
             $.ajax({
@@ -143,8 +145,7 @@
                     }
                     else {
                         // Show an error message or something and stay here
-                        $('#message').html(result.message);
-                        $('#message').show();
+                        $('#errorMessage').show();
                     }
                 },
                 error: function(xhr, status, error) {
