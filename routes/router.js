@@ -26,13 +26,12 @@ router.get('/login', async function(req, res) {
     res.render('../routes/views/login');
 });
 
-router.post('/login', async function(req, res, next) {
+router.post('/login', function(req, res, next) {
 
     console.log('inside login post');
-    let check = getUserInfo(req.body.username);
+    let check = getUserInfo(req.body);
+    console.log("User: ",check);
     let successful = false;
-    let message = '';
-    console.log("here",check);
     // TODO: replace with MySQL SELECT and hashing/salting...
     // if (req.body.username === 'admin' && req.body.password === 'admin') {
     //     successful = true;
@@ -41,10 +40,9 @@ router.post('/login', async function(req, res, next) {
     // else {
     //     // delete the user as punishment!
     //     delete req.session.username;
-    //     message = 'Wrong username or password!';
     // }
 
-    console.log('session username', req.session.username);
+    //console.log('session username', req.session.username);
 
     // console.log('res.body', req.body);
 
@@ -112,7 +110,10 @@ return conn;
 
 }
 
-function getUserInfo(username){
+function getUserInfo(body){
+   
+   let u = body.username;
+   console.log(u);
    
    let conn = dbConnection();
     
@@ -121,17 +122,14 @@ function getUserInfo(username){
            if (err) throw err;
            console.log("Connected!");
         
-           let sql = `SELECT *
-                      FROM auth
-                      WHERE username = ?`;
+           let sql = `SELECT * FROM auth`;
                       
-           conn.query(sql, username, function (err, rows, fields) {
+           conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
-              resolve(rows[0]); //Query returns only ONE record
+              resolve(rows); //Query returns only ONE record
            });
-        
         });//connect
     });//promise 
 }
