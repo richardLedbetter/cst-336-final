@@ -146,11 +146,9 @@
                 success: function(result, status) {
                     console.log("got login status back", result);
                     if (result.successful) {
-                        // This will navigate to wherever i say...
                         window.location.href = '/index';
                     }
                     else {
-                        // Show an error message or something and stay here
                         $('#message').html(result.message);
                         $('#message').show();
                     }
