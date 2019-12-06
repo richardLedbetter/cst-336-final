@@ -153,7 +153,11 @@ function getUserInfo(body){
               if (err) throw err;
               //res.send(rows);
               conn.end();
+<<<<<<< HEAD
               resolve(rows);
+=======
+              resolve(rows); //Query returns only ONE record
+>>>>>>> 099aa47035885accb653358d83a7932b29d42e9b
            });
         });//connect
     });//promise 

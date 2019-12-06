@@ -106,7 +106,7 @@
 		<p class="hint-text">Member Login</p>
         <div class="form-group">
 			<div class="row">
-				<div class="col-xs-6"><input type="text" id="login" class="form-control" name="login" placeholder="Username" required="required"></div>
+				<div class="col-xs-12"><input type="text" id="login" class="form-control" name="login" placeholder="Username" required="required"></div>
 			</div>        	
         </div>
 		<div class="form-group">
@@ -115,13 +115,19 @@
 		<div class="form-group">
             <button type="submit" id="loginButton" class="btn btn-success btn-lg btn-block">Login</button>
         </div>
-        <div id="errorMessage">Incorrect Username or Password</div>
+        
+       	<button type="button" class="btn btn-secondary" id="SignupButton">Dont have an account? Sign Up</button> <br><br>
+        <div class="alert alert-danger" role="alert" id="errorMessage">Incorrect Username or Password</div>
     </form>
 </div>
 </body>
 </html>
 <script>
+	/* global $ */
 	$(document).ready(function() {
+        $("#SignupButton").on("click",function(e) {
+            window.location.href = "/register";
+        });
         
         $('#errorMessage').hide();
 
@@ -148,15 +154,8 @@
                         $('#errorMessage').show();
                         console.log("error");
                     }
-                },
-                error: function(xhr, status, error) {
-                    err = eval("error: (" + xhr.responseText + ")");
-                    console.error(err);
-                },
-                complete: function(data, status) { //optional, used for debugging purposes
-                    console.log(status);
                 }
             });
-        })
+        });
     });
 </script>
