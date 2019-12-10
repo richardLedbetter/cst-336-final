@@ -6,13 +6,12 @@ const session = require('express-session')
 router.use(express.json());
 
 router.get('/', async function(req, res) {
-    // ADD AFTER LOGIN AND REGISTER FUNCTIONS ARE FINISHED
     if (req.session && req.session.username && req.session.username.length) {
         res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
         delete req.session.username;
-        res.redirect('/index');
+        res.redirect('/login');
     }
     
     console.log("req.sesison.username", req.session.username);
@@ -26,8 +25,8 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    console.log("name",req.query) // gets nothing
-    let user = await getSingleUserInfo(req.query.name);
+    let user = await getSingleUserInfo(req.session.username);
+    console.log("User: ", user);
     res.render('../routes/views/home', {"user": user});
     
 });
@@ -47,6 +46,7 @@ router.post('/login', async function(req, res, next) {
         rows[0].username == req.body.username) {
             successful = true;
             req.session.username = rows[0].username;
+            req.session.email = rows[0].email;
         }
     }
 
@@ -56,11 +56,11 @@ router.post('/login', async function(req, res, next) {
 
 });
 
-router.get('/logout', function(req, res, next) { // cant get this to go back to the index when use logs out
+router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.render("../routes/views/index");
+        res.redirect("/index");
     }
 
     res.json({
@@ -88,6 +88,7 @@ router.post("/register", async function(req, res){
         if (rows[0].password == req.body.password &&
             rows[0].username == req.body.username) {
                 req.session.username = rows[0].username;
+                req.session.email = rows[0].email;
         }
     }
   }
@@ -218,11 +219,11 @@ function addUserInfo(body){
         //   console.log("Connected!");
         
            let sql = `INSERT INTO user_info
-                      (name, age)
-                      VALUES (?,?)    
+                      (name, age, email)
+                      VALUES (?,?,?)    
                       `;
         
-           let params = [body.name, body.age];
+           let params = [body.name, body.age, body.email];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -247,10 +248,10 @@ return conn;
 
 }
 
-function getSingleUserInfo(userName){
+function getSingleUserInfo(email){
     let conn = dbConnection();
     
-    console.log(userName);
+    console.log(email);
     
     return new Promise(function(resolve, reject){
         conn.connect(function(err) {
@@ -258,11 +259,11 @@ function getSingleUserInfo(userName){
         //   console.log("Connected!");
         
             let sql = `
-                    SELECT *
-                    FROM user_info
-                    WHERE name = ?`;
+                    SELECT a.email, u.name, u.age, u.gender, u.height, u.weight
+                    FROM auth a
+                    INNER JOIN user_info u USING(email)`;
             // console.log(sql); 
-            conn.query(sql, [userName], function (err, rows, fields) {
+            conn.query(sql, [email], function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
