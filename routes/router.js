@@ -276,7 +276,7 @@ function getSingleUserInfo(username){
               if (err) throw err;
               //res.send(rows);
               conn.end();
-              console.log(rows);
+              //console.log(rows);
               resolve(rows); //Query returns only ONE record
             });
             
