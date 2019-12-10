@@ -7,16 +7,27 @@ const session = require('express-session')
 router.get('/', async function(req, res) {
     // ADD AFTER LOGIN AND REGISTER FUNCTIONS ARE FINISHED
     if (req.session && req.session.username && req.session.username.length) {
-        res.render('../routes/views/index');
+        res.render('../routes/views/home');
     }
-    
     else {
         delete req.session.username;
-        res.redirect('/login');
+        res.redirect('../routes/views/index');
     }
     
     console.log("req.sesison.username", req.session.username);
 
+});
+
+router.get('/index', async function(req, res) {
+
+    res.render('../routes/views/index');
+    
+});
+
+router.get('/home', async function(req, res) {
+
+    res.render('../routes/views/home');
+    
 });
 
 router.get('/login', async function(req, res) {
@@ -43,9 +54,8 @@ router.post('/login', async function(req, res, next) {
 
 });
 
-router.get("/register", function(req, res){
-        res.render("../routes/views/newUser");
-
+router.get("/register", function(req, res){ // should this be async? 
+    res.render("../routes/views/newUser");
 });
 
 router.post("/register", async function(req, res){
@@ -69,6 +79,54 @@ router.post("/register", async function(req, res){
     });
 
 });
+
+router.get("/userInfo", function(req, res){
+    res.render("../routes/views/userInfo");
+});
+
+router.post("/userInfo", async function(req, res){
+    // updates the user info
+    let rows = await updateUser(req.body);
+    
+    let userInfo = req.body;
+    console.log("post->update->req.body",req.body);
+    console.log(rows);
+    let message = "Author WAS NOT updated!";
+    if (rows.affectedRows > 0) {
+        message = "Author successfully updated!";
+    }
+    res.render("../routes/views/userInfo", { "message": message, "user": userInfo });
+});
+
+function updateUser(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE l9_author
+                      SET firstName = ?, 
+                          lastName  = ?
+                     WHERE authorId = ?`;
+
+            let params = [body.firstName, body.lastName, body.authorId];
+
+            // console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+
+        }); //connect
+    }); //promise 
+}
 
 function userLogin(body){
    
@@ -153,11 +211,7 @@ function getUserInfo(body){
               if (err) throw err;
               //res.send(rows);
               conn.end();
-<<<<<<< HEAD
-              resolve(rows);
-=======
               resolve(rows); //Query returns only ONE record
->>>>>>> 099aa47035885accb653358d83a7932b29d42e9b
            });
         });//connect
     });//promise 
