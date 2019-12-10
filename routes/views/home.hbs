@@ -3,9 +3,15 @@
 </head>
 <body>
     This is the home page for users who are logged in
-    <a href = "/userInfo">
+    <br>
+    <a href = "/userInfo?name={{user.name}}">
         <button>
             Profile
+        </button>
+    </a>
+    <a href = "/logout">
+        <button>
+            Log Out
         </button>
     </a>
 </body>

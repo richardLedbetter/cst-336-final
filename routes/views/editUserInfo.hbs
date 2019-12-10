@@ -1,0 +1,80 @@
+<head>
+    <title> User Info </title>
+</head>
+<body>
+    <h1> Personal Information </h1>
+    
+    <form method = "POST">
+        Name:   <input type="text" name ="name" value="{{ user.name }}"><br>
+        
+        Age:    <input type="text" name ="age" value="{{ user.age }}"><br>
+        
+        Gender: <select value="{{ user.gender }}">
+                    <option name=" "> Select One </option>
+                    <option name="P"> Prefer Not To Specify </option>
+                    <option name="F"> Female </option>
+                    <option name="M"> Male </option>
+                    <option name="O"> Other </option>
+                </select>
+        <br>
+        Height: <input type="text" name ="height" value="{{ user.height }}"><br>
+        
+        Weight: <input type="text" name ="weight" value="{{ user.weight }}"><br>
+        
+        <button onclick="confirmChanges()" href = "./editUserInfo?user={{ user.name }}">
+            Done
+        </button>
+        
+    </form>
+    
+    <a href = "/home">
+        <button>
+            Home
+        </button>
+    </a>
+    <br>
+    <a href = "/userInfo">
+        <button>
+            Profile
+        </button>
+    </a>
+</body>
+
+<script>
+    function confirmChanged() {
+        if (!confirm("Confirm Changes!")) {
+            event.preventDefault();
+        } 
+    }
+    
+    // $(document).ready(function() {
+    //     /*global $ */
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/editUserInfo",
+    //         dataType: "json",
+    //         contentType: "application/json",
+    //         data: JSON.stringify({
+    //             "name": $("#name").val(),
+    //             "age": $("#age").val()
+    //         }),
+    //         success: function(result, status) {
+    //             console.log("got login status back", result);
+    //             // if (result.successful) {
+    //             //     window.location.href = '/editUserInfo';
+    //             // }
+    //             // else {
+    //             //     $('#message').html(result.message);
+    //             //     $('#message').show();
+    //             // }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             err = eval("error: (" + xhr.responseText + ")");
+    //             console.error(err);
+    //         },
+    //         complete: function(data, status) { //optional, used for debugging purposes
+    //             console.log(status);
+    //         }
+    //     });
+    // });
+</script>

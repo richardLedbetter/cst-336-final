@@ -3,15 +3,16 @@ const router = express.Router();
 const mysql = require('mysql');
 const session = require('express-session')
 
+router.use(express.json());
 
 router.get('/', async function(req, res) {
     // ADD AFTER LOGIN AND REGISTER FUNCTIONS ARE FINISHED
     if (req.session && req.session.username && req.session.username.length) {
-        res.render('../routes/views/home');
+        res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
         delete req.session.username;
-        res.redirect('../routes/views/index');
+        res.redirect('/index');
     }
     
     console.log("req.sesison.username", req.session.username);
@@ -25,8 +26,9 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-
-    res.render('../routes/views/home');
+    console.log("name",req.query) // gets nothing
+    let user = await getSingleUserInfo(req.query.name);
+    res.render('../routes/views/home', {"user": user});
     
 });
 
@@ -54,16 +56,31 @@ router.post('/login', async function(req, res, next) {
 
 });
 
+router.get('/logout', function(req, res, next) { // cant get this to go back to the index when use logs out
+
+    if (req.session && req.session.username && req.session.username.length) {
+        delete req.session.username;
+        res.render("../routes/views/index");
+    }
+
+    res.json({
+        successful: true,
+        message: ''
+    });
+
+});
+
 router.get("/register", function(req, res){ // should this be async? 
     res.render("../routes/views/newUser");
 });
 
 router.post("/register", async function(req, res){
   let rows = await insertUser(req.body);
+  let rows2 = await addUserInfo(req.body); // to add their info into the system
   let successful = false;
 
   let message = "User WAS NOT added to the database!";
-  if (rows.affectedRows > 0) {
+  if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
       message= "User successfully added!";
       successful = true;
       let rows = await userLogin(req.body);
@@ -84,13 +101,19 @@ router.get("/userInfo", function(req, res){
     res.render("../routes/views/userInfo");
 });
 
-router.post("/userInfo", async function(req, res){
+router.get("/editUserInfo", async function(req, res){
+    let userInfo = await getSingleUserInfo(req.query.name);
+    // console.log("query",req.query);
+    res.render("../routes/views/editUserInfo", { "user": userInfo });
+});
+
+router.post("/editUserInfo", async function(req, res){
     // updates the user info
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
-    console.log("post->update->req.body",req.body);
-    console.log(rows);
+    // console.log("post->update->req.body",req.body);
+    // console.log(rows);
     let message = "Author WAS NOT updated!";
     if (rows.affectedRows > 0) {
         message = "Author successfully updated!";
@@ -107,12 +130,15 @@ function updateUser(body) {
             if (err) throw err;
             // console.log("Connected!");
 
-            let sql = `UPDATE l9_author
-                      SET firstName = ?, 
-                          lastName  = ?
-                     WHERE authorId = ?`;
+            let sql = `UPDATE user_info
+                      SET name = ?, 
+                          age  = ?,
+                          gender  = ?,
+                          height = ?,
+                          weight = ?
+                     WHERE name = ?`;
 
-            let params = [body.firstName, body.lastName, body.authorId];
+            let params = [body.name, body.age, body.gender, body.height, body.weight];
 
             // console.log(sql);
             // console.log(params);
@@ -135,7 +161,7 @@ function userLogin(body){
     return new Promise(function(resolve, reject){
         conn.connect(function(err) {
            if (err) throw err;
-           console.log("Connected!");
+        //   console.log("Connected!");
         
            let sql = `SELECT * 
                     FROM auth
@@ -162,13 +188,41 @@ function insertUser(body){
     return new Promise(function(resolve, reject){
         conn.connect(function(err) {
            if (err) throw err;
-           console.log("Connected!");
+        //   console.log("Connected!");
         
-           let sql = `INSERT INTO auth (username, password, email)
-                    VALUES (?,?,?)    
-                         `;
+           let sql = `INSERT INTO auth
+                      (username, password, email)
+                      VALUES (?,?,?)    
+                      `;
         
            let params = [body.username, body.password, body.email];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows);
+           });
+        
+        });
+    });
+}
+
+function addUserInfo(body){
+   
+   let conn = dbConnection();
+//   console.log(body.name);
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+        //   console.log("Connected!");
+        
+           let sql = `INSERT INTO user_info
+                      (name, age)
+                      VALUES (?,?)    
+                      `;
+        
+           let params = [body.name, body.age];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -193,10 +247,37 @@ return conn;
 
 }
 
+function getSingleUserInfo(userName){
+    let conn = dbConnection();
+    
+    console.log(userName);
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    FROM user_info
+                    WHERE name = ?`;
+            // console.log(sql); 
+            conn.query(sql, [userName], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
+        });//connect
+    });//promise
+    
+}
+
 function getUserInfo(body){
    
    let u = body.username;
-   console.log(u);
+//   console.log(u);
    
    let conn = dbConnection();
     
