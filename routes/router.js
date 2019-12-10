@@ -13,12 +13,7 @@ router.get('/', async function(req, res) {
         let username = req.session.username;
         let user = await getSingleUserInfo(username);
         console.log("root - user:", user);
-        res.redirect(url.format({
-            pathname: '/home',
-            query: {
-                "user": user
-            }
-        })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+        res.redirect("/home");
     }
     else {
         delete req.session.username;
@@ -35,9 +30,10 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    
-    console.log("User: ", user);
-    res.render('../routes/views/home', {"user": user});
+    console.log("here",req.session.username);
+    let user = await getSingleUserInfo(req.session.username);
+    console.log("User-home: ", user);
+    res.render('../routes/views/home', {"user":user});
     
 });
 
@@ -281,7 +277,7 @@ function getSingleUserInfo(username){
               //res.send(rows);
               conn.end();
               console.log(rows);
-              resolve(rows[0]); //Query returns only ONE record
+              resolve(rows); //Query returns only ONE record
             });
             
         });//connect
