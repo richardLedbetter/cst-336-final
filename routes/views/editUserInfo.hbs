@@ -9,12 +9,12 @@
         
         Age:    <input type="text" name ="age" value="{{ user.age }}"><br>
         
-        Gender: <select value="{{ user.gender }}">
-                    <option name=" "> Select One </option>
-                    <option name="P"> Prefer Not To Specify </option>
-                    <option name="F"> Female </option>
-                    <option name="M"> Male </option>
-                    <option name="O"> Other </option>
+        Gender: <select value="{{ user.gender }}" name="gender">
+                    <option name=" ">{{user.gender}} </option>
+                    <option name="P" value="P"> Prefer Not To Specify </option>
+                    <option name="F" value="F"> Female </option>
+                    <option name="M" value="M"> Male </option>
+                    <option name="O" value="O"> Other </option>
                 </select>
         <br>
         Height: <input type="text" name ="height" value="{{ user.height }}"><br>

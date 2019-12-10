@@ -14,7 +14,6 @@ router.get('/', async function(req, res) {
         res.redirect('/login');
     }
     
-    console.log("req.sesison.username", req.session.username);
 
 });
 
@@ -25,7 +24,7 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    let user = await getSingleUserInfo(req.session.username);
+    let user = await getSingleUserInfo(req.query.username);
     console.log("User: ", user);
     res.render('../routes/views/home', {"user": user});
     
@@ -41,12 +40,12 @@ router.post('/login', async function(req, res, next) {
     
     let successful = false;
     let rows = await userLogin(req.body);
+    console.log("Login: ", req.body);
     if (rows.length > 0) {
         if (rows[0].password == req.body.password &&
         rows[0].username == req.body.username) {
             successful = true;
             req.session.username = rows[0].username;
-            req.session.email = rows[0].email;
         }
     }
 
@@ -110,6 +109,7 @@ router.get("/editUserInfo", async function(req, res){
 
 router.post("/editUserInfo", async function(req, res){
     // updates the user info
+    console.log(req.body)
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
@@ -137,9 +137,9 @@ function updateUser(body) {
                           gender  = ?,
                           height = ?,
                           weight = ?
-                     WHERE name = ?`;
+                     WHERE email = ?`;
 
-            let params = [body.name, body.age, body.gender, body.height, body.weight];
+            let params = [body.name, body.age, body.gender, body.height, body.weight, body.email];
 
             // console.log(sql);
             // console.log(params);
@@ -259,9 +259,9 @@ function getSingleUserInfo(email){
         //   console.log("Connected!");
         
             let sql = `
-                    SELECT a.email, u.name, u.age, u.gender, u.height, u.weight
+                    SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
                     FROM auth a
-                    INNER JOIN user_info u USING(email)`;
+                    LEFT JOIN user_info u USING(email)`;
             // console.log(sql); 
             conn.query(sql, [email], function (err, rows, fields) {
               if (err) throw err;
