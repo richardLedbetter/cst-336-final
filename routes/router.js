@@ -36,8 +36,9 @@ router.get('/index', async function(req, res) {
 
 router.get('/home', async function(req, res) {
     
-    console.log("User: ", res.user);
-    res.render('../routes/views/home', {"user": res.user});
+    console.log("User: ", req.session.username);
+    let data = await getSingleUserInfo(req.session.username);
+    res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
     
 });
 
