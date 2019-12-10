@@ -3,11 +3,22 @@ const router = express.Router();
 const mysql = require('mysql');
 const session = require('express-session')
 
+const url = require('url');
+
 router.use(express.json());
 
 router.get('/', async function(req, res) {
+    console.log("username: ", req.session.username);
     if (req.session && req.session.username && req.session.username.length) {
-        res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+        let username = req.session.username;
+        let user = await getSingleUserInfo(username);
+        console.log("root - user:", user);
+        res.redirect(url.format({
+            pathname: '/home',
+            query: {
+                "user": user
+            }
+        })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
         delete req.session.username;
@@ -24,7 +35,7 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    let user = await getSingleUserInfo(req.query.username);
+    
     console.log("User: ", user);
     res.render('../routes/views/home', {"user": user});
     
@@ -41,6 +52,7 @@ router.post('/login', async function(req, res, next) {
     let successful = false;
     let rows = await userLogin(req.body);
     console.log("Login: ", req.body);
+    console.log("rows: ", rows);
     if (rows.length > 0) {
         if (rows[0].password == req.body.password &&
         rows[0].username == req.body.username) {
@@ -98,12 +110,13 @@ router.post("/register", async function(req, res){
 });
 
 router.get("/userInfo", function(req, res){
+    console.log(req.query);
     res.render("../routes/views/userInfo");
 });
 
 router.get("/editUserInfo", async function(req, res){
-    let userInfo = await getSingleUserInfo(req.query.name);
-    // console.log("query",req.query);
+    let userInfo = await getSingleUserInfo(req.query);
+    console.log("query", req.query);
     res.render("../routes/views/editUserInfo", { "user": userInfo });
 });
 
@@ -248,10 +261,10 @@ return conn;
 
 }
 
-function getSingleUserInfo(email){
+function getSingleUserInfo(username){
     let conn = dbConnection();
     
-    console.log(email);
+    console.log("get single user - username: ", username);
     
     return new Promise(function(resolve, reject){
         conn.connect(function(err) {
@@ -259,14 +272,15 @@ function getSingleUserInfo(email){
         //   console.log("Connected!");
         
             let sql = `
-                    SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
-                    FROM auth a
-                    LEFT JOIN user_info u USING(email)`;
+                    SELECT *
+                    FROM user_info
+                    WHERE username = ?`;
             // console.log(sql); 
-            conn.query(sql, [email], function (err, rows, fields) {
+            conn.query(sql, [username], function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
+              console.log(rows);
               resolve(rows[0]); //Query returns only ONE record
             });
             
@@ -274,6 +288,34 @@ function getSingleUserInfo(email){
     });//promise
     
 }
+
+// function getSingleUserInfo(email){
+//     let conn = dbConnection();
+    
+//     console.log(email);
+    
+//     return new Promise(function(resolve, reject){
+//         conn.connect(function(err) {
+//           if (err) throw err;
+//         //   console.log("Connected!");
+        
+//             let sql = `
+//                     SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
+//                     FROM auth a
+//                     LEFT JOIN user_info u USING(email)`;
+//             // console.log(sql); 
+//             conn.query(sql, [email], function (err, rows, fields) {
+//               if (err) throw err;
+//               //res.send(rows);
+//               conn.end();
+//               console.log(rows);
+//               resolve(rows[0]); //Query returns only ONE record
+//             });
+            
+//         });//connect
+//     });//promise
+    
+// }
 
 function getUserInfo(body){
    
