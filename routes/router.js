@@ -87,25 +87,38 @@ router.get("/register", function(req, res){ // should this be async?
 });
 
 router.post("/register", async function(req, res){
-  let rows = await insertUser(req.body);
-  let rows2 = await addUserInfo(req.body); // to add their info into the system
+  
+  let checkEmail = await registrationCheckEmail(req.body);
+  let checkUsername = await registrationCheckUsername(req.body);
   let successful = false;
 
   let message = "User WAS NOT added to the database!";
-  if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
-      message= "User successfully added!";
-      successful = true;
-      let rows = await userLogin(req.body);
-      if (rows.length > 0) {
-        if (rows[0].password == req.body.password &&
-            rows[0].username == req.body.username) {
-                req.session.username = rows[0].username;
-                req.session.email = rows[0].email;
+  
+  if (checkEmail[0].cnt > 0) {
+      message = "Email already exists";
+  }
+  else if (checkUsername[0].cnt > 0) {
+      message = "Username already exists";
+  }
+  else {
+      let rows = await insertUser(req.body);
+      let rows2 = await addUserInfo(req.body); // to add their info into the system
+      if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
+          message= "User successfully added!";
+          successful = true;
+          let rows = await userLogin(req.body);
+          if (rows.length > 0) {
+            if (rows[0].password == req.body.password &&
+                rows[0].username == req.body.username) {
+                    req.session.username = rows[0].username;
+                    req.session.email = rows[0].email;
+            }
         }
-    }
+      }
   }
   res.json({
         successful: successful,
+        message: message
     });
 
 });
@@ -233,7 +246,7 @@ function addUserInfo(body){
         //   console.log("Connected!");
         
            let sql = `INSERT INTO user_info
-                      (name, age, email)
+                      (username, age, email)
                       VALUES (?,?,?)    
                       `;
         
@@ -341,5 +354,60 @@ function getUserInfo(body){
         });//connect
     });//promise 
 }
+
+////////////////////////////
+// CHECKS FOR VALID REGISTRATION
+
+////////////////////////////
+
+function registrationCheckEmail(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+        //   console.log("Connected!");
+        
+           let sql = `SELECT COUNT(email) AS cnt
+                      FROM auth
+                      WHERE email = ? 
+                      `;
+        
+           conn.query(sql, body.email, function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows);
+           });
+        
+        });
+    });
+}
+
+function registrationCheckUsername(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+        //   console.log("Connected!");
+        
+           let sql = `SELECT COUNT(username) AS cnt
+                      FROM auth
+                      WHERE username = ? 
+                      `;
+        
+           conn.query(sql, body.username, function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows);
+           });
+        
+        });
+    });
+}
+////////////////////////////
+
 
 module.exports = router;
