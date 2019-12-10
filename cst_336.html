@@ -25,23 +25,24 @@
 			height: 50px;
 			width: 75px;
 		}
-		.background{
-			background-image: url("beer_img.jpg");
-			color: blue;
-			filter: blur(9px) !important;
-			 height: 100%; 
+		body{
+			 background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("beer_img.jpg");
+			filter: blur(0px);
 			  /* Center and scale the image nicely */
-			  background-position: center;
-			  background-repeat: no-repeat;
-			  background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-attachment: fixed;
+			
 		}
 		input{
 			color:black;
 		}
 		.non_background { 
-			 background-color: rgb(0,0,0); /* Fallback color */
- 	 		background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
-			  color:white;
+			filter: blur(0px)!important;
+			 /*background-color: rgb(0,0,0); /* Fallback color */
+ 	 	/*	background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+			  color:white !important;
 			  font-weight: bold;
 			  position: absolute;
 			  top: 50%;
@@ -52,6 +53,9 @@
 			  height: 100%;
 			  padding: 70px;
 			  text-align: center;
+		}
+		tr{
+			color:white!important;
 		}
 		
 	</style>
@@ -72,37 +76,45 @@
 			<total id = "total"><b>___</b></total><b>%</b>
 		</bac>
 	</h1>
-	<h2 class="container">
-		<div class = "col">
-			<beer class="row">
-				Total amount of beer consumed: 
+	<h2 class="container" >
+		<table class = "col" id = "drinks">
+			<tr class="row" >
+				Beer<br>
 				<button class = "minus" id ="minus_beer">-</button>
 				<input id = "beer" size="4"> </input>
 				<button class = "add" id ="add_beer">+</button>
-			</beer><br>
-			<wine class="row top-buffer">
-				Total amount of wine consumed: 
+			</tr><br>
+			<tr class="row top-buffer">
+				Wine<br>
 				<button class = "minus" id ="minus_wine">-</button>
 				<input id = "wine" size="4"></input>
 				<button class = "add" id ="add_wine">+</button>
-			</wine><br>
-			<other class="row top-buffer">
-				Total amount of alcohol consumed:
+			</tr><br>
+			<tr class="row top-buffer">
+				Other<br>
 				<button class = "minus" id ="minus_other">-</button>
 				<input id = "alcohol" size="4"></input>
 				<button class = "add" id ="add_other">-</button>
-			</other><br>
+			</tr><br>
+			<tr>
 			
-			<weight class="row top-buffer">
+			</tr>
+		</table>
+			<br>
+				<button id = "add_drinks" >
+					add new drink
+				</button >
+		<br>
+		<weight class="row top-buffer">
+			<br>
 				Enter Weight 
-				<input id = "weight"></input>
-			</weight><br>
-			<time> 
-				Enter amount of hours since first drink
-				<input id ="time"></input>
-			</time>
+		<input id = "weight"></input>
+		</weight><br>
+		<time> 
+			Enter amount of hours since first drink
+			<input id ="time"></input>
+		</time>
 			<br><button id = "calc">calculate</button>
-		</div> 
 	</h2>
 	</div>
 </body>
@@ -113,6 +125,7 @@
 	total = 0;
 	weight = 0;
 	time = 0;
+	number_of_rows = 1
 	$('#calc').on("click",calc);
     function calc(){
 		beer = $("#beer").val() *12;   
@@ -128,5 +141,14 @@
     function sign_in(){
     	location.href = "routes/views/login.hbs";
     }
-    
+    $('#add_drinks').on("click",add_row);
+    function add_row(){
+    	console.log("line 140");
+    	var table = document.getElementById("drinks");
+    	cell1 = table.insertRow(number_of_rows);
+    	cell1.innerHTML = "NEW CELL1";
+    	cell1.style.color="white";
+    	cell1.className = "row top-buffer";
+    	number_of_rows++;
+    }
 </script>

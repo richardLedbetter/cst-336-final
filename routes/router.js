@@ -259,7 +259,7 @@ function getSingleUserInfo(email){
         //   console.log("Connected!");
         
             let sql = `
-                    SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
+                    SELECT a.email, a.username, u.age, u.gender, u.height, u.weight
                     FROM auth a
                     LEFT JOIN user_info u USING(email)`;
             // console.log(sql); 
@@ -267,7 +267,15 @@ function getSingleUserInfo(email){
               if (err) throw err;
               //res.send(rows);
               conn.end();
-              resolve(rows[0]); //Query returns only ONE record
+              tmp = rows[0];
+              console.log("email",email)
+              for (i =0;i<rows.length;i++){
+                  if(rows[i].email==email){
+                      tmp = rows[i];
+                      break;
+                  }
+              }
+              resolve(tmp); //Query returns only ONE record
             });
             
         });//connect
