@@ -1,5 +1,13 @@
 <head>
     <title> Home Page </title>
+	    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .inputs{
+            width: 10px;
+            height: 40px;
+        }
+    </style>
 </head>
 <body>
     This is the home page for users who are logged in
@@ -15,4 +23,29 @@
             Log Out
         </button>
     </a>
+	    <inputs> <button id = "weight" class = "inputs"></button>
+    <button id = "beer" class = "inputs"></button>
+    <button id = "wine" class = "inputs"></button>
+    <button id = "alcohol" class = "inputs"></button>
+    <button id = "time" class = "inputs"></button></inputs>
 </body>
+<script>
+    let time = 0.0;
+    
+    function update_time(){
+        time = time+.25;
+        recalc();
+        setTimeout(update_time(), 900000);
+    }
+    $('#calc').on("click",recalc);
+    function recalc(){
+        beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		other = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		time = $("#time").val()+time;
+		total = ((beer+wine+other))/weight; 
+		total = total-(time*.017);
+		$("total").text(total);
+    }
+</script>
