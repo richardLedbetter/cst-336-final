@@ -105,7 +105,7 @@ router.post("/register", async function(req, res){
   else if (!emailCheck) {
       message = "Invalid email format";
   }
-    else if (isNaN(req.body.age) || parseInt(req.body.age) < 21) {
+    else if (isNaN(req.body.age) || parseInt(req.body.age) < 21 || parseInt(req.body.age) > 99) {
       message = "Invalid age";
   }
   
