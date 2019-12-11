@@ -9,9 +9,14 @@
     
     <style>
         .inputs{
-            width: 10px;
+            width: 100px;
             height: 40px;
         }
+		.profile{
+			position: sticky;
+		  	bottom: 0;
+			
+		}	
     </style>
 
 </head>
@@ -29,6 +34,21 @@
             Log Out
         </button>
     </a>
+	<br>
+	<button id = "time" class = "inputs">Time</button>
+	    <table> 
+			<tr>
+				<th><button id = "beer" class = "inputs">BEER</button></th>
+				<th><button id = "wine" class = "inputs">WINE</button>	</th>
+				<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
+			</tr>
+			<tr>
+				<th><button id = "shots" class = "inputs">SHOTS</button></th>
+				<th><button id = "mixdrinks" class = "inputs">MIXED DRINKS</button></th>					
+				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
+			</tr>
+	</table>
+	<button class = "profile btn btn-primary btn-lg">Edit Profile</button>
 
     
     <button type="button" class="btn btn-primary" id="testButton"> Test </button>
@@ -55,7 +75,6 @@
         </div>
       </div>
     </div>
-    <!--- End of Modal -->
     
     
     <script>
