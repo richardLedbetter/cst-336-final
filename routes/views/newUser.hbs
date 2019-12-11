@@ -111,7 +111,7 @@
 			<p class="hint-text">Create a free account now! Takes just a minute.</p>
 	        <div class="form-group">
 				<div class="row">
-					<div class="col-xs-6"><input type="text" id="login" class="form-control" name="login" placeholder="Username" required="required"></div>
+					<div class="col-xs-6"><input type="text" id="login" class="form-control" name="login" placeholder="Username" required></div>
 				</div>        	
 	        </div>
 			<div class="form-group">
@@ -119,21 +119,21 @@
 	        </div>
 	        <div class="form-group">
 				<div class="row">
-					<div class="col-xs-6"><input type="email" id="email" class="form-control" name="email" placeholder="Email" required="required"></div>
+					<div class="col-xs-6"><input type="email" id="email" class="form-control" name="email" placeholder="Email" required></div>
 				</div>        	
 	        </div>
 	        <div class="form-group">
 				<div class="row">
-					<div class="col-xs-6"><input type="text" id="name" class="form-control" name="name" placeholder="Name" required="required"></div>
+					<div class="col-xs-6"><input type="text" id="name" class="form-control" name="name" placeholder="Name" required></div>
 				</div>        	
 	        </div>
 	        <div class="form-group">
 				<div class="row">
-					<div class="col-xs-6"><input type="text" id="age" class="form-control" name="age" placeholder="Age" required="required"></div>
+					<div class="col-xs-6"><input type="text" id="age" class="form-control" name="age" placeholder="Age" required></div>
 				</div>
 				<br>
-				<div id="message" style="background-color:red"></div><br>
-				*Must Be 21 To Create An Account
+				<div class ="alert alert-danger" role="alert" id="message"></div><br>
+				*Must be 21 to create an account
 	        </div>
 			<div class="form-group">
 	            <button type="submit" id="registerButton" class="btn btn-success btn-lg btn-block">Register</button>
@@ -146,11 +146,12 @@
 <script>
 	/* global $ */
 	$(document).ready(function() {
+		$("#message").hide();
         
         // $('#message').hide();
         $('#registerButton').on('click', function(e) {
+        	e.preventDefault();
             // Do not submit until I am ready
-            e.preventDefault();
             $.ajax({
                 type: "POST",
                 url: "/register",
@@ -181,7 +182,9 @@
                     console.log(status);
                 }
             });
-        })
-    });
+	
+	});
+
+});
 </script>
 </html>

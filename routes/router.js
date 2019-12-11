@@ -87,36 +87,56 @@ router.get("/register", function(req, res){ // should this be async?
 });
 
 router.post("/register", async function(req, res){
-  
-  let checkEmail = await registrationCheckEmail(req.body);
-  let checkUsername = await registrationCheckUsername(req.body);
-  let successful = false;
-
-  let message = "User WAS NOT added to the database!";
-  
-  if (checkEmail[0].cnt > 0) {
-      message = "Email already exists";
+    let message = "User WAS NOT added to the database!";
+    let successful = false;
+    
+    // Check if inputs are valid before checking with sql table
+    
+    if (req.body.username == '' ||
+           req.body.password == '' ||
+           req.body.email == '' ||
+           req.body.name == '' ||
+           req.body.age == '') {
+      message = "Some fields are empty";
   }
-  else if (checkUsername[0].cnt > 0) {
-      message = "Username already exists";
+    else if (isNaN(req.body.age) || parseInt(req.body.age) < 21) {
+      message = "Invalid age";
   }
+  
+  
+  // Call sql checks
   else {
-      let rows = await insertUser(req.body);
-      let rows2 = await addUserInfo(req.body); // to add their info into the system
-      if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
-          message= "User successfully added!";
-          successful = true;
-          let rows = await userLogin(req.body);
-          if (rows.length > 0) {
-            if (rows[0].password == req.body.password &&
-                rows[0].username == req.body.username) {
-                    req.session.username = rows[0].username;
-                    req.session.email = rows[0].email;
-            }
-        }
+      let checkEmail = await registrationCheckEmail(req.body);
+      let checkUsername = await registrationCheckUsername(req.body);
+    
+      if (checkEmail[0].cnt > 0) {
+          message = "Email already exists";
       }
-  }
-  res.json({
+      else if (checkUsername[0].cnt > 0) {
+          message = "Username already exists";
+      }
+      
+      
+      else {
+          console.log("req.body: ", req.body);
+          let rows = await insertUser(req.body);
+          let rows2 = await addUserInfo(req.body); // to add their info into the system
+          if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
+              successful = true;
+              let rows = await userLogin(req.body);
+              if (rows.length > 0) {
+                if (rows[0].password == req.body.password &&
+                    rows[0].username == req.body.username) {
+                        req.session.username = rows[0].username;
+                        req.session.email = rows[0].email;
+                }
+            }
+          }
+      }
+     
+    }
+    
+    res.json({
         successful: successful,
         message: message
     });
@@ -250,7 +270,7 @@ function addUserInfo(body){
                       VALUES (?,?,?)    
                       `;
         
-           let params = [body.name, body.age, body.email];
+           let params = [body.username, body.age, body.email];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -371,10 +391,9 @@ function registrationCheckEmail(body){
         
            let sql = `SELECT COUNT(email) AS cnt
                       FROM auth
-                      WHERE email = ? 
-                      `;
+                      WHERE email = ?`;
         
-           conn.query(sql, body.email, function (err, rows, fields) {
+           conn.query(sql, [body.email], function (err, rows, fields) {
               if (err) throw err;
               conn.end();
               resolve(rows);
@@ -391,14 +410,14 @@ function registrationCheckUsername(body){
     return new Promise(function(resolve, reject){
         conn.connect(function(err) {
            if (err) throw err;
-        //   console.log("Connected!");
+          console.log("RegistrationCheckUsername Connected!");
         
            let sql = `SELECT COUNT(username) AS cnt
                       FROM auth
                       WHERE username = ? 
                       `;
         
-           conn.query(sql, body.username, function (err, rows, fields) {
+           conn.query(sql, [body.username], function (err, rows, fields) {
               if (err) throw err;
               conn.end();
               resolve(rows);
@@ -407,6 +426,19 @@ function registrationCheckUsername(body){
         });
     });
 }
+
+function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
+  {
+    return (true)
+  }
+    alert("You have entered an invalid email address!")
+    return (false)
+}
+
+
+
 ////////////////////////////
 
 
