@@ -1,8 +1,13 @@
 <head>
     <title> Home Page </title>
+
 	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
     <style>
         .inputs{
             width: 10px;
@@ -25,6 +30,7 @@
             Log Out
         </button>
     </a>
+
     
     <button type="button" class="btn btn-primary" id="testButton"> Test </button>
     
@@ -81,13 +87,16 @@
         });
     </script>
     
+
 	    <inputs> <button id = "weight" class = "inputs"></button>
     <button id = "beer" class = "inputs"></button>
     <button id = "wine" class = "inputs"></button>
     <button id = "alcohol" class = "inputs"></button>
     <button id = "time" class = "inputs"></button></inputs>
 </body>
+
  <script>
+
     let time = 0.0;
     
     function update_time(){
@@ -106,5 +115,6 @@
 		total = total-(time*.017);
 		$("total").text(total);
     }
- </script>
+
+</script>
 
