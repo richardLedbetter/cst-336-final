@@ -64,7 +64,7 @@
 	<button class = "profile btn btn-primary btn-lg">Edit Profile</button>
 
     
-    <button type="button" class="btn btn-primary" id="testButton"> Test </button>
+
     
     
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,9 +92,11 @@
 
 </body>
 <script>
+        /* global $ */
         $(document).ready(function(){
             
-            $("#beer").on("click", function() {               
+            $("#beer").on("click", function() { 
+                $("#drinkNames").empty();
                $.ajax({
                    method: "GET",
                    url: "/getBeer",
@@ -110,7 +112,8 @@
                }); //ajax
             }); //button
 													   
-			$("#wine").on("click", function() {               
+			$("#wine").on("click", function() {
+			    $("#drinkNames").empty();
                $.ajax({
                    method: "GET",
                    url: "/getWine",
@@ -126,23 +129,9 @@
                }); //ajax
             }); //button
 	
-            $("#shots").on("click", function() {               
-               $.ajax({
-                   method: "GET",
-                   url: "/getshots",
-                   dataType: "json",
-                   success: function(result,status) {
-                       console.log(result);
-                       //$("#drinkNames").html(result[0].name);
-                      for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
-                      }
-                       $("#drinkModal").modal("show");
-                   }
-               }); //ajax
-            }); //button
 													   
-            $("#mixdrinks").on("click", function() {               
+            $("#mixdrinks").on("click", function() {
+                $("#drinkNames").empty();
                $.ajax({
                    method: "GET",
                    url: "/getMixed",

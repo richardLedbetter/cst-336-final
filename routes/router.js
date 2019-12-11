@@ -182,11 +182,15 @@ router.get("/getWine", async function(req,res) {
    
    let rows = await getWineList();
    res.send(rows);
+   
 });
+
 router.get("/getMixed", async function(req,res){
 	let rows = await getMixedList();
 	res.send(rows);
+	
 });
+
 function getMixedList() {
     let conn = dbConnection();
 
