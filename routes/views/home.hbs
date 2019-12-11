@@ -146,6 +146,22 @@
                    }
                }); //ajax
             }); //button
+			$("#shots").on("click", function() {
+                $("#drinkNames").empty();
+               $.ajax({
+                   method: "GET",
+                   url: "/getMisc",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
             let time = 0.0;
     
 			function update_time(){
