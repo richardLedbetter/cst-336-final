@@ -1,41 +1,75 @@
 <head>
     <title> User Info </title>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	
+	<title>Login</title>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	
+	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
 </head>
 <body>
-    <h1> Personal Information </h1>
-=    <form method = "POST">
-        Username: <input type="text" name="username" placeholder="{{editUser.username}}"value="{{editUser.username}}" readonly><br>
-        Age:    <input type="text" name ="age" value="{{ userInfo.age }}"><br>
-        
-        Gender: <select value="{{ editUser.gender }}" name="gender">
-                    <option name=" ">{{editUser.gender}} </option>
-                    <option name="P" value="P"> Prefer Not To Specify </option>
-                    <option name="F" value="F"> Female </option>
-                    <option name="M" value="M"> Male </option>
-                    <option name="O" value="O"> Other </option>
-                </select>
-        <br>
-        Height: <input type="text" name ="height" value="{{ editUser.height }}"><br>
-        
-        Weight: <input type="text" name ="weight" value="{{ editUser.weight }}"><br>
-        
-        <button onclick="confirmChanges()" href = "./editUserInfo?user={{ editUser.username }}">
-            Done
-        </button>
-        
-    </form>
-    
-    <a href = "/home">
-        <button>
-            Home
-        </button>
-    </a>
-    <br>
-    <a href = "/userInfo">
-        <button>
-            Profile
-        </button>
-    </a>
+    <div class="container py-2">
+    <div class="row my-2">
+        <!-- edit form column -->
+        <div class="col-lg-4">
+            <h2 class="text-center font-weight-light">User Profile</h2>
+        </div>
+        <div class="col-lg-8 order-lg-1 personal-info">
+            <form method="POST">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name="username" value="{{userInfo.username}}" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Age</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name="age" value="{{userInfo.age}}"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Height</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name ="height" value="{{ userInfo.height }}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Weight</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name ="weight" value="{{ userInfo.weight }}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Gender</label>
+                    <div class="col-lg-9">
+                        <select name="gender" value="{{ userInfo.gender }}" class="form-control" size="0">
+                            <option name=" ">{{userInfo.gender}} </option>
+                            <option name="P" value="P"> Prefer Not To Specify </option>
+                            <option name="F" value="F"> Female </option>
+                            <option name="M" value="M"> Male </option>
+                            <option name="O" value="O"> Other </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-9 ml-auto text-right">
+                        <input type="reset" class="btn btn-outline-secondary" value="Cancel" />
+                        <button type="submit" class="btn btn-primary" value="Save Changes" href = "./editUserInfo?user={{ userInfo.username }}">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 
 <script>

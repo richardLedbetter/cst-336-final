@@ -13,6 +13,7 @@ router.get('/', async function(req, res) {
         let username = req.session.username;
         let user = await getSingleUserInfo(username);
         console.log("root - user:", user);
+        
         res.redirect(url.format({
             pathname: '/home',
             query: {
@@ -162,7 +163,7 @@ router.get("/userInfo", async function(req, res){
 router.get("/editUserInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let editUser = await getSingleUserInfo(req.query.user);
-        res.render("../routes/views/editUserInfo", { "userinfo": editUser });
+        res.render("../routes/views/editUserInfo", { "userInfo": editUser });
     }
     
     else {
