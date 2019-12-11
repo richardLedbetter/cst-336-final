@@ -30,10 +30,9 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    console.log("here",req.session.username);
-    let user = await getSingleUserInfo(req.session.username);
-    console.log("User-home: ", user);
-    res.render('../routes/views/home', {"user":user});
+    console.log("User - home: ", req.session.username);
+    let data = await getSingleUserInfo(req.session.username);
+    res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
     
 });
 
@@ -106,19 +105,19 @@ router.post("/register", async function(req, res){
 });
 
 router.get("/userInfo", function(req, res){
-    console.log(req.query);
+    console.log("user info - query", req.query);
     res.render("../routes/views/userInfo");
 });
 
 router.get("/editUserInfo", async function(req, res){
     let userInfo = await getSingleUserInfo(req.query);
-    console.log("query", req.query);
+    console.log("edit user info - query", req.query);
     res.render("../routes/views/editUserInfo", { "user": userInfo });
 });
 
 router.post("/editUserInfo", async function(req, res){
     // updates the user info
-    console.log(req.body)
+    console.log("edit user info post - query", req.body);
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
@@ -284,34 +283,6 @@ function getSingleUserInfo(username){
     });//promise
     
 }
-
-// function getSingleUserInfo(email){
-//     let conn = dbConnection();
-    
-//     console.log(email);
-    
-//     return new Promise(function(resolve, reject){
-//         conn.connect(function(err) {
-//           if (err) throw err;
-//         //   console.log("Connected!");
-        
-//             let sql = `
-//                     SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
-//                     FROM auth a
-//                     LEFT JOIN user_info u USING(email)`;
-//             // console.log(sql); 
-//             conn.query(sql, [email], function (err, rows, fields) {
-//               if (err) throw err;
-//               //res.send(rows);
-//               conn.end();
-//               console.log(rows);
-//               resolve(rows[0]); //Query returns only ONE record
-//             });
-            
-//         });//connect
-//     });//promise
-    
-// }
 
 function getUserInfo(body){
    
