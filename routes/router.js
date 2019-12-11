@@ -36,6 +36,7 @@ router.get('/index', async function(req, res) {
 
 router.get('/home', async function(req, res) {
     
+    
     console.log("User: ", req.session.username);
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
@@ -72,12 +73,12 @@ router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.redirect("/index");
+        res.redirect("/login");
     }
 
     res.json({
         successful: true,
-        message: ''
+        message: 'Logged out'
     });
 
 });
@@ -89,6 +90,7 @@ router.get("/register", function(req, res){ // should this be async?
 router.post("/register", async function(req, res){
     let message = "User WAS NOT added to the database!";
     let successful = false;
+    let emailCheck = emailIsValid(req.body.email);
     
     // Check if inputs are valid before checking with sql table
     
@@ -98,6 +100,9 @@ router.post("/register", async function(req, res){
            req.body.name == '' ||
            req.body.age == '') {
       message = "Some fields are empty";
+  }
+  else if (!emailCheck) {
+      message = "Invalid email format";
   }
     else if (isNaN(req.body.age) || parseInt(req.body.age) < 21) {
       message = "Invalid age";
@@ -143,20 +148,33 @@ router.post("/register", async function(req, res){
 
 });
 
-router.get("/userInfo", function(req, res){
-    console.log(req.query);
-    res.render("../routes/views/userInfo");
+router.get("/userInfo", async function(req, res){
+    if (req.session && req.session.username && req.session.username.length) {
+        let userInfo = await getSingleUserInfo(req.query.user);
+        res.render("../routes/views/userInfo", {"userInfo":userInfo});
+    }
+    else {
+        delete req.session.username;
+        res.redirect('/login');
+    }
 });
 
 router.get("/editUserInfo", async function(req, res){
-    let userInfo = await getSingleUserInfo(req.query);
-    console.log("query", req.query);
-    res.render("../routes/views/editUserInfo", { "user": userInfo });
+    if (req.session && req.session.username && req.session.username.length) {
+        let editUser = await getSingleUserInfo(req.query.user);
+        res.render("../routes/views/editUserInfo", { "userinfo": editUser });
+    }
+    
+    else {
+        delete req.session.username;
+        res.redirect('/login');
+    }
 });
 
 router.post("/editUserInfo", async function(req, res){
     // updates the user info
-    console.log(req.body)
+    if (req.session && req.session.username && req.session.username.length) {
+    console.log(req.body);
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
@@ -167,6 +185,7 @@ router.post("/editUserInfo", async function(req, res){
         message = "Author successfully updated!";
     }
     res.render("../routes/views/userInfo", { "message": message, "user": userInfo });
+    }
 });
 
 
@@ -216,14 +235,14 @@ function updateUser(body) {
             // console.log("Connected!");
 
             let sql = `UPDATE user_info
-                      SET name = ?, 
+                      SET 
                           age  = ?,
                           gender  = ?,
                           height = ?,
                           weight = ?
-                     WHERE email = ?`;
+                     WHERE username = ?`;
 
-            let params = [body.name, body.age, body.gender, body.height, body.weight, body.email];
+            let params = [body.age, body.gender, body.height, body.weight, body.username];
 
             // console.log(sql);
             // console.log(params);
@@ -360,38 +379,8 @@ function getSingleUserInfo(username){
     
 }
 
-// function getSingleUserInfo(email){
-//     let conn = dbConnection();
-    
-//     console.log(email);
-    
-//     return new Promise(function(resolve, reject){
-//         conn.connect(function(err) {
-//           if (err) throw err;
-//         //   console.log("Connected!");
-        
-//             let sql = `
-//                     SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
-//                     FROM auth a
-//                     LEFT JOIN user_info u USING(email)`;
-//             // console.log(sql); 
-//             conn.query(sql, [email], function (err, rows, fields) {
-//               if (err) throw err;
-//               //res.send(rows);
-//               conn.end();
-//               console.log(rows);
-//               resolve(rows[0]); //Query returns only ONE record
-//             });
-            
-//         });//connect
-//     });//promise
-    
-// }
 
-function getUserInfo(body){
-   
-   let u = body.username;
-//   console.log(u);
+function getUserInfo(userId){
    
    let conn = dbConnection();
     
@@ -414,8 +403,12 @@ function getUserInfo(body){
 
 ////////////////////////////
 // CHECKS FOR VALID REGISTRATION
-
 ////////////////////////////
+//------------------------------------
+function emailIsValid (email) {
+    
+  return /\S+@\S+\.\S+/.test(email);
+}
 
 function registrationCheckEmail(body){
    
@@ -464,19 +457,9 @@ function registrationCheckUsername(body){
     });
 }
 
-function ValidateEmail(mail) 
-{
- if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
-  {
-    return (true)
-  }
-    alert("You have entered an invalid email address!")
-    return (false)
-}
-
-
-
+//------------------------------------
 ////////////////////////////
-
+// CHECKS FOR VALID REGISTRATION
+////////////////////////////
 
 module.exports = router;
