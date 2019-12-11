@@ -183,6 +183,52 @@ router.get("/getWine", async function(req,res) {
    let rows = await getWineList();
    res.send(rows);
 });
+router.get("/getMixed", async function(req,res){
+	let rows = await getMixedList();
+	res.send(rows);
+});
+function getMixedList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM mixed_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+function getWineList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM wine`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 
 function getBeerList() {
     let conn = dbConnection();
