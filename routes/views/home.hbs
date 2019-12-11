@@ -21,6 +21,10 @@
 		.middle{
 			
 		}
+		.trace{
+			padding:50px;
+			color: blue;
+		}
     </style>
 
 </head>
@@ -42,13 +46,13 @@
 	<button id = "time" class = "inputs">Time</button>
 		<br>
 	    <table class = " container middle text-center"> 
-			<tr>
-				<th><button id = "beer" class = "inputs">BEER</button></th>
+			<tr class = "trace">
+				<th><button id = "beer" class = "inputs ">BEER</button></th>
 				<th><button id = "wine" class = "inputs">WINE</button>	</th>
 				<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
 			</tr>
 			
-			<tr>
+			<tr class = "trace">
 				<th><button id = "shots" class = "inputs">SHOTS</button></th>
 				<th><button id = "mixdrinks" class = "inputs">MIXED DRINKS</button></th>					
 				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
@@ -85,27 +89,11 @@
     
     
 
-    
-
-	    <inputs> <button id = "weight" class = "inputs"></button>
-    <button id = "beer" class = "inputs"></button>
-    <button id = "wine" class = "inputs"></button>
-    <button id = "alcohol" class = "inputs"></button>
-    <button id = "time" class = "inputs"></button></inputs>
-
-    
-
-	    <inputs> <button id = "weight" class = "inputs"></button>
-    <button id = "beer" class = "inputs"></button>
-    <button id = "wine" class = "inputs"></button>
-    <button id = "alcohol" class = "inputs"></button>
-    <button id = "time" class = "inputs"></button></inputs>
 </body>
-    <script>
+<script>
         $(document).ready(function(){
             
-            $("#testButton").on("click", function() {
-               
+            $("#beer").on("click", function() {               
                $.ajax({
                    method: "GET",
                    url: "/getBeer",
@@ -120,31 +108,84 @@
                    }
                }); //ajax
             }); //button
+													   
+			$("#wine").on("click", function() {               
+               $.ajax({
+                   method: "GET",
+                   url: "/getWine",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+	
+            $("#shots").on("click", function() {               
+               $.ajax({
+                   method: "GET",
+                   url: "/getshots",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+													   
+            $("#mixdrinks").on("click", function() {               
+               $.ajax({
+                   method: "GET",
+                   url: "/getMixed",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+            let time = 0.0;
+    
+			function update_time(){
+				time = time+.25;
+				recalc();
+				setTimeout(update_time(), 900000);
+			}
+			$('#calc').on("click",recalc);
+			function recalc(){
+				beer = $("#beer").val() *12;   
+				wine = $("#wine").val()*5;
+				other = $("#alcohol").val() *1.5; 
+				weight = $("#weight").val();
+				time = $("#time").val()+time;
+				total = ((beer+wine+other))/weight; 
+				total = total-(time*.017);
+				$("total").text(total);
+			}
             
-            
-            
-            
-            
+													   
+			function openForm() {
+			  document.getElementById("myForm").style.display = "block";
+			}
+
+			function closeForm() {
+			  document.getElementById("myForm").style.display = "none";
+			}
         });
 
-    let time = 0.0;
     
-    function update_time(){
-        time = time+.25;
-        recalc();
-        setTimeout(update_time(), 900000);
-    }
-    $('#calc').on("click",recalc);
-    function recalc(){
-        beer = $("#beer").val() *12;   
-		wine = $("#wine").val()*5;
-		other = $("#alcohol").val() *1.5; 
-		weight = $("#weight").val();
-		time = $("#time").val()+time;
-		total = ((beer+wine+other))/weight; 
-		total = total-(time*.017);
-		$("total").text(total);
-    }
 
 </script>
 
