@@ -1,7 +1,13 @@
 <head>
     <title> Home Page </title>
-	    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
     <style>
         .inputs{
             width: 100px;
@@ -13,6 +19,7 @@
 			
 		}	
     </style>
+
 </head>
 <body>
     This is the home page for users who are logged in
@@ -28,6 +35,7 @@
             Log Out
         </button>
     </a>
+<<<<<<< HEAD
 	<br>
 	<button id = "time" class = "inputs">Time</button>
 	    <table> 
@@ -43,8 +51,75 @@
 			</tr>
 	</table>
 	<button class = "profile btn btn-primary btn-lg">Edit Profile</button>
+=======
+
+    
+    <button type="button" class="btn btn-primary" id="testButton"> Test </button>
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1>List of Beers</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+                <div id="drinkNames"></div>
+                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--- End of Modal -->
+    
+    
+    <script>
+        /* global $ */
+        $(document).ready(function(){
+            
+            $("#testButton").on("click", function() {
+               
+               $.ajax({
+                   method: "GET",
+                   url: "/getBeer",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+            
+            
+            
+            
+            
+        });
+    </script>
+    
+
+	    <inputs> <button id = "weight" class = "inputs"></button>
+    <button id = "beer" class = "inputs"></button>
+    <button id = "wine" class = "inputs"></button>
+    <button id = "alcohol" class = "inputs"></button>
+    <button id = "time" class = "inputs"></button></inputs>
+>>>>>>> 9ba9a61dc84fd1ac1ec30b010cff8a7b06d341cf
 </body>
-<script>
+
+ <script>
+
     let time = 0.0;
     
     function update_time(){
@@ -63,4 +138,6 @@
 		total = total-(time*.017);
 		$("total").text(total);
     }
+
 </script>
+
