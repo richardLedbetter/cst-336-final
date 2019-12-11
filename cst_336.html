@@ -141,14 +141,32 @@
     function sign_in(){
     	location.href = "routes/views/login.hbs";
     }
-    $('#add_drinks').on("click",add_row);
-    function add_row(){
-    	console.log("line 140");
-    	var table = document.getElementById("drinks");
-    	cell1 = table.insertRow(number_of_rows);
-    	cell1.innerHTML = "NEW CELL1";
-    	cell1.style.color="white";
-    	cell1.className = "row top-buffer";
-    	number_of_rows++;
-    }
+	//call add function for new drinks 
+	$('#loginButton').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "username": $("#login").val(),
+                    "password": $("#password").val()
+                }),
+                success: function(result, status) {
+                    console.log("got login status back", result);
+
+                    if (result.successful) {
+                        window.location.href = '/';
+                        return false;
+                    }
+                    else {
+                        // Show an error message or something and stay here
+                        $('#errorMessage').show();
+                        console.log("error");
+                    }
+                }
+            });
+        });
+    
 </script>

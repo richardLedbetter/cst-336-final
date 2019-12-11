@@ -36,6 +36,7 @@ router.get('/index', async function(req, res) {
 
 router.get('/home', async function(req, res) {
     
+    
     console.log("User: ", req.session.username);
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
@@ -72,12 +73,12 @@ router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.redirect("/index");
+        res.redirect("/login");
     }
 
     res.json({
         successful: true,
-        message: ''
+        message: 'Logged out'
     });
 
 });
@@ -87,43 +88,93 @@ router.get("/register", function(req, res){ // should this be async?
 });
 
 router.post("/register", async function(req, res){
-  let rows = await insertUser(req.body);
-  let rows2 = await addUserInfo(req.body); // to add their info into the system
-  let successful = false;
-
-  let message = "User WAS NOT added to the database!";
-  if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
-      message= "User successfully added!";
-      successful = true;
-      let rows = await userLogin(req.body);
-      if (rows.length > 0) {
-        if (rows[0].password == req.body.password &&
-            rows[0].username == req.body.username) {
-                req.session.username = rows[0].username;
-                req.session.email = rows[0].email;
-        }
-    }
+    let message = "User WAS NOT added to the database!";
+    let successful = false;
+    let emailCheck = emailIsValid(req.body.email);
+    
+    // Check if inputs are valid before checking with sql table
+    
+    if (req.body.username == '' ||
+           req.body.password == '' ||
+           req.body.email == '' ||
+           req.body.name == '' ||
+           req.body.age == '') {
+      message = "Some fields are empty";
   }
-  res.json({
+  else if (!emailCheck) {
+      message = "Invalid email format";
+  }
+    else if (isNaN(req.body.age) || parseInt(req.body.age) < 21) {
+      message = "Invalid age";
+  }
+  
+  
+  // Call sql checks
+  else {
+      let checkEmail = await registrationCheckEmail(req.body);
+      let checkUsername = await registrationCheckUsername(req.body);
+    
+      if (checkEmail[0].cnt > 0) {
+          message = "Email already exists";
+      }
+      else if (checkUsername[0].cnt > 0) {
+          message = "Username already exists";
+      }
+      
+      
+      else {
+          console.log("req.body: ", req.body);
+          let rows = await insertUser(req.body);
+          let rows2 = await addUserInfo(req.body); // to add their info into the system
+          if (rows.affectedRows > 0 && rows2.affectedRows > 0) {
+              successful = true;
+              let rows = await userLogin(req.body);
+              if (rows.length > 0) {
+                if (rows[0].password == req.body.password &&
+                    rows[0].username == req.body.username) {
+                        req.session.username = rows[0].username;
+                        req.session.email = rows[0].email;
+                }
+            }
+          }
+      }
+     
+    }
+    
+    res.json({
         successful: successful,
+        message: message
     });
 
 });
 
-router.get("/userInfo", function(req, res){
-    console.log(req.query);
-    res.render("../routes/views/userInfo");
+router.get("/userInfo", async function(req, res){
+    if (req.session && req.session.username && req.session.username.length) {
+        let userInfo = await getSingleUserInfo(req.query.user);
+        res.render("../routes/views/userInfo", {"userInfo":userInfo});
+    }
+    else {
+        delete req.session.username;
+        res.redirect('/login');
+    }
 });
 
 router.get("/editUserInfo", async function(req, res){
-    let userInfo = await getSingleUserInfo(req.query);
-    console.log("query", req.query);
-    res.render("../routes/views/editUserInfo", { "user": userInfo });
+    if (req.session && req.session.username && req.session.username.length) {
+        let editUser = await getSingleUserInfo(req.query.user);
+        res.render("../routes/views/editUserInfo", { "userinfo": editUser });
+    }
+    
+    else {
+        delete req.session.username;
+        res.redirect('/login');
+    }
 });
 
 router.post("/editUserInfo", async function(req, res){
     // updates the user info
-    console.log(req.body)
+    if (req.session && req.session.username && req.session.username.length) {
+    console.log(req.body);
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
@@ -134,7 +185,121 @@ router.post("/editUserInfo", async function(req, res){
         message = "Author successfully updated!";
     }
     res.render("../routes/views/userInfo", { "message": message, "user": userInfo });
+    }
 });
+
+
+router.get("/getBeer", async function(req,res) {
+    
+    let rows = await getBeerList();
+    res.send(rows);
+    
+});
+
+
+router.get("/getWine", async function(req,res) {
+   
+   let rows = await getWineList();
+   res.send(rows);
+   
+});
+
+router.get("/getMixed", async function(req,res){
+	let rows = await getMixedList();
+	res.send(rows);
+	
+});
+router.get("/getMisc", async function(req,res){
+	let rows = await getMixedList();
+	res.send(rows);
+	
+});
+function getMiscList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM misc_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
+function getMixedList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM mixed_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+function getWineList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM wine`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
+function getBeerList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM beers`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 
 function updateUser(body) {
 
@@ -146,14 +311,14 @@ function updateUser(body) {
             // console.log("Connected!");
 
             let sql = `UPDATE user_info
-                      SET name = ?, 
+                      SET 
                           age  = ?,
                           gender  = ?,
                           height = ?,
                           weight = ?
-                     WHERE email = ?`;
+                     WHERE username = ?`;
 
-            let params = [body.name, body.age, body.gender, body.height, body.weight, body.email];
+            let params = [body.age, body.gender, body.height, body.weight, body.username];
 
             // console.log(sql);
             // console.log(params);
@@ -233,11 +398,11 @@ function addUserInfo(body){
         //   console.log("Connected!");
         
            let sql = `INSERT INTO user_info
-                      (name, age, email)
+                      (username, age, email)
                       VALUES (?,?,?)    
                       `;
         
-           let params = [body.name, body.age, body.email];
+           let params = [body.username, body.age, body.email];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -290,38 +455,8 @@ function getSingleUserInfo(username){
     
 }
 
-// function getSingleUserInfo(email){
-//     let conn = dbConnection();
-    
-//     console.log(email);
-    
-//     return new Promise(function(resolve, reject){
-//         conn.connect(function(err) {
-//           if (err) throw err;
-//         //   console.log("Connected!");
-        
-//             let sql = `
-//                     SELECT a.email, a.username, u.name, u.age, u.gender, u.height, u.weight
-//                     FROM auth a
-//                     LEFT JOIN user_info u USING(email)`;
-//             // console.log(sql); 
-//             conn.query(sql, [email], function (err, rows, fields) {
-//               if (err) throw err;
-//               //res.send(rows);
-//               conn.end();
-//               console.log(rows);
-//               resolve(rows[0]); //Query returns only ONE record
-//             });
-            
-//         });//connect
-//     });//promise
-    
-// }
 
-function getUserInfo(body){
-   
-   let u = body.username;
-//   console.log(u);
+function getUserInfo(userId){
    
    let conn = dbConnection();
     
@@ -341,5 +476,66 @@ function getUserInfo(body){
         });//connect
     });//promise 
 }
+
+////////////////////////////
+// CHECKS FOR VALID REGISTRATION
+////////////////////////////
+//------------------------------------
+function emailIsValid (email) {
+    
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+function registrationCheckEmail(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+        //   console.log("Connected!");
+        
+           let sql = `SELECT COUNT(email) AS cnt
+                      FROM auth
+                      WHERE email = ?`;
+        
+           conn.query(sql, [body.email], function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows);
+           });
+        
+        });
+    });
+}
+
+function registrationCheckUsername(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+          console.log("RegistrationCheckUsername Connected!");
+        
+           let sql = `SELECT COUNT(username) AS cnt
+                      FROM auth
+                      WHERE username = ? 
+                      `;
+        
+           conn.query(sql, [body.username], function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows);
+           });
+        
+        });
+    });
+}
+
+//------------------------------------
+////////////////////////////
+// CHECKS FOR VALID REGISTRATION
+////////////////////////////
 
 module.exports = router;

@@ -3,25 +3,23 @@
 </head>
 <body>
     <h1> Personal Information </h1>
-    
-    <form method = "POST">
-        Name:   <input type="text" name ="name" value="{{ user.name }}"><br>
+=    <form method = "POST">
+        Username: <input type="text" name="username" placeholder="{{editUser.username}}"value="{{editUser.username}}" readonly><br>
+        Age:    <input type="text" name ="age" value="{{ userInfo.age }}"><br>
         
-        Age:    <input type="text" name ="age" value="{{ user.age }}"><br>
-        
-        Gender: <select value="{{ user.gender }}" name="gender">
-                    <option name=" ">{{user.gender}} </option>
+        Gender: <select value="{{ editUser.gender }}" name="gender">
+                    <option name=" ">{{editUser.gender}} </option>
                     <option name="P" value="P"> Prefer Not To Specify </option>
                     <option name="F" value="F"> Female </option>
                     <option name="M" value="M"> Male </option>
                     <option name="O" value="O"> Other </option>
                 </select>
         <br>
-        Height: <input type="text" name ="height" value="{{ user.height }}"><br>
+        Height: <input type="text" name ="height" value="{{ editUser.height }}"><br>
         
-        Weight: <input type="text" name ="weight" value="{{ user.weight }}"><br>
+        Weight: <input type="text" name ="weight" value="{{ editUser.weight }}"><br>
         
-        <button onclick="confirmChanges()" href = "./editUserInfo?user={{ user.name }}">
+        <button onclick="confirmChanges()" href = "./editUserInfo?user={{ editUser.username }}">
             Done
         </button>
         
