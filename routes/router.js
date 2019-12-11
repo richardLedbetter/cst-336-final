@@ -136,6 +136,43 @@ router.post("/editUserInfo", async function(req, res){
     res.render("../routes/views/userInfo", { "message": message, "user": userInfo });
 });
 
+
+router.get("/getBeer", async function(req,res) {
+    
+    let rows = await getBeerList();
+    res.send(rows);
+    
+});
+
+
+router.get("/getWine", async function(req,res) {
+   
+   let rows = await getWineList();
+   res.send(rows);
+});
+
+function getBeerList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM beers`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
 function updateUser(body) {
 
     let conn = dbConnection();
