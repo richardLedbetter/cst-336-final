@@ -12,12 +12,16 @@
         .inputs{
             width: 100px;
             height: 40px;
+			
         }
 		.profile{
 			position: sticky;
 		  	bottom: 0;
 			
 		}	
+		.middle{
+			
+		}
     </style>
 
 </head>
@@ -37,25 +41,28 @@
     </a>
 	<br>
 	<button id = "time" class = "inputs">Time</button>
-	    <table> 
+		<br>
+	    <table class = " container middle text-center"> 
 			<tr>
 				<th><button id = "beer" class = "inputs">BEER</button></th>
 				<th><button id = "wine" class = "inputs">WINE</button>	</th>
 				<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
 			</tr>
+			
 			<tr>
 				<th><button id = "shots" class = "inputs">SHOTS</button></th>
 				<th><button id = "mixdrinks" class = "inputs">MIXED DRINKS</button></th>					
 				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
 			</tr>
-	</table>
+		</table>
+			
+			
 	<button class = "profile btn btn-primary btn-lg">Edit Profile</button>
 
     
     <button type="button" class="btn btn-primary" id="testButton"> Test </button>
     
     
-    <!-- Modal -->
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -78,8 +85,16 @@
     </div>
     
     
+
+    
+
+	    <inputs> <button id = "weight" class = "inputs"></button>
+    <button id = "beer" class = "inputs"></button>
+    <button id = "wine" class = "inputs"></button>
+    <button id = "alcohol" class = "inputs"></button>
+    <button id = "time" class = "inputs"></button></inputs>
+</body>
     <script>
-        /* global $ */
         $(document).ready(function(){
             
             $("#testButton").on("click", function() {
@@ -104,17 +119,6 @@
             
             
         });
-    </script>
-    
-
-	    <inputs> <button id = "weight" class = "inputs"></button>
-    <button id = "beer" class = "inputs"></button>
-    <button id = "wine" class = "inputs"></button>
-    <button id = "alcohol" class = "inputs"></button>
-    <button id = "time" class = "inputs"></button></inputs>
-</body>
-
- <script>
 
     let time = 0.0;
     
