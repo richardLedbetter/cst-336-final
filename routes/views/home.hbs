@@ -1,5 +1,13 @@
 <head>
     <title> Home Page </title>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .inputs{
+            width: 10px;
+            height: 40px;
+        }
+    </style>
 
 	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -43,6 +51,33 @@
             Log Out
         </button>
     </a>
+    current BAC is <total></total>
+    <inputs> <button id = "weight" class = "inputs"></button>
+    <button id = "beer" class = "inputs"></button>
+    <button id = "wine" class = "inputs"></button>
+    <button id = "alcohol" class = "inputs"></button>
+    <button id = "time" class = "inputs"></button></inputs>
+</body>
+<script>
+    let time = 0.0;
+    
+    function update_time(){
+        time = time+.25;
+        recalc();
+        setTimeout(update_time(), 900000);
+    }
+    $('#calc').on("click",recalc);
+    function recalc(){
+        beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		other = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		time = $("#time").val()+time;
+		total = ((beer+wine+other))/weight; 
+		total = total-(time*.017);
+		$("total").text(total);
+    }
+</script>
 	<br>
 	<button id = "time" class = "inputs">Time</button>
 		<br>
@@ -135,6 +170,22 @@
                $.ajax({
                    method: "GET",
                    url: "/getMixed",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+			$("#shots").on("click", function() {
+                $("#drinkNames").empty();
+               $.ajax({
+                   method: "GET",
+                   url: "/getMisc",
                    dataType: "json",
                    success: function(result,status) {
                        console.log(result);

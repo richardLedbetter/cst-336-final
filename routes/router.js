@@ -210,6 +210,32 @@ router.get("/getMixed", async function(req,res){
 	res.send(rows);
 	
 });
+router.get("/getMisc", async function(req,res){
+	let rows = await getMixedList();
+	res.send(rows);
+	
+});
+function getMiscList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM misc_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 
 function getMixedList() {
     let conn = dbConnection();
