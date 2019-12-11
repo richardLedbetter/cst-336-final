@@ -1,10 +1,15 @@
 <head>
     <title> Home Page </title>
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+    <style>
+        .inputs{
+            width: 10px;
+            height: 40px;
+        }
+    </style>
+
 </head>
 <body>
     This is the home page for users who are logged in
@@ -23,6 +28,7 @@
     
     <button type="button" class="btn btn-primary" id="testButton"> Test </button>
     
+    
     <!-- Modal -->
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -36,8 +42,6 @@
           <div class="modal-body">
             
                 <div id="drinkNames"></div>
-                
-                
                 
           </div>
           <div class="modal-footer">
@@ -77,4 +81,30 @@
         });
     </script>
     
+	    <inputs> <button id = "weight" class = "inputs"></button>
+    <button id = "beer" class = "inputs"></button>
+    <button id = "wine" class = "inputs"></button>
+    <button id = "alcohol" class = "inputs"></button>
+    <button id = "time" class = "inputs"></button></inputs>
 </body>
+ <script>
+    let time = 0.0;
+    
+    function update_time(){
+        time = time+.25;
+        recalc();
+        setTimeout(update_time(), 900000);
+    }
+    $('#calc').on("click",recalc);
+    function recalc(){
+        beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		other = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		time = $("#time").val()+time;
+		total = ((beer+wine+other))/weight; 
+		total = total-(time*.017);
+		$("total").text(total);
+    }
+ </script>
+
