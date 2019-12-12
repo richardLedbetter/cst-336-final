@@ -57,8 +57,13 @@ router.get('/home', async function(req, res) {
     //     delete req.session.username;
     //     res.redirect('/cst_336');
     // }else{
+        if (req.session && req.session.username && req.session.username.length) {
         let data = await getSingleUserInfo(req.session.username);
         res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
+        }
+        else {
+            res.redirect('/login');
+        }
     // }
 });
 
@@ -104,10 +109,14 @@ function searchdrink(body) {
         
            let sql = `SELECT *
                     FROM `+body.type
-                    +`\n WHERE name LIKE ? AND
-                    FIND_IN_SET(?, al_content)`;
+                    +`\n WHERE al_content BETWEEN ? AND ?
+                    GROUP BY name
+                    HAVING name LIKE ?`;
             console.log(sql);
-            let params =[body.name+'%', body.per];
+            let lower = body.per - 0.5;
+            let higher = body.per + 0.5;
+            
+            let params =[lower, higher,body.name+'%'];
             
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -142,7 +151,9 @@ router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.redirect("/login");
+        res.redirect("/cst_336");
+    } else {
+        res.redirect("/cst_336");
     }
 
     res.json({

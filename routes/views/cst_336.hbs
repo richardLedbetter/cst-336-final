@@ -10,6 +10,13 @@
 			right: 0;
 			position: fixed;
 		}
+		.home{
+			color: black;
+			background:grey;
+			top: 0;
+			left: 0;
+			position: fixed;
+		}
 		.btn{
 			height: 50px;
 			width: 100px;
@@ -94,6 +101,7 @@
 			Login
 		</button><br>
 	</login>
+	
 	<button id ="change_background">
 		change background image
 	</button>
@@ -210,6 +218,11 @@
     function sign_in(){
     	location.href = "/login";
     }
+        $('#home').on("click",home);
+    function home(){
+    	location.href = "/home";
+    }
+    
     $('#change_background').on('click',change_background)
     function change_background(){
     	let link = "";
@@ -276,12 +289,17 @@
 			    	"per" : $("#per").val()
                 }),
                 success: function(result,status) {
-                       console.log(result);
+                	if (status) {
+                       console.log("result:", status);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
                           $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div>" + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
+                	}
+                	else {
+                		
+                	}
                    }
             });
 
