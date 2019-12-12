@@ -113,16 +113,6 @@
 <script>
     let time = 0.0;
     
-    function recalc(){
-        beer = $("#beer").val() *12;   
-		wine = $("#wine").val()*5;
-		other = $("#alcohol").val() *1.5; 
-		weight = $("#weight").val();
-		time = $("#time").val()+time;
-		total = ((beer+wine+other))/weight; 
-		total = total-(time*.017);
-		$("total").text(total);
-    }
         /* global $ */
         $(document).ready(function(){
             $("Edit_profile").on("click",function() {
