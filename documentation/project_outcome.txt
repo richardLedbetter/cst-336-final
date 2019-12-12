@@ -1,4 +1,4 @@
-Project SDrink Counter by:
+Project Drink Counter by:
 Blessing, Richard, Jake, Ethan
 
 Project Description: 
