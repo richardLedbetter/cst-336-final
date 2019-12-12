@@ -101,10 +101,14 @@ function searchdrink(body) {
         
            let sql = `SELECT *
                     FROM `+body.type
-                    +`\n WHERE name LIKE ? AND
-                    FIND_IN_SET(?, al_content)`;
+                    +`\n WHERE al_content BETWEEN ? AND ?
+                    GROUP BY name
+                    HAVING name LIKE 'b%'`;
             console.log(sql);
-            let params =[body.name+'%', body.per];
+            let lower = body.per - 1;
+            let higher = body.per + 1
+            
+            let params =[lower, higher,body.name+'%'];
             
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
