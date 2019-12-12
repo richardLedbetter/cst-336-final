@@ -50,26 +50,26 @@
 			<tr class = "trace">
 				<th><button id = "beer" class = "inputs ">BEER</button></th>
 				<th><button id = "wine" class = "inputs">WINE</button>	</th>
-				<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
 			</tr>
 			
 			<tr class = "trace">
 				<th><button id = "shots" class = "inputs">SHOTS</button></th>
-				<th><button id = "mixdrinks" class = "inputs">MIXED DRINKS</button></th>					
-				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
+				<th><button id = "misc" class = "inputs">MISC DRINKS</button></th>
+				<th><button id = "mixed" class = "inputs">MIXED DRINKS</button></th>	
 			</tr>
-		</table>
-    {{!--{{user}} is logged in{{user_data.username}}--}}
-    <a href = "/userInfo?user={{user_data.username}}">
-        <button>
-            Profile {{data.username}}
-        </button>
-    </a>
-    <a href = "/logout">
-        <button>
-            Log Out
-        </button>
-    </a>
+			<tr class = "trace">
+        		<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
+        		<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
+        	</tr>
+        	<tr class = "trace">
+        		<th><a href = "/logout"><button id = "logout" class = "inputs">Log Out</button></a></th>
+                <th><a href = "/userInfo?user={{user_data.username}}"><button id = "profile" class = "inputs">Profile {{data.username}}</button></a></th>
+            </tr>
+	</table>
+	
+		
+    
+    
 	<br>
 	<selected class = "col-md-4">
 	    <button id = "time" class = "inputs ">Time</button>
@@ -87,7 +87,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1>List of Beers</h5>
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -105,7 +105,7 @@
     </div>
     
     
-
+    {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
 </body>
 <script>
     let time = 0.0;
@@ -114,9 +114,10 @@
         $(document).ready(function(){
             $("Edit_profile").on("click",function() {
                 location.href = "/editUserInfo.hbs";
-            })
+            });
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Beers");
                $.ajax({
                    method: "GET",
                    url: "/getBeer",
@@ -125,7 +126,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -134,6 +135,7 @@
 													   
 			$("#wine").on("click", function() {
 			    $("#drinkNames").empty();
+			    $("#exampleModalLabel").html("List of Wines");
                $.ajax({
                    method: "GET",
                    url: "/getWine",
@@ -142,7 +144,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                         $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -150,8 +152,9 @@
             }); //button
 	
 													   
-            $("#mixdrinks").on("click", function() {
+            $("#mixed").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Mixed Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMixed",
@@ -160,14 +163,16 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
                }); //ajax
             }); //button
-			$("#shots").on("click", function() {
+            
+			$("#misc").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Misc Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMisc",
@@ -176,7 +181,25 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+            
+            $("#shots").on("click", function() {
+                $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Shots");
+               $.ajax({
+                   method: "GET",
+                   url: "/getShots",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }

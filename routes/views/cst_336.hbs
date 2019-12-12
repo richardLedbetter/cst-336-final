@@ -26,7 +26,7 @@
 			width: 75px;
 		}
 		body{
-			 background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("beer_img.jpg");
+			 background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("/beer_img.jpg");
 			filter: blur(0px);
 			  /* Center and scale the image nicely */
 			background-position: center;
@@ -84,19 +84,19 @@
 			<tr class="row" >
 				Beer<br>
 				<button class = "minus" id ="minus_beer">-</button>
-				<input id = "beer" size="4"> </input>
+				<input id = "beer" size="4">0</input>
 				<button class = "add" id ="add_beer">+</button>
 			</tr><br>
 			<tr class="row top-buffer">
 				Wine<br>
 				<button class = "minus" id ="minus_wine">-</button>
-				<input id = "wine" size="4"></input>
+				<input id = "wine" size="4">0</input>
 				<button class = "add" id ="add_wine">+</button>
 			</tr><br>
 			<tr class="row top-buffer">
 				Other<br>
 				<button class = "minus" id ="minus_other">-</button>
-				<input id = "alcohol" size="4"></input>
+				<input id = "alcohol" size="4">0</input>
 				<button class = "add" id ="add_other">-</button>
 			</tr><br>
 			<tr>
@@ -122,6 +122,22 @@
 	</div>
 </body>
 <script>
+	$('#add_beer').on("click",add_drink("#beer"));
+	$('#minus_beer').on("click",minus_drink("#beer"));
+	$('#add_wine').on("click",add_drink("#wine"));
+	$('#minus_wine').on("click",minus_drink("#wine"));
+	function minus_drink(type){
+		tmp = parseInt($(type).val());
+		tmp--;
+		console.log(tmp);
+		console.log("clicked");
+		$(type).text(tmp);
+	}
+	function add_drink(type){
+		tmp = parseInt($(type).val());
+		tmp++;
+		$(type).text(tmp);
+	}
 	beer = 0;
 	wine = 0;
 	other = 0;

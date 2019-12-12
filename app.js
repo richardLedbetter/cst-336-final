@@ -11,6 +11,8 @@ var indexRouter = require('./routes/router');
 
 var app = express();
 
+app.use(express.static("public"));
+
 app.use(session({
   secret: '6wOBwJBStY'
 }));
