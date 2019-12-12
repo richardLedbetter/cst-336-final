@@ -50,26 +50,26 @@
 			<tr class = "trace">
 				<th><button id = "beer" class = "inputs ">BEER</button></th>
 				<th><button id = "wine" class = "inputs">WINE</button>	</th>
-				<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
 			</tr>
 			
 			<tr class = "trace">
 				<th><button id = "shots" class = "inputs">SHOTS</button></th>
-				<th><button id = "mixdrinks" class = "inputs">MIXED DRINKS</button></th>					
-				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
+				<th><button id = "misc" class = "inputs">MISC DRINKS</button></th>
+				<th><button id = "mixed" class = "inputs">MIXED DRINKS</button></th>	
 			</tr>
-		</table>
-    {{!--{{user}} is logged in{{user_data.username}}--}}
-    <a href = "/userInfo?user={{user_data.username}}">
-        <button>
-            Profile {{data.username}}
-        </button>
-    </a>
-    <a href = "/logout">
-        <button>
-            Log Out
-        </button>
-    </a>
+			<tr class = "trace">
+        		<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
+        		<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
+        	</tr>
+        	<tr class = "trace">
+        		<th><a href = "/logout"><button id = "logout" class = "inputs">Log Out</button></a></th>
+                <th><a href = "/userInfo?user={{user_data.username}}"><button id = "profile" class = "inputs">Profile {{data.username}}</button></a></th>
+            </tr>
+	</table>
+	
+		
+    
+    
 	<br>
 	<selected class = "col-md-4">
 	    <button id = "time" class = "inputs ">Time</button>

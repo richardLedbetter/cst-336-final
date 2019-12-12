@@ -11,9 +11,8 @@ router.get('/', async function(req, res) {
     console.log("username: ", req.session.username);
     if (req.session && req.session.username && req.session.username.length) {
         let username = req.session.username;
-        //let user = await getSingleUserInfo(username);
-        
-        res.redirect("/home"); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+        res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+
     }
     else {
         delete req.session.username;
