@@ -10,6 +10,13 @@
 			right: 0;
 			position: fixed;
 		}
+		.home{
+			color: black;
+			background:grey;
+			top: 0;
+			left: 0;
+			position: fixed;
+		}
 		.btn{
 			height: 50px;
 			width: 100px;
@@ -94,6 +101,11 @@
 			Login
 		</button><br>
 	</login>
+		<home class = "home">
+		<button id = "home" type="button"  class='btn pull-right'>
+			Home
+		</button><br>
+	</home>
 			<button id ="change_background">
 			change background image
 		</button>
@@ -182,6 +194,11 @@
     function sign_in(){
     	location.href = "/login";
     }
+        $('#home').on("click",home);
+    function home(){
+    	location.href = "/home";
+    }
+    
     $('#change_background').on('click',change_background)
     function change_background(){
     	let link = "";

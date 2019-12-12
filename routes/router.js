@@ -57,8 +57,13 @@ router.get('/home', async function(req, res) {
     //     delete req.session.username;
     //     res.redirect('/cst_336');
     // }else{
+        if (req.session && req.session.username && req.session.username.length) {
         let data = await getSingleUserInfo(req.session.username);
         res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
+        }
+        else {
+            res.redirect('/login');
+        }
     // }
 });
 
