@@ -70,10 +70,27 @@
 			Login
 		</button>
 	</login>
-	<h1 class=" text-center" >
-		<div class="md-form mt-0">
-  <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-</div>
+					<form method="POST">
+	                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Type</label>
+                    <div class="col-lg-9">
+                        <select name="type" id="type" value="Select type" class="form-control" size="0">
+                            <option name=" "></option>
+                            <option name="beer" value="beers"> Beer </option>
+                            <option name="shots" value="shots"> Shots </option>
+                            <option name="wine" value="wine"> Wine </option>
+							<option name="mixed_drinks" value="mixed_drinks"> Mixed Drinks </option>
+                            <option name="misc_drinks" value="misc_drinks"> Other </option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required">
+                    <input type="password" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required">
+                	<div class="form-group">
+	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
+	        </div>
+	        {{rows}}
+                </div>
+                </form>
 		<bac >
 			current bac is 
 			<total id = "total"><b>___</b></total><b>%</b>
@@ -165,5 +182,38 @@
                 }
             });
         });
-    
+    $("#searchButton").on('click',function(e) {
+    	e.preventDefault();
+    	/*
+    		beer
+    		wine
+    		shots
+    		mixed
+    	*/
+    	
+        $.ajax({
+                type: "POST",
+                url: "/search_types",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                	"type": $("#type").val(),
+			    	"name" :$("#name").val(),
+			    	"per" : $("#per").val()
+                }),
+                success: function(result, status) {
+                    console.log("got login status back", result);
+
+                    if (result.successful) {
+                        window.location.href = '/';
+                        return false;
+                    }
+                    else {
+                        // Show an error message or something and stay here
+                        $('#errorMessage').show();
+                        console.log("error");
+                    }
+                }
+            });
+    })
 </script>

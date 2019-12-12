@@ -11,8 +11,6 @@ router.get('/', async function(req, res) {
     console.log("username: ", req.session.username);
     if (req.session && req.session.username && req.session.username.length) {
         let username = req.session.username;
-<<<<<<< HEAD
-        let user = await getSingleUserInfo(username);
         
         res.redirect('/home');
         
@@ -22,10 +20,6 @@ router.get('/', async function(req, res) {
         //         "user": user.username
         //     }
         // })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
-=======
-        res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
-
->>>>>>> 093d8bde70abaac23cb29923f0c4f21f7d3f7e85
     }
     else {
         delete req.session.username;
@@ -62,7 +56,47 @@ router.get('/login', async function(req, res) {
     res.render('../routes/views/login');
     
 });
+	/*
+    		beer
+    		wine
+    		shots
+    		mixed
+    	*/
+router.post('/search_types',async function(req,res) {
+    //name,%
+    let rows = await searchdrink(req.body);
+    console.log("return drinks: ", rows);
+    console.log("clicked",req.body);
+    res.send(rows);
 
+    
+});
+
+
+function searchdrink(body) {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                    FROM `+body.type
+                    +`\n WHERE name LIKE ? AND
+                    FIND_IN_SET(?, al_content)`;
+            console.log(sql);
+            let params =[body.name+'%', body.per];
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 router.post('/login', async function(req, res, next) {
     
     let successful = false;
