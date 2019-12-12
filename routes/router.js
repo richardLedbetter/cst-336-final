@@ -272,6 +272,494 @@ router.get("/getShots", async function(req,res){
    res.send(rows);
 });
 
+
+router.get("/editBeer", async function(req, res){
+  let name = await getBeerInfo(req.query.id);
+  console.log("TEST", name);
+  res.render("../routes/views/editDrink", {"drink":name, "type":0});
+});
+
+
+router.get("/editWine", async function(req, res){
+  let name = await getWineInfo(req.query.id);
+  console.log(name);
+  res.render("../routes/views/editDrink", {"drink":name, "type":1});
+});
+
+router.get("/editMixed", async function(req, res){
+  let name = await getMixedInfo(req.query.id);
+  console.log(name);
+  res.render("../routes/views/editDrink", {"drink":name, "type":2});
+});
+
+router.get("/editMisc", async function(req, res){
+  let name = await getMiscInfo(req.query.id);
+  console.log(name);
+  res.render("../routes/views/editDrink", {"drink":name, "type":3});
+});
+
+router.get("/editShots", async function(req, res){
+  let name = await getShotsInfo(req.query.id);
+  console.log(name);
+  res.render("../routes/views/editDrink", {"drink":name, "type":4});
+});
+
+router.post("/editDrink", async function(req,res) {
+   let successful = false;
+   if(req.body.typeAL == 0) {
+      let rows = await updateBeer(req.body);
+      console.log(rows);
+      if (rows.affectedRows > 0) {
+          //console.log("GOT IT");
+          successful = true;
+      }
+   }
+   if(req.body.typeAL == 1) {
+      let rows = await updateWine(req.body);
+      console.log(rows);
+      if (rows.affectedRows > 0) {
+          //console.log("GOT IT");
+          successful = true;
+      } 
+   }
+   if(req.body.typeAL == 2) {
+      let rows = await updateMixed(req.body);
+      console.log(rows);
+      if (rows.affectedRows > 0) {
+          //console.log("GOT IT");
+          successful = true;
+      } 
+   }
+   if(req.body.typeAL == 3) {
+      let rows = await updateMisc(req.body);
+      console.log(rows);
+      if (rows.affectedRows > 0) {
+          //console.log("GOT IT");
+          successful = true;
+      } 
+   }
+   if(req.body.typeAL == 4) {
+      let rows = await updateShots(req.body);
+      console.log(rows);
+      if (rows.affectedRows > 0) {
+          //console.log("GOT IT");
+          successful = true;
+      } 
+   }
+   
+   res.json({
+            successful : successful
+        });
+   
+});
+
+
+router.get("/deleteBeer", async function(req,res) {
+   let rows = await deleteBeer(req.query.id); 
+   
+   if(rows.affectedRows > 0) {
+       console.log("deleted");
+   }
+   res.redirect("/home");
+});
+
+router.get("/deleteWine", async function(req,res) {
+   let rows = await deleteWine(req.query.id); 
+   
+   if(rows.affectedRows > 0) {
+       console.log("deleted");
+   }
+   res.redirect("/home");
+});
+
+router.get("/deleteMixed", async function(req,res) {
+   let rows = await deleteMixed(req.query.id); 
+   
+   if(rows.affectedRows > 0) {
+       console.log("deleted");
+   }
+   res.redirect("/home");
+});
+
+router.get("/deleteMisc", async function(req,res) {
+   let rows = await deleteMisc(req.query.id); 
+   
+   if(rows.affectedRows > 0) {
+       console.log("deleted");
+   }
+   res.redirect("/home");
+});
+
+router.get("/deleteShots", async function(req,res) {
+   let rows = await deleteShots(req.query.id); 
+   
+   if(rows.affectedRows > 0) {
+       console.log("deleted");
+   }
+   res.redirect("/home");
+});
+
+
+function deleteBeer(id){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM beers
+                      WHERE id = ?`;
+        
+           conn.query(sql, [id], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deleteWine(id){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM wine
+                      WHERE id = ?`;
+        
+           conn.query(sql, [id], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deleteMixed(id){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM mixed_drinks
+                      WHERE id = ?`;
+        
+           conn.query(sql, [id], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deleteMisc(id){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM misc_drinks
+                      WHERE id = ?`;
+        
+           conn.query(sql, [id], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deleteShots(id){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM shots
+                      WHERE id = ?`;
+        
+           conn.query(sql, [id], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+
+function updateBeer(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE beers
+                      SET name = ?,
+                    al_content  = ?
+                     WHERE id = ?`;
+
+            let params = [body.name, body.al_content, body.id];
+
+            console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+        }); //connect
+    }); //promise 
+}
+
+function updateWine(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE wine
+                      SET name = ?,
+                    al_content  = ?
+                     WHERE id = ?`;
+
+            let params = [body.name, body.al_content, body.id];
+
+            console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+        }); //connect
+    }); //promise 
+}
+
+function updateMixed(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE mixed_drinks
+                      SET name = ?,
+                    al_content  = ?
+                     WHERE id = ?`;
+
+            let params = [body.name, body.al_content, body.id];
+
+            console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+        }); //connect
+    }); //promise 
+}
+
+function updateMisc(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE misc_drinks
+                      SET name = ?,
+                    al_content  = ?
+                     WHERE id = ?`;
+
+            let params = [body.name, body.al_content, body.id];
+
+            console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+        }); //connect
+    }); //promise 
+}
+
+function updateShots(body) {
+
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject) {
+        conn.connect(function(err) {
+            if (err) throw err;
+            // console.log("Connected!");
+
+            let sql = `UPDATE shots
+                      SET name = ?,
+                    al_content  = ?
+                     WHERE id = ?`;
+
+            let params = [body.name, body.al_content, body.id];
+
+            console.log(sql);
+            // console.log(params);
+
+            conn.query(sql, params, function (err, rows, fields) {
+                if (err) throw err;
+                //res.send(rows);
+                conn.end();
+                resolve(rows);
+            });
+        }); //connect
+    }); //promise 
+}
+
+function getBeerInfo(name){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    from beers
+                    WHERE id = ?`;
+            // console.log(sql); 
+            conn.query(sql, [name], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              //console.log(rows);
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
+        });//connect
+    });//promise
+}
+
+function getWineInfo(name){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    from wine
+                    WHERE id = ?`;
+            // console.log(sql); 
+            conn.query(sql, [name], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              //console.log(rows);
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
+        });//connect
+    });//promise
+}
+
+function getMixedInfo(name){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    from mixed_drinks
+                    WHERE id = ?`;
+            // console.log(sql); 
+            conn.query(sql, [name], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              //console.log(rows);
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
+        });//connect
+    });//promise
+}
+
+function getMiscInfo(name){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    from misc_drinks
+                    WHERE id = ?`;
+            // console.log(sql); 
+            conn.query(sql, [name], function (err, rows, fields) {
+              if (err) throw err;
+              conn.end();
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
+        });//connect
+    });//promise
+}
+
+
 function getMiscList() {
     let conn = dbConnection();
 
@@ -290,6 +778,31 @@ function getMiscList() {
               resolve(rows);
            });
         
+        });//connect
+    });//promise
+}
+
+function getShotsInfo(name){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+        //   console.log("Connected!");
+        
+            let sql = `
+                    SELECT *
+                    from shots
+                    WHERE id = ?`;
+            // console.log(sql); 
+            conn.query(sql, [name], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              //console.log(rows);
+              resolve(rows[0]); //Query returns only ONE record
+            });
+            
         });//connect
     });//promise
 }
