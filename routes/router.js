@@ -36,9 +36,7 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    
-    
-    console.log("User: ", req.session.username);
+    console.log("User - home: ", req.session.username);
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
     
@@ -450,8 +448,8 @@ function getSingleUserInfo(username){
               if (err) throw err;
               //res.send(rows);
               conn.end();
-              console.log(rows);
-              resolve(rows[0]); //Query returns only ONE record
+              //console.log(rows);
+              resolve(rows); //Query returns only ONE record
             });
             
         });//connect

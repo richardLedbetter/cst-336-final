@@ -1,17 +1,43 @@
 <head>
     <title> User Info </title>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-    <h1> Personal Information </h1>
+    
+    
+    <div class="jumbotron text-center">
+        <h1> Profile </h1>
+        <text>This is the profile page</text>
+    </div>
 
-    Age: {{userInfo.age}}
-    
-    Height: {{userInfo.height}}
-    
-    Weight: {{userInfo.weight}}
-    
-    Gender: {{userInfo.gender}}
-    
+    <div>
+        Age: {{user_data.age}}
+    </div>
+    <br>
+    <div>
+        Height: {{user_data.height}}
+    </div>
+    <br>
+    <div>
+        Weight: {{user_data.weight}}
+    </div>
+    <br>
+    <div>
+        Gender: {{user_data.gender}}
+    </div>
+ 
     <a href = "/home">
         <button>
             Home
