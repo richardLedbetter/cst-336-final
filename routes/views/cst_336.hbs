@@ -92,11 +92,14 @@
 		<button id = "login" type="button"  class='btn pull-right'>
 			Login
 		</button>
+		<button id ="change_background">
+			change background image
+		</button>
 	</login>
 
 					<form method="POST">
 	                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Type</label>
+                    <label class="col-lg-3 col-form-label form-control-label">Type</label><br>
                     <div class="col-lg-9">
                         <select name="type" id="type" value="Select type" class="form-control" size="0">
                             <option name=" "></option>
@@ -179,6 +182,10 @@
     $('#login').on("click",sign_in);
     function sign_in(){
     	location.href = "/login";
+    }
+    $('#change_background').on('click',change_background)
+    function change_background(){
+    	
     }
 	//call add function for new drinks 
 	$('#loginButton').on('click', function(e) {
