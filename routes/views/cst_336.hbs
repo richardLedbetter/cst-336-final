@@ -88,9 +88,13 @@
                 	<div class="form-group">
 	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
 	        </div>
-	        {{rows}}
                 </div>
                 </form>
+                <div class="modal-body">
+            
+                <div id="drinkNames"></div>
+                
+          </div>
 		<bac >
 			current bac is 
 			<total id = "total"><b>___</b></total><b>%</b>
@@ -215,5 +219,18 @@
                     }
                 }
             });
+           $.ajax({
+                   method: "GET",
+                   url: "/search_types",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
     })
 </script>

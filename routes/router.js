@@ -62,13 +62,15 @@ router.get('/login', async function(req, res) {
     		shots
     		mixed
     	*/
-router.post('/search_types',async function(req,res) {
+router.get('/search_types',async function(req,res) {
     //name,%
     let rows = await searchdrink(req.body);
+    let keyword = req.body.name;
     console.log("return drinks: ", rows);
     console.log("clicked",req.body);
-    res.send(rows);
+    let parsedData = await getImages(keyword);
 
+    res.render("cst_336", {"images":parsedData, "rows": rows.name});
     
 });
 
@@ -618,5 +620,30 @@ function registrationCheckUsername(body){
 ////////////////////////////
 // CHECKS FOR VALID REGISTRATION
 ////////////////////////////
+
+function getImages(keyword){
+    
+    
+    return new Promise( function(resolve, reject){
+        request('https://pixabay.com/api/?key=5589438-47a0bca778bf23fc2e8c5bf3e&q='+keyword,
+                 function (error, response, body) {
+    
+            if (!error && response.statusCode == 200  ) { //no issues in the request
+                
+                 let parsedData = JSON.parse(body); //converts string to JSON
+                 
+                 resolve(parsedData);
+                
+            } else {
+                reject(error);
+                console.log(response.statusCode);
+                console.log(error);
+            }
+    
+          });//request
+   
+    });
+    
+}
 
 module.exports = router;
