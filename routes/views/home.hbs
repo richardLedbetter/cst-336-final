@@ -36,11 +36,15 @@
 		.time{
 		    left:50%;
 		}
-		body{
-		    background-color: darkgray;
-		}
+		/*body{*/
+		/*    background-color: darkgray;*/
+		/*}*/
 		.jumbotron{
 		    background-color: lightBlue;
+		}
+		#beerButton{
+		    height: 200px;
+		    width:200px;
 		}
     </style>
 
@@ -55,7 +59,8 @@
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
             <div class="col-sm-6">
-                <button id = "beer" class = "inputs btn btn-primary">BEER</button>
+                {{!--<button id = "beer" class = "inputs btn btn-primary">BEER</button>--}}
+                <input type="image" id = "beerButton" src="336_BeerButton.png" />
                 <br>
     		    <button id = "wine" class = "inputs btn btn-primary">WINE</button>
                 <br>
