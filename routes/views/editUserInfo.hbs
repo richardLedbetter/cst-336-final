@@ -13,9 +13,11 @@
         html, body {
             height: 100%;
         }
+
     </style>
 
 </head>
+
 
 <body>
     
@@ -97,6 +99,7 @@
 	            e.preventDefault();
 	            $('#alert').show();
 	            $('#changed').hide();
+	            console.log(age);
 
 	        }else{
 	            e.preventDefault();
@@ -111,18 +114,18 @@
         let height = $("#height").val();
         let weight = $("#weight").val();
         
-        if (isNaN(age) || parseInt(age) > 99 || parseInt(age) < 21) {
+        if (isNaN(age) || parseInt(age) > 99 || parseInt(age) < 21 || age == '') {
             isValid = false;
             $("#alert").html("Enter valid age");
         }
         
-        if (isNaN(height) || parseInt(height) > 86 || parseInt(height) < 50 ) {
+        if (isNaN(height) || parseInt(height) > 86 || parseInt(height) < 50 || height == '') {
             isValid = false;
             $("#alert").html("Enter valid height");
 
         }
         
-        if (isNaN(weight) || parseInt(weight) > 400 || parseInt(weight) < 100 ) {
+        if (isNaN(weight) || parseInt(weight) > 400 || parseInt(weight) < 100 || weight == '') {
             isValid = false;
             $("#alert").html("Enter valid weight");
         }

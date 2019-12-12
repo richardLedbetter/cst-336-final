@@ -99,7 +99,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1>List of Beers</h5>
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -117,7 +117,7 @@
     </div>
     {{!--End Of Modal Stuff--}}
     
-
+    {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
 </body>
 <script>
     let time = 0.0;
@@ -129,6 +129,7 @@
             })
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Beers");
                $.ajax({
                    method: "GET",
                    url: "/getBeer",
@@ -137,7 +138,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -146,6 +147,7 @@
 													   
 			$("#wine").on("click", function() {
 			    $("#drinkNames").empty();
+			    $("#exampleModalLabel").html("List of Wines");
                $.ajax({
                    method: "GET",
                    url: "/getWine",
@@ -154,7 +156,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                         $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -162,8 +164,9 @@
             }); //button
 	
 													   
-            $("#mixdrinks").on("click", function() {
+            $("#mixed").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Mixed Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMixed",
@@ -172,14 +175,16 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
                }); //ajax
             }); //button
-			$("#shots").on("click", function() {
+            
+			$("#misc").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Misc Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMisc",
@@ -188,7 +193,25 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+            
+            $("#shots").on("click", function() {
+                $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Shots");
+               $.ajax({
+                   method: "GET",
+                   url: "/getShots",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }

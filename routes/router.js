@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const session = require('express-session')
+const session = require('express-session');
 
 const url = require('url');
 
@@ -51,7 +51,47 @@ router.get('/login', async function(req, res) {
     res.render('../routes/views/login');
     
 });
+	/*
+    		beer
+    		wine
+    		shots
+    		mixed
+    	*/
+router.post('/search_types',async function(req,res) {
+    //name,%
+    let rows = await searchdrink(req.body);
+    console.log("return drinks: ", rows);
+    console.log("clicked",req.body);
+    res.send(rows);
 
+    
+});
+
+
+function searchdrink(body) {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                    FROM `+body.type
+                    +`\n WHERE name LIKE ? AND
+                    FIND_IN_SET(?, al_content)`;
+            console.log(sql);
+            let params =[body.name+'%', body.per];
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 router.post('/login', async function(req, res, next) {
     
     let successful = false;
@@ -153,6 +193,7 @@ router.post("/register", async function(req, res){
 router.get("/userInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let userInfo = await getSingleUserInfo(req.query.user);
+        console.log(userInfo);
         console.log("userInfo: ", userInfo);
         res.render("../routes/views/userInfo", {"userInfo":userInfo});
     }
@@ -218,10 +259,16 @@ router.get("/getMixed", async function(req,res){
 	
 });
 router.get("/getMisc", async function(req,res){
-	let rows = await getMixedList();
+	let rows = await getMiscList();
 	res.send(rows);
 	
 });
+
+router.get("/getShots", async function(req,res){
+   let rows = await getShotsList();
+   res.send(rows);
+});
+
 function getMiscList() {
     let conn = dbConnection();
 
@@ -232,6 +279,28 @@ function getMiscList() {
         
            let sql = `SELECT * 
                       FROM misc_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
+function getShotsList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM shots`;
             console.log(sql);        
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
