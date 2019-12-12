@@ -151,7 +151,9 @@ router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.redirect("/login");
+        res.redirect("/cst_336");
+    } else {
+        res.redirect("/cst_336");
     }
 
     res.json({
