@@ -42,7 +42,6 @@
 			background-repeat: no-repeat;
 			background-size: cover;
 			background-attachment: fixed;
-			
 		}
 		input{
 			color:black;
@@ -66,10 +65,8 @@
 		tr{
 			color:white!important;
 		}
-		
 	</style>
 </head>
-
 <body>
 		{{!--Modal Stuff--}}
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -82,9 +79,7 @@
             </button>
           </div>
           <div class="modal-body">
-            
                 <div id="drinkNames"></div>
-                
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -94,21 +89,18 @@
     </div>
     {{!--End Of Modal Stuff--}}
 	<div class = "background"></div>
-	
 	<div class = "non_background">
 	<login class = "login">
 		<button id = "login" type="button"  class='btn pull-right'>
 			Login
 		</button><br>
 	</login>
-	
 	<button id ="change_background">
-		change background image
-	</button>
-
+		Change Background Image
+	</button> <br><br>
 	<form method="POST">
 	    <div class="form-group row">
-		    <label class="col-lg-3 col-form-label form-control-label">Type</label><br>
+		    <label class="col-lg-3 col-form-label form-control-label">Type</label><br><br>
 		    <div class="col-lg-9">
 		        <select name="type" id="type" value="Select type" class="form-control" size="0">
 		            <option name=" "></option>
@@ -119,17 +111,15 @@
 		            <option name="misc_drinks" value="misc_drinks"> Other </option>
 		        </select>
 		    </div>
-		    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required">
-		    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required">
+		    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required"> <br><br>
+		    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required"> <br><br>
 			<div class="form-group">
 				<button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
 			</div>
 		</div>
 	</form>
-	
       {{image}}
       {{rows}}
-      
 	<bac >
 		current bac is 
 		<total id = "total"><b>___</b></total><b>%</b>
@@ -150,7 +140,6 @@
 				<input id = "alcohol" size="4" placeholder = 0 maxlength = 3></input>
 			</tr><br>
 			<tr>
-			
 			</tr>
 		</table>
 			<br>
@@ -196,12 +185,10 @@
     	let weight = 0;
     	let ethanol = 0;
     	let oz = 0;
-    	
 		beer = $("#beer").val() *12;   
 		wine = $("#wine").val()*5;
 		other = $("#alcohol").val() *1.5; 
 		weight = $("#weight").val();
-		
 		oz = beer + wine + other;
 		if(beer> 0){
 			ethanol = ethanol + 5;
@@ -212,10 +199,8 @@
 		if(other > 0){
 			ethanol = ethanol + 20;
 		}
-		
 		result = (150/weight)*(ethanol/50)*oz*0.025;
 		time = $("#time").val();
-		
 		if(time > 5){
 		    result = 0;
 		}else{
@@ -234,7 +219,6 @@
     function home(){
     	location.href = "/home";
     }
-    
     $('#change_background').on('click',change_background)
     function change_background(){
     	let link = "";
@@ -257,7 +241,6 @@
     				$("body").css("background", t);
                    }
             });
-         
     }
 	//call add function for new drinks 
 	$('#loginButton').on('click', function(e) {
@@ -273,7 +256,6 @@
                 }),
                 success: function(result, status) {
                     console.log("got login status back", result);
-
                     if (result.successful) {
                         window.location.href = '/';
                         return false;
@@ -289,7 +271,6 @@
     $("#searchButton").on('click',function(e) {
     	e.preventDefault();
     	 $("#drinkNames").empty();
-
         $.ajax({
                 type: "POST",
                 url: "/search_types",
@@ -310,10 +291,8 @@
                        $("#drinkModal").modal("show");
                 	}
                 	else {
-                		
                 	}
                    }
             });
-
     })
 </script>
