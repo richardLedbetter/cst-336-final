@@ -1,5 +1,5 @@
 <head>
-    <title> Edit Drink </title>
+    <title> Add Drink </title>
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -20,48 +20,51 @@
     
     <div>
            
-            Drink name: <input id="drinkName" type="text" name="drinkName"value="{{drink.name}}"><br>    
-            Alcohol Content: <input id="ac" type="number" name="alcontent" value={{drink.al_content}}><br>    
+            Drink name: <input id="drinkName" type="text" name="drinkName"value=""><br>    
+            Alcohol Content: <input id="ac" type="number" name="alcontent" value=""><br>  
+            Type of Drink : <select id="tester" name="drinkType">
+                    <option value="">Select One</option>
+                    <option value="beer">Beer</option>
+                    <option value="wine">Wine</option>
+                    <option value="mixed">Mixed Drink</option>
+                    <option value="misc">Misc Drink</option>
+                    <option value="shot">Shot</option>
+            </select>
             
             
            
           
-            <div id="altype">{{type}}</div>
-            <div id="drinkid">{{drink.id}}</div>
+            
             <br><br>
-            <button type="button" class="btn btn-primary" id="updateButton">Update Drink</button>
+            <button type="button" class="btn btn-primary" id="createButton">Create</button>
             <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+            
+            <div id="hiddenMessage">Drink Created</div>
         
     </div>
-    
-    <div id="hiddenMessage" >Drink Updated</div>
     
     <script>
         /* global $ */
         //console.log()
         $(document).ready(function(){
             $("#hiddenMessage").hide();
-            $("#drinkid").hide();
-            $("#altype").hide();
-            let test = $("#altype").html();
-            console.log(test);
             
             $("#cancelButton").on("click",function() {
-               window.location.href = "/home"; 
+               window.location.href = "/home";
             });
             
             
-            $("#updateButton").on("click", function() {
+            
+            $("#createButton").on("click", function() {
                 $.ajax({
                     type: "POST",
-                    url: "/editDrink",
+                    url: "/addDrink",
                     dataType: "json",
                     contentType: "application/json",
                     data: JSON.stringify({
                         "name": $("#drinkName").val(),
                         "al_content": parseFloat($("#ac").val()),
-                        "typeAL": test,
-                        "id": parseInt($("#drinkid").html())
+                        "typeAL": $("#tester").val()
                     }),
                     success: function(result, status) {
                         if(result.successful) {
