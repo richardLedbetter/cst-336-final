@@ -278,7 +278,7 @@
                        console.log("result:", status);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2></div>" + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                 	}
