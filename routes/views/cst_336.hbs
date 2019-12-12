@@ -5,6 +5,7 @@
 	<style>
 		.login{
 			color: black;
+			background:grey;
 			top: 0;
 			right: 0;
 			position: fixed;
@@ -91,11 +92,11 @@
 	<login class = "login">
 		<button id = "login" type="button"  class='btn pull-right'>
 			Login
-		</button>
-		<button id ="change_background">
+		</button><br>
+	</login>
+			<button id ="change_background">
 			change background image
 		</button>
-	</login>
 
 					<form method="POST">
 	                <div class="form-group row">
@@ -185,7 +186,27 @@
     }
     $('#change_background').on('click',change_background)
     function change_background(){
-    	
+    	let link = "";
+    	$.ajax({
+                type: "POST",
+                url: "/new_image",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :"Beer"
+                }),
+                success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                       console.log(result);
+                 	link = result.hits[Math.floor(Math.random() * 20)].largeImageURL;
+                 	console.log(link);
+                 	   t = " linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("+'\"'+link+'\"'+")";
+            		console.log(t);
+    				$("body").css("background", t);
+                   }
+            });
+         
     }
 	//call add function for new drinks 
 	$('#loginButton').on('click', function(e) {
