@@ -12,12 +12,11 @@ router.get('/', async function(req, res) {
     if (req.session && req.session.username && req.session.username.length) {
         let username = req.session.username;
         let user = await getSingleUserInfo(username);
-        console.log("root - user:", user);
         
         res.redirect(url.format({
             pathname: '/home',
             query: {
-                "user": user
+                "user": user.username
             }
         })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
@@ -36,7 +35,6 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    console.log("User - home: ", req.session.username);
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
     
@@ -52,8 +50,7 @@ router.post('/login', async function(req, res, next) {
     
     let successful = false;
     let rows = await userLogin(req.body);
-    console.log("Login: ", req.body);
-    console.log("rows: ", rows);
+    
     if (rows.length > 0) {
         if (rows[0].password == req.body.password &&
         rows[0].username == req.body.username) {
@@ -150,6 +147,7 @@ router.post("/register", async function(req, res){
 router.get("/userInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let userInfo = await getSingleUserInfo(req.query.user);
+        console.log("userInfo: ", userInfo);
         res.render("../routes/views/userInfo", {"userInfo":userInfo});
     }
     else {
@@ -176,16 +174,16 @@ router.post("/editUserInfo", async function(req, res){
     console.log(req.body);
     let rows = await updateUser(req.body);
     
-    let editUser = req.body;
+    let userInfo = req.body;
     // console.log("post->update->req.body",req.body);
     // console.log(rows);
     let message = "User WAS NOT updated!";
     if (rows.affectedRows > 0) {
         message = "Changes saved!";
     }
-    res.render("../routes/views/editUserInfo", { "message": message, "userInfo": editUser });
+    res.render("../routes/views/editUserInfo", { "message": message, "userInfo": userInfo });
     console.log("POST editUser: message - ", message);
-    console.log("POST editUser: user - ", editUser);
+    console.log("POST editUser: user - ", userInfo);
 
     }
 });
@@ -451,7 +449,7 @@ function getSingleUserInfo(username){
               //res.send(rows);
               conn.end();
               //console.log(rows);
-              resolve(rows); //Query returns only ONE record
+              resolve(rows[0]); //Query returns only ONE record
             });
             
         });//connect
