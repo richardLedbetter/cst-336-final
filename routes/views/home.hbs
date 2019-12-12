@@ -113,12 +113,6 @@
 <script>
     let time = 0.0;
     
-    function update_time(){
-        time = time+.25;
-        recalc();
-        setTimeout(update_time(), 900000);
-    }
-    $('#calc').on("click",recalc);
     function recalc(){
         beer = $("#beer").val() *12;   
 		wine = $("#wine").val()*5;
