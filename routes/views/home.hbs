@@ -59,24 +59,24 @@
     <div class="jumbotron text-center">
         <h1>Welcome, {{user}}, to the Home Page</h1>
         <text>This is the home page for users who are logged in</text><br>
-        current BAC is <h2><total></total></h2>
+        current BAC is <h2><total id = "total"><b>___</b></total><b>%</b></h2>
     </div>
     <br>
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
             <div class="col-sm-6">
-                <input type="image" id = "beer" src="336_BeerButton.png" />
+                <input type="image" id = "beer" value = "0" src="336_BeerButton.png" />
                 <br>
-                <input type="image" id = "wine" src="336_WineButton.png" />
+                <input type="image" id = "wine" value = "0" src="336_WineButton.png" />
                 <br>
-                <input type="image" id = "shots" src="336_ShotsButton.png" />
+                <input type="image" id = "shots" value = "0" src="336_ShotsButton.png" />
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <input type="image" id = "mixed" src="336_MixedDrinkButton.png" />
+                <input type="image" id = "mixed" value = "0" src="336_MixedDrinkButton.png" />
                 <br>
-                <input type="image" id = "misc" src="336_MiscButton.png" />
+                <input type="image" id = "misc" value = "0" src="336_MiscButton.png" />
                 <br>
                 <a href = "/addDrink">
                     <input type="image" id = "add" src="336_AddDrinkButton.png" />
@@ -95,6 +95,11 @@
             <a href = "/userInfo?user={{user_data.username}}">
                 <button id = "profile" class = "inputs btn btn-primary">
                     Profile
+                </button>
+            </a>
+            <a href = "/cst_336">
+                <button id = "dashboard" class = "inputs btn btn-primary">
+                    Calculate BAC
                 </button>
             </a>
         </div>
@@ -131,6 +136,65 @@
 
 <script>
     let time = 0.0;
+    let beer = 0;
+    let wine = 0;
+    let shots = 0;
+    let mixed = 0;
+    let misc = 0;
+    
+    // $("#beer").on("click", calc(), function(){
+    //     let count = $("#beer").val() + 1;
+    //     $("#beer").attr("value", count);
+    // });
+    // $("#wine").on("click", calc());
+    // $("#shots").on("click", calc());
+    // $("#mixed").on("click", calc());
+    // $("#misc").on("click", calc());
+    
+    function calc(){
+    	let result = 0;
+    	let weight = 0;
+    	let ethanol = 0;
+    	let oz = 0;
+    	
+    	console.log("beer", $("#beer").val());
+    	
+		beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		misc = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		
+		oz = beer + wine + shots + mixed + misc;
+		if(beer > 0){
+			ethanol = ethanol + 5;
+		}
+		if(wine > 0){
+			ethanol = ethanol + 12;
+		}
+		if(misc > 0){
+			ethanol = ethanol + 8;
+		}
+		if(shots > 0){
+			ethanol = ethanol + 40;
+		}
+		if(mixed > 0){
+			ethanol = ethanol + 12;
+		}
+		
+		result = (150/weight)*(ethanol/50)*oz*0.025;
+		time = $("#time").val();
+		
+		if(time > 5){
+		    result = 0;
+		}else{
+		    for(let i = 0; i < time; i++){
+    		    result = result * 0.065;
+    		}
+		}
+		
+		
+		$("total").text(result.toPrecision(2));
+    }
     
         /* global $ */
         $(document).ready(function(){
@@ -145,7 +209,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -163,7 +227,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                         $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
+                         $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -182,7 +246,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -200,7 +264,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -218,7 +282,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -291,10 +355,10 @@
 			function recalc(){
 				beer = $("#beer").val() *12;   
 				wine = $("#wine").val()*5;
-				other = $("#alcohol").val() *1.5; 
+				misc = $("#alcohol").val() *1.5; 
 				weight = $("#weight").val();
 				time = $("#time").val()+time;
-				total = ((beer+wine+other))/weight; 
+				total = ((beer+wine+misc))/weight; 
 				total = total-(time*.017);
 				$("total").text(total);
 			}

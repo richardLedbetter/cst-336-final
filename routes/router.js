@@ -28,8 +28,14 @@ router.get('/', async function(req, res) {
 });
 
 router.get('/cst_336', async function(req, res) {
-
+    if (req.session && req.session.username && req.session.username.length) {
+        let data = await getSingleUserInfo(req.session.username);
+        res.render('../routes/views/cst_336', {"data":data});
+        console.log("data: ", data);
+    }
+    else {
     res.render('../routes/views/cst_336');
+    }
     
 });
 router.post('/cst_336', async function(req, res) {
@@ -57,8 +63,13 @@ router.get('/home', async function(req, res) {
     //     delete req.session.username;
     //     res.redirect('/cst_336');
     // }else{
+        if (req.session && req.session.username && req.session.username.length) {
         let data = await getSingleUserInfo(req.session.username);
         res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
+        }
+        else {
+            res.redirect('/login');
+        }
     // }
 });
 
@@ -142,10 +153,10 @@ function searchdrink(body) {
                     FROM `+body.type
                     +`\n WHERE al_content BETWEEN ? AND ?
                     GROUP BY name
-                    HAVING name LIKE 'b%'`;
+                    HAVING name LIKE ?`;
             console.log(sql);
-            let lower = body.per - 1;
-            let higher = body.per + 1
+            let lower = body.per - 0.5;
+            let higher = body.per + 0.5;
             
             let params =[lower, higher,body.name+'%'];
             
@@ -182,7 +193,9 @@ router.get('/logout', function(req, res, next) {
 
     if (req.session && req.session.username && req.session.username.length) {
         delete req.session.username;
-        res.redirect("/login");
+        res.redirect("/cst_336");
+    } else {
+        res.redirect("/cst_336");
     }
 
     res.json({
