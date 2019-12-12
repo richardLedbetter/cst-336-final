@@ -108,7 +108,7 @@
 	</home>
 			<button id ="change_background">
 			change background image
-		</button>
+		</button> <br><br>
 
 					<form method="POST">
 	                <div class="form-group row">
@@ -123,8 +123,9 @@
                             <option name="misc_drinks" value="misc_drinks"> Other </option>
                         </select>
                     </div>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required">
-                    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required">
+                    <br><br>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required"> <br><br>
+                    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required"> <br><br>
                 	<div class="form-group">
 	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
 	        </div>
@@ -156,12 +157,12 @@
 			<br>
 				<button id = "add_drinks" >
 					add new drink
-				</button >
+				</button > <br>
 		<br>
 		<weight class="row top-buffer">
 			<br>
-				Enter Weight 
-		<input id = "weight"></input>
+				Enter Weight &nbsp;
+		<input id ="weight"></input>
 		</weight><br>
 		<time> 
 			Enter amount of hours since first drink
@@ -172,6 +173,7 @@
 	</div>
 </body>
 <script>
+	/* global $ */
 	beer = 0;
 	wine = 0;
 	other = 0;
