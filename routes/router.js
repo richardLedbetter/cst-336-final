@@ -28,8 +28,14 @@ router.get('/', async function(req, res) {
 });
 
 router.get('/cst_336', async function(req, res) {
-
+    if (req.session && req.session.username && req.session.username.length) {
+        let data = await getSingleUserInfo(req.session.username);
+        res.render('../routes/views/cst_336', {"data":data});
+        console.log("data: ", data);
+    }
+    else {
     res.render('../routes/views/cst_336');
+    }
     
 });
 router.post('/cst_336', async function(req, res) {
