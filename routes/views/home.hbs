@@ -59,24 +59,24 @@
     <div class="jumbotron text-center">
         <h1>Welcome, {{user}}, to the Home Page</h1>
         <text>This is the home page for users who are logged in</text><br>
-        current BAC is <h2><total></total></h2>
+        current BAC is <h2><total id = "total"><b>___</b></total><b>%</b></h2>
     </div>
     <br>
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
             <div class="col-sm-6">
-                <input type="image" id = "beer" src="336_BeerButton.png" />
+                <input type="image" id = "beer" value = "0" src="336_BeerButton.png" />
                 <br>
-                <input type="image" id = "wine" src="336_WineButton.png" />
+                <input type="image" id = "wine" value = "0" src="336_WineButton.png" />
                 <br>
-                <input type="image" id = "shots" src="336_ShotsButton.png" />
+                <input type="image" id = "shots" value = "0" src="336_ShotsButton.png" />
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <input type="image" id = "mixed" src="336_MixedDrinkButton.png" />
+                <input type="image" id = "mixed" value = "0" src="336_MixedDrinkButton.png" />
                 <br>
-                <input type="image" id = "misc" src="336_MiscButton.png" />
+                <input type="image" id = "misc" value = "0" src="336_MiscButton.png" />
                 <br>
                 <a href = "/addDrink">
                     <input type="image" id = "add" src="336_AddDrinkButton.png" />
@@ -142,11 +142,22 @@
     let mixed = 0;
     let misc = 0;
     
+    // $("#beer").on("click", calc(), function(){
+    //     let count = $("#beer").val() + 1;
+    //     $("#beer").attr("value", count);
+    // });
+    // $("#wine").on("click", calc());
+    // $("#shots").on("click", calc());
+    // $("#mixed").on("click", calc());
+    // $("#misc").on("click", calc());
+    
     function calc(){
     	let result = 0;
     	let weight = 0;
     	let ethanol = 0;
     	let oz = 0;
+    	
+    	console.log("beer", $("#beer").val());
     	
 		beer = $("#beer").val() *12;   
 		wine = $("#wine").val()*5;
