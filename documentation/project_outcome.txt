@@ -1,0 +1,38 @@
+Project Save Drunks by:
+Blessing, Richard, Jake, Ethan
+
+Project Description: 
+A drink counter than you enter what you are drinking into and will calculate your BAC for you. 
+
+Project Attributes: 
+Needs to have a user login and needs to remember user data. 
+	Data will include:
+Name
+Height
+Weight
+Age (must be 21 to make an account but not to use the app)
+Gender
+Home address
+Users can enter new types of drinks that will be saved to a database. 
+	Drink Information needed to create a drink:
+Total fl. Oz.
+Type of alcohol
+Total alcohol in fl. Oz.
+
+Database stores drinking “sessions”. 
+	Example: 
+Jessica drank 4 beers 11-13-2019 
+    OR 
+Jarred drank 8oz alcohol 11-15-2019 over the span of 2 hours
+
+Database stores drinks 
+Each drink has ingredients and includes alcohol concentration  
+
+Save button 
+will stamp current time
+the calculator will factor in the time between drinks.
+
+Practice Safety:
+If you BAC goes over the legal limit to drive, the app will 
+text emergency contact (Only works if user is signed in).
+Pop up asking the user if they need an uber/lyft
