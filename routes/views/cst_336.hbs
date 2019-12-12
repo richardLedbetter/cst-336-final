@@ -191,7 +191,7 @@
 		weight = $("#weight").val();
 		oz = beer + wine + other;
 		if(beer> 0){
-			ethanol = ethanol + 4;
+			ethanol = ethanol + 5;
 		}
 		if(wine > 0){
 			ethanol = ethanol + 12;
@@ -201,7 +201,15 @@
 		}
 		result = (150/weight)*(ethanol/50)*oz*0.025;
 		time = $("#time").val();
-		$("total").text(result);
+		if(time > 5){
+		    result = 0;
+		}else{
+		    for(let i = 0; i < time; i++){
+    		    result = result * 0.065;
+    		}
+		}
+		
+		$("total").text(result.toPrecision(2));
     }
     $('#login').on("click",sign_in);
     function sign_in(){
