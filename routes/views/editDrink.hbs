@@ -1,0 +1,92 @@
+<head>
+    <title> Edit Drink </title>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body{
+    	    background-color: darkgray;
+    	}
+    	.jumbotron{
+    	    background-color: lightBlue;
+    	}
+    </style>
+
+</head>
+<body>
+    <div class="jumbotron text-center">
+        <h1>Edit Drink</h1>
+    </div>
+    <br>
+    <div>
+           
+            Drink name: <input id="drinkName" type="text" name="drinkName"value="{{drink.name}}"><br>    
+            Alcohol Content: <input id="ac" type="number" name="alcontent" value={{drink.al_content}}><br>    
+            
+            
+           
+          
+            <div id="altype">{{type}}</div>
+            <div id="drinkid">{{drink.id}}</div>
+            <br><br>
+            <button type="button" class="btn btn-primary" id="updateButton">Update Drink</button>
+            <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+        
+    </div>
+    
+    <div id="hiddenMessage" >Drink Updated</div>
+    
+    <script>
+        /* global $ */
+        //console.log()
+        $(document).ready(function(){
+            $("#hiddenMessage").hide();
+            $("#drinkid").hide();
+            $("#altype").hide();
+            let test = $("#altype").html();
+            console.log(test);
+            
+            $("#cancelButton").on("click",function() {
+               window.location.href = "/home"; 
+            });
+            
+            
+            $("#updateButton").on("click", function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/editDrink",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "name": $("#drinkName").val(),
+                        "al_content": parseFloat($("#ac").val()),
+                        "typeAL": test,
+                        "id": parseInt($("#drinkid").html())
+                    }),
+                    success: function(result, status) {
+                        if(result.successful) {
+                            $("#hiddenMessage").show();
+                            
+                        }
+                    }
+                }); //ajax
+            }); //button
+            
+        });
+        
+        
+        
+        
+    </script>
+    
+    
+</body>
