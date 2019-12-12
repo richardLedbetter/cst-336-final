@@ -27,7 +27,11 @@ router.get('/cst_336', async function(req, res) {
     res.render('../routes/views/cst_336');
     
 });
+router.post('/cst_336', async function(req, res) {
 
+    res.render('../routes/views/cst_336');
+    
+});
 
 router.get('/index', async function(req, res) {
 

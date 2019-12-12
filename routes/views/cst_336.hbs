@@ -1,6 +1,7 @@
 <head>
- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<style>
 		.login{
 			color: black;
@@ -70,6 +71,28 @@
 			Login
 		</button>
 	</login>
+	{{!--Modal Stuff--}}
+    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+                <div id="drinkNames"></div>
+                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!--End Of Modal Stuff--}}
 					<form method="POST">
 	                <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label">Type</label>
@@ -88,7 +111,7 @@
                 	<div class="form-group">
 	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
 	        </div>
-	        {{rows}}
+	        
                 </div>
                 </form>
 		<bac >
@@ -184,13 +207,8 @@
         });
     $("#searchButton").on('click',function(e) {
     	e.preventDefault();
-    	/*
-    		beer
-    		wine
-    		shots
-    		mixed
-    	*/
-    	
+    	 $("#drinkNames").empty();
+
         $.ajax({
                 type: "POST",
                 url: "/search_types",
@@ -201,19 +219,14 @@
 			    	"name" :$("#name").val(),
 			    	"per" : $("#per").val()
                 }),
-                success: function(result, status) {
-                    console.log("got login status back", result);
-
-                    if (result.successful) {
-                        window.location.href = '/';
-                        return false;
-                    }
-                    else {
-                        // Show an error message or something and stay here
-                        $('#errorMessage').show();
-                        console.log("error");
-                    }
-                }
+                success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
             });
     })
 </script>
