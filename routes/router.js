@@ -22,11 +22,18 @@ router.get('/', async function(req, res) {
     }
     else {
         delete req.session.username;
-        res.redirect('/login');
+        res.redirect('/cst_336');
     }
     
 
 });
+
+router.get('/cst_336', async function(req, res) {
+
+    res.render('../routes/views/cst_336');
+    
+});
+
 
 router.get('/index', async function(req, res) {
 
