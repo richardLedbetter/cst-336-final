@@ -124,7 +124,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -142,7 +142,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                         $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                         $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -161,7 +161,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -179,7 +179,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -197,12 +197,66 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
                }); //ajax
             }); //button
+            
+            $(document).on('click', '.editBeer', function () {
+                window.location.href = "/editBeer?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editWine', function () {
+                window.location.href = "/editWine?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editMixed', function () {
+                window.location.href = "/editMixed?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editMisc', function () {
+                window.location.href = "/editMisc?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editShots', function () {
+                window.location.href = "/editShots?id=" + this.id;
+            });
+            
+            $(document).on('click', '.deleteBeer', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteBeer?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteWine', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteWine?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteMisc', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteMisc?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteMixed', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteMixed?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteShots', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteShots?id=" + this.id;
+                }
+            });
+           
+            
+
+            
             let time = 0.0;
     
 			function update_time(){
