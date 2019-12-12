@@ -63,15 +63,7 @@
 </head>
 
 <body>
-	<div class = "background"></div>
-	
-	<div class = "non_background">
-	<login class = "login">
-		<button id = "login" type="button"  class='btn pull-right'>
-			Login
-		</button>
-	</login>
-	{{!--Modal Stuff--}}
+		{{!--Modal Stuff--}}
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -93,6 +85,15 @@
       </div>
     </div>
     {{!--End Of Modal Stuff--}}
+	<div class = "background"></div>
+	
+	<div class = "non_background">
+	<login class = "login">
+		<button id = "login" type="button"  class='btn pull-right'>
+			Login
+		</button>
+	</login>
+
 					<form method="POST">
 	                <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label">Type</label>
@@ -111,9 +112,10 @@
                 	<div class="form-group">
 	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
 	        </div>
-	        
                 </div>
                 </form>
+          {{image}}hey
+          {{rows}}
 		<bac >
 			current bac is 
 			<total id = "total"><b>___</b></total><b>%</b>
@@ -223,10 +225,11 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div>" + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
             });
+
     })
 </script>

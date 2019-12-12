@@ -36,6 +36,12 @@
 		.time{
 		    left:50%;
 		}
+		body{
+		    background-color: darkgray;
+		}
+		.jumbotron{
+		    background-color: lightBlue;
+		}
     </style>
 
 </head>
@@ -45,7 +51,6 @@
         <text>This is the home page for users who are logged in</text><br>
         current BAC is <h2><total></total></h2>
     </div>
-
     <br>
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
@@ -55,23 +60,21 @@
     		    <button id = "wine" class = "inputs btn btn-primary">WINE</button>
                 <br>
                 <button id = "shots" class = "inputs btn btn-primary">SHOTS</button>
-                <br>
-    		    <button id = "misc" class = "inputs btn btn-primary">MISC</button>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <button id = "mixed" class = "inputs btn btn-primary">MIXED</button>
                 <br>
-                <button id = "smth" class = "inputs btn btn-primary">smth</button>
+    		    <button id = "misc" class = "inputs btn btn-primary">MISC</button>
                 <br>
+                <a href = "/addDrink">
                 <button id = "add_drink" class = "inputs btn btn-primary">ADD NEW</button>
-                <br>
-                <button id = "remove_drink" class = "inputs btn btn-primary">REMOVE</button>
+                </a>
             </div>
         </div>
     </div>
-    <br><br>
+    <br>
     <div class = "container d-flex flex-column">
         <div class = "d-flex flex-column text-center">
             <a href = "/logout">
@@ -79,13 +82,11 @@
                     Log Out
                 </button>
             </a>
-            <br>
             <a href = "/userInfo?user={{user_data.username}}">
                 <button id = "profile" class = "inputs btn btn-primary">
                     Profile
                 </button>
             </a>
-            <br>
             <a>
                 <button id = "Edit_profile" class = "inputs btn btn-primary">
                     Edit Profile
@@ -93,29 +94,38 @@
             </a>
         </div>
     </div>
-	
-    {{!--Modal Stuff--}}
-    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+
+{{!--end of background--}}
+
+{{!--Modal Stuff--}}
+<div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+            <div id="drinkNames"></div>
             
-                <div id="drinkNames"></div>
-                
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+<<<<<<< HEAD
+  </div>
+=======
+
+    
+    {{rows.name}}
+
+>>>>>>> da0860b411059069d93244d4aa399b763ddfd080
     {{!--End Of Modal Stuff--}}
+
     
     {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
 </body>
@@ -138,7 +148,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -156,7 +166,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                         $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                         $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -175,7 +185,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -193,7 +203,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -211,12 +221,68 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
                }); //ajax
             }); //button
+            
+            $(document).on('click', '.editBeer', function () {
+                window.location.href = "/editBeer?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editWine', function () {
+                window.location.href = "/editWine?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editMixed', function () {
+                window.location.href = "/editMixed?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editMisc', function () {
+                window.location.href = "/editMisc?id=" + this.id;
+            });
+            
+            $(document).on('click', '.editShots', function () {
+                window.location.href = "/editShots?id=" + this.id;
+            });
+            
+            $(document).on('click', '.deleteBeer', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteBeer?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteWine', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteWine?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteMisc', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteMisc?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteMixed', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteMixed?id=" + this.id;
+                }
+            });
+            
+            $(document).on('click', '.deleteShots', function () {
+                if(confirm("Delete Beer?")) {
+                    window.location.href = "/deleteShots?id=" + this.id;
+                }
+            });
+           
+            // $("#add_drink").on("click",function() {
+            //     window.location.href = "/addDrink"; 
+            // });
+
+            
             let time = 0.0;
     
 			function update_time(){
