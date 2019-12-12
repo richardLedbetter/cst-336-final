@@ -37,6 +37,7 @@ router.get('/search_types', async function(req, res) {
 });
 
 
+
 router.get('/index', async function(req, res) {
 
     res.render('../routes/views/index');
@@ -312,6 +313,185 @@ router.get("/editShots", async function(req, res){
   console.log(name);
   res.render("../routes/views/editDrink", {"drink":name, "type":4});
 });
+
+router.get("/addDrink", async function(req,res) {
+   
+   res.render('../routes/views/addDrink'); 
+});
+
+
+router.post("/addDrink", async function(req,res){
+   console.log(req.body.typeAL);
+   let successful = false
+   if(req.body.typeAL == "beer") {
+       let rows = await insertBeer(req.body);
+       if(rows.affectedRows > 0) {
+           successful = true;
+       }
+   }
+   if(req.body.typeAL == "wine") {
+       let rows = await insertWine(req.body);
+       if(rows.affectedRows > 0) {
+           successful = true;
+       }
+   }
+   if(req.body.typeAL == "mixed") {
+       let rows = await insertMixed(req.body);
+       if(rows.affectedRows > 0) {
+           successful = true;
+       }
+   }
+   if(req.body.typeAL == "misc") {
+       let rows = await insertMisc(req.body);
+       if(rows.affectedRows > 0) {
+           successful = true;
+       }
+   }
+   if(req.body.typeAL == "shot") {
+       let rows = await insertShots(req.body);
+       if(rows.affectedRows > 0) {
+           successful = true;
+       }
+   }
+   
+   res.json({
+            successful : successful
+        });
+   
+    
+});
+
+
+function insertBeer(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO beers
+                        (name, al_content)
+                         VALUES (?,?)`;
+        
+           let params = [body.name, body.al_content];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function insertWine(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO wine
+                        (name, al_content)
+                         VALUES (?,?)`;
+        
+           let params = [body.name, body.al_content];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function insertMixed(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO mixed_drinks
+                        (name, al_content)
+                         VALUES (?,?)`;
+        
+           let params = [body.name, body.al_content];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function insertMisc(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO misc_drinks
+                        (name, al_content)
+                         VALUES (?,?)`;
+        
+           let params = [body.name, body.al_content];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function insertShots(body){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `INSERT INTO shots
+                        (name, al_content)
+                         VALUES (?,?)`;
+        
+           let params = [body.name, body.al_content];
+        
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
 
 router.post("/editDrink", async function(req,res) {
    let successful = false;
