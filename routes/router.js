@@ -212,8 +212,6 @@ router.post("/register", async function(req, res){
 router.get("/userInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let userInfo = await getSingleUserInfo(req.query.user);
-        console.log(userInfo);
-        console.log("userInfo: ", userInfo);
         res.render("../routes/views/userInfo", {"userInfo":userInfo});
     }
     else {
@@ -225,7 +223,7 @@ router.get("/userInfo", async function(req, res){
 router.get("/editUserInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let editUser = await getSingleUserInfo(req.query.user);
-        console.log(editUser);
+        console.log("editUser: ", editUser);
         res.render("../routes/views/editUserInfo", { "userInfo": editUser });
     }
     
@@ -242,8 +240,6 @@ router.post("/editUserInfo", async function(req, res){
     let rows = await updateUser(req.body);
     
     let userInfo = req.body;
-    // console.log("post->update->req.body",req.body);
-    // console.log(rows);
     let message = "User WAS NOT updated!";
     if (rows.affectedRows > 0) {
         message = "Changes saved!";
@@ -1099,14 +1095,14 @@ function updateUser(body) {
             // console.log("Connected!");
 
             let sql = `UPDATE user_info
-                      SET name = ?,
+                      SET 
                           age  = ?,
                           gender  = ?,
                           height = ?,
                           weight = ?
                      WHERE username = ?`;
 
-            let params = [body.name, body.age, body.gender, body.height, body.weight, body.username];
+            let params = [body.age, body.gender, body.height, body.weight, body.username];
 
             // console.log(sql);
             // console.log(params);
@@ -1186,11 +1182,11 @@ function addUserInfo(body){
         //   console.log("Connected!");
         
            let sql = `INSERT INTO user_info
-                      (username, age, email, name)
-                      VALUES (?,?,?, ?)    
+                      (username, age, email)
+                      VALUES (?,?,?)    
                       `;
         
-           let params = [body.username, body.age, body.email, body.name];
+           let params = [body.username, body.age, body.email];
         
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
