@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const session = require('express-session')
+const session = require('express-session');
 
 const url = require('url');
 
@@ -37,6 +37,9 @@ router.get('/index', async function(req, res) {
 router.get('/home', async function(req, res) {
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
+    if(req.session && req.session.username && req.session.username.length) {
+        
+    }
     
 });
 
