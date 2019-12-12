@@ -136,6 +136,54 @@
 
 <script>
     let time = 0.0;
+    let beer = 0;
+    let wine = 0;
+    let shots = 0;
+    let mixed = 0;
+    let misc = 0;
+    
+    function calc(){
+    	let result = 0;
+    	let weight = 0;
+    	let ethanol = 0;
+    	let oz = 0;
+    	
+		beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		misc = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		
+		oz = beer + wine + shots + mixed + misc;
+		if(beer > 0){
+			ethanol = ethanol + 5;
+		}
+		if(wine > 0){
+			ethanol = ethanol + 12;
+		}
+		if(misc > 0){
+			ethanol = ethanol + 8;
+		}
+		if(shots > 0){
+			ethanol = ethanol + 40;
+		}
+		if(mixed > 0){
+			ethanol = ethanol + 12;
+		}
+		
+		result = (150/weight)*(ethanol/50)*oz*0.025;
+		time = $("#time").val();
+		
+		if(time > 5){
+		    result = 0;
+		}else{
+		    for(let i = 0; i < time; i++){
+    		    result = result * 0.065;
+    		}
+		}
+		
+		
+		$("total").text(result.toPrecision(2));
+    }
     
         /* global $ */
         $(document).ready(function(){
@@ -150,7 +198,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='editBeer btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteBeer'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -168,7 +216,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                         $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
+                         $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='editWine btn btn-secondary'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteWine'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -187,7 +235,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMixed'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMixed'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -205,7 +253,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editMisc'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteMisc'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -223,7 +271,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<h2>"+ result[i].name  +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
+                          $("#drinkNames").append("<h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2><button id=" + result[i].id + " type='button' class='btn btn-secondary editShots'>Edit</button> <button id=" + result[i].id + " type='button' class='btn btn-danger deleteShots'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -296,10 +344,10 @@
 			function recalc(){
 				beer = $("#beer").val() *12;   
 				wine = $("#wine").val()*5;
-				other = $("#alcohol").val() *1.5; 
+				misc = $("#alcohol").val() *1.5; 
 				weight = $("#weight").val();
 				time = $("#time").val()+time;
-				total = ((beer+wine+other))/weight; 
+				total = ((beer+wine+misc))/weight; 
 				total = total-(time*.017);
 				$("total").text(total);
 			}
