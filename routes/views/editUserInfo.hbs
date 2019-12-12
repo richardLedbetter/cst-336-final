@@ -23,12 +23,32 @@ body {
     display: table-cell;
     vertical-align: middle;
 }
+
+#logoutLblPos{
+
+   position:fixed;
+   right:10px;
+   top:5px;
+}
+
+#homeLblPos{
+
+   position:fixed;
+   left:10px;
+   top:5px;
+}
     </style>
 
 </head>
 
+
 <body>
-    
+        <a href = "/logout" id="logoutLblPos">
+            [Logout]
+        </a>
+        <a href = "/home" id="homeLblPos">
+            [Home]
+        </a>
     <div class="container py-2">
     <div class="row my-2">
         <!-- edit form column -->
@@ -100,6 +120,7 @@ body {
 	            e.preventDefault();
 	            $('#alert').show();
 	            $('#changed').hide();
+	            console.log(age);
 
 	        }
 	        $('#alert').show();
@@ -114,18 +135,18 @@ body {
         let height = $("#height").val();
         let weight = $("#weight").val();
         
-        if (isNaN(age) || parseInt(age) > 99 || parseInt(age) < 21) {
+        if (isNaN(age) || parseInt(age) > 99 || parseInt(age) < 21 || age == '') {
             isValid = false;
             $("#alert").html("Enter valid age");
         }
         
-        if (isNaN(height) || parseInt(height) > 86 || parseInt(height) < 50 ) {
+        if (isNaN(height) || parseInt(height) > 86 || parseInt(height) < 50 || height == '') {
             isValid = false;
             $("#alert").html("Enter valid height");
 
         }
         
-        if (isNaN(weight) || parseInt(weight) > 400 || parseInt(weight) < 100 ) {
+        if (isNaN(weight) || parseInt(weight) > 400 || parseInt(weight) < 100 || weight == '') {
             isValid = false;
             $("#alert").html("Enter valid weight");
         }

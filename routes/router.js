@@ -13,12 +13,14 @@ router.get('/', async function(req, res) {
         let username = req.session.username;
         let user = await getSingleUserInfo(username);
         
-        res.redirect(url.format({
-            pathname: '/home',
-            query: {
-                "user": user.username
-            }
-        })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+        res.redirect('/home');
+        
+        // res.redirect(url.format({
+        //     pathname: '/home',
+        //     query: {
+        //         "user": user.username
+        //     }
+        // })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
         delete req.session.username;
@@ -154,6 +156,7 @@ router.post("/register", async function(req, res){
 router.get("/userInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let userInfo = await getSingleUserInfo(req.query.user);
+        console.log(userInfo);
         console.log("userInfo: ", userInfo);
         res.render("../routes/views/userInfo", {"userInfo":userInfo});
     }
