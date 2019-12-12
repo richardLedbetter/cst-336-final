@@ -37,58 +37,21 @@
 			color: blue;
 			background:light-blue;
 		}
+		.time{
+		    left:50%;
+		}
     </style>
 
 </head>
 <body>
     <div class="jumbotron text-center">
         <h1>Welcome, {{user}}, to the Home Page</h1>
-        <text>This is the home page for users who are logged in</text>
+        <text>This is the home page for users who are logged in</text><br>
+        current BAC is <h2><total></total></h2>
     </div>
 
     <br>
-    {{!--{{user}} is logged in{{user_data.username}}--}}
-    <a href = "/userInfo?user={{user_data.username}}">
-        <button>
-            Profile
-        </button>
-    </a>
-    <a href = "/logout">
-        <button>
-            Log Out
-        </button>
-    </a>
-    current BAC is <total></total>
-    <inputs> <button id = "weight" class = "inputs"></button>
-    <button id = "beer" class = "inputs"></button>
-    <button id = "wine" class = "inputs"></button>
-    <button id = "alcohol" class = "inputs"></button>
-    <button id = "time" class = "inputs"></button></inputs>
-</body>
-<script>
-    let time = 0.0;
-    
-    function update_time(){
-        time = time+.25;
-        recalc();
-        setTimeout(update_time(), 900000);
-    }
-    $('#calc').on("click",recalc);
-    function recalc(){
-        beer = $("#beer").val() *12;   
-		wine = $("#wine").val()*5;
-		other = $("#alcohol").val() *1.5; 
-		weight = $("#weight").val();
-		time = $("#time").val()+time;
-		total = ((beer+wine+other))/weight; 
-		total = total-(time*.017);
-		$("total").text(total);
-    }
-</script>
-	<br>
-	<button id = "time" class = "inputs">Time</button>
-		<br>
-	    <table class = " container middle text-center"> 
+    <table class = " container middle text-center"> 
 			<tr class = "trace">
 				<th><button id = "beer" class = "inputs ">BEER</button></th>
 				<th><button id = "wine" class = "inputs">WINE</button>	</th>
@@ -101,14 +64,28 @@
 				<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
 			</tr>
 		</table>
+    {{!--{{user}} is logged in{{user_data.username}}--}}
+    <a href = "/userInfo?user={{user_data.username}}">
+        <button>
+            Profile
+        </button>
+    </a>
+    <a href = "/logout">
+        <button>
+            Log Out
+        </button>
+    </a>
+	<br>
+	<selected class = "col-md-4">
+	    <button id = "time" class = "inputs ">Time</button>
+	    
+	   </selected>
+		<br>
+	    
 			
 			
-	<button class = "profile btn btn-primary btn-lg">Edit Profile</button>
+	<button id = "Edit_profile" class = "profile btn btn-primary btn-lg">Edit Profile</button>
 
-    
-
-    
-    
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -134,9 +111,29 @@
 
 </body>
 <script>
+    let time = 0.0;
+    
+    function update_time(){
+        time = time+.25;
+        recalc();
+        setTimeout(update_time(), 900000);
+    }
+    $('#calc').on("click",recalc);
+    function recalc(){
+        beer = $("#beer").val() *12;   
+		wine = $("#wine").val()*5;
+		other = $("#alcohol").val() *1.5; 
+		weight = $("#weight").val();
+		time = $("#time").val()+time;
+		total = ((beer+wine+other))/weight; 
+		total = total-(time*.017);
+		$("total").text(total);
+    }
         /* global $ */
         $(document).ready(function(){
-            
+            $("Edit_profile").on("click",function() {
+                location.href = "/editUserInfo.hbs";
+            })
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
                $.ajax({
