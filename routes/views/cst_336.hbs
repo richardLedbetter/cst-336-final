@@ -118,8 +118,6 @@
 	        </div>
                 </div>
                 </form>
-          {{image}}hey
-          {{rows}}
 		<bac >
 			current bac is 
 			<total id = "total"><b>___</b></total><b>%</b>
@@ -250,12 +248,17 @@
 			    	"per" : $("#per").val()
                 }),
                 success: function(result,status) {
-                       console.log(result);
+                	if (status) {
+                       console.log("result:", status);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
                           $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div>" + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
+                	}
+                	else {
+                		
+                	}
                    }
             });
 

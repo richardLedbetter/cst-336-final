@@ -106,10 +106,10 @@ function searchdrink(body) {
                     FROM `+body.type
                     +`\n WHERE al_content BETWEEN ? AND ?
                     GROUP BY name
-                    HAVING name LIKE 'b%'`;
+                    HAVING name LIKE ?`;
             console.log(sql);
-            let lower = body.per - 1;
-            let higher = body.per + 1
+            let lower = body.per - 0.5;
+            let higher = body.per + 0.5;
             
             let params =[lower, higher,body.name+'%'];
             
