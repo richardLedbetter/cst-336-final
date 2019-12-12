@@ -29,7 +29,11 @@ router.get('/cst_336', async function(req, res) {
     res.render('../routes/views/cst_336');
     
 });
+router.post('/cst_336', async function(req, res) {
 
+    res.render('../routes/views/cst_336');
+    
+});
 router.get('/search_types', async function(req, res) {
 
     res.render('../routes/views/cst_336');
@@ -66,17 +70,23 @@ router.get('/login', async function(req, res) {
     		shots
     		mixed
     	*/
+router.post('/new_image',async function(req,res){
+    let parsedData = await getImages(req.body.name);
+    console.log("parsedData: ", parsedData.hits[0].largeImageURL);
+    res.send(parsedData);
+});
+
 router.post('/search_types',async function(req,res) {
     //name,%
     let rows = await searchdrink(req.body);
     let keyword = req.body.name;
     console.log("return drinks: ", rows);
     console.log("clicked",req.body);
-    let parsedData = await getImages(rows[0].name);
     console.log("rows.name: ", rows[0].name);
-    console.log("parsedData: ", parsedData.hits[0].largeImageURL);
-    res.render('../routes/views/cst_336', {"image":parsedData.hits[0].largeImageURL, "rows": rows[0].name});
+    
+   // res.render('../routes/views/cst_336', {"image":parsedData.hits[0].largeImageURL, "rows": rows[0].name});
     //console.log("images: ", parsedData);
+    res.send(rows);
     
 });
 
@@ -95,6 +105,7 @@ function searchdrink(body) {
                     FIND_IN_SET(?, al_content)`;
             console.log(sql);
             let params =[body.name+'%', body.per];
+            
            conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);

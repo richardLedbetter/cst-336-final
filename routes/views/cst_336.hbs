@@ -1,9 +1,11 @@
 <head>
- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<style>
 		.login{
 			color: black;
+			background:grey;
 			top: 0;
 			right: 0;
 			position: fixed;
@@ -62,17 +64,43 @@
 </head>
 
 <body>
+		{{!--Modal Stuff--}}
+    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+                <div id="drinkNames"></div>
+                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!--End Of Modal Stuff--}}
 	<div class = "background"></div>
 	
 	<div class = "non_background">
 	<login class = "login">
 		<button id = "login" type="button"  class='btn pull-right'>
 			Login
-		</button>
+		</button><br>
 	</login>
+			<button id ="change_background">
+			change background image
+		</button>
+
 					<form method="POST">
 	                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Type</label>
+                    <label class="col-lg-3 col-form-label form-control-label">Type</label><br>
                     <div class="col-lg-9">
                         <select name="type" id="type" value="Select type" class="form-control" size="0">
                             <option name=" "></option>
@@ -90,11 +118,6 @@
 	        </div>
                 </div>
                 </form>
-                <div class="modal-body">
-            
-                <div id="drinkNames"></div>
-                
-          </div>
           {{image}}hey
           {{rows}}
 		<bac >
@@ -161,6 +184,30 @@
     function sign_in(){
     	location.href = "/login";
     }
+    $('#change_background').on('click',change_background)
+    function change_background(){
+    	let link = "";
+    	$.ajax({
+                type: "POST",
+                url: "/new_image",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :"Beer"
+                }),
+                success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                       console.log(result);
+                 	link = result.hits[Math.floor(Math.random() * 20)].largeImageURL;
+                 	console.log(link);
+                 	   t = " linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("+'\"'+link+'\"'+")";
+            		console.log(t);
+    				$("body").css("background", t);
+                   }
+            });
+         
+    }
 	//call add function for new drinks 
 	$('#loginButton').on('click', function(e) {
             e.preventDefault();
@@ -190,13 +237,8 @@
         });
     $("#searchButton").on('click',function(e) {
     	e.preventDefault();
-    	/*
-    		beer
-    		wine
-    		shots
-    		mixed
-    	*/
-    	
+    	 $("#drinkNames").empty();
+
         $.ajax({
                 type: "POST",
                 url: "/search_types",
@@ -207,19 +249,14 @@
 			    	"name" :$("#name").val(),
 			    	"per" : $("#per").val()
                 }),
-                success: function(result, status) {
-                    console.log("got login status back", result);
-
-                    if (result.successful) {
-                        window.location.href = '/';
-                        return false;
-                    }
-                    else {
-                        // Show an error message or something and stay here
-                        $('#errorMessage').show();
-                        console.log("error");
-                    }
-                }
+                success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name  +"</h2></div>" + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
             });
 
     })
