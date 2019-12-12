@@ -213,10 +213,11 @@ router.get("/getMixed", async function(req,res){
 	
 });
 router.get("/getMisc", async function(req,res){
-	let rows = await getMixedList();
+	let rows = await getMiscList();
 	res.send(rows);
 	
 });
+
 function getMiscList() {
     let conn = dbConnection();
 

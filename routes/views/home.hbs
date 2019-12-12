@@ -90,7 +90,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1>List of Beers</h5>
+            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -120,6 +120,7 @@
             })
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Beers");
                $.ajax({
                    method: "GET",
                    url: "/getBeer",
@@ -137,6 +138,7 @@
 													   
 			$("#wine").on("click", function() {
 			    $("#drinkNames").empty();
+			    $("#exampleModalLabel").html("List of Wines");
                $.ajax({
                    method: "GET",
                    url: "/getWine",
@@ -155,6 +157,7 @@
 													   
             $("#mixdrinks").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Mixed Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMixed",
@@ -169,8 +172,10 @@
                    }
                }); //ajax
             }); //button
+            
 			$("#shots").on("click", function() {
                 $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Something Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMisc",
