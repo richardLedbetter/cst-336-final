@@ -11,6 +11,7 @@ router.get('/', async function(req, res) {
     console.log("username: ", req.session.username);
     if (req.session && req.session.username && req.session.username.length) {
         let username = req.session.username;
+        console.log("root - username", username);
         res.redirect('/home'); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
@@ -35,9 +36,14 @@ router.get('/index', async function(req, res) {
 });
 
 router.get('/home', async function(req, res) {
-    let data = await getSingleUserInfo(req.session.username);
-    res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
-    
+    // console.log("root - username", req.session.username);
+    // if(!req.session && !req.session.username && !req.session.username.length){
+    //     delete req.session.username;
+    //     res.redirect('/cst_336');
+    // }else{
+        let data = await getSingleUserInfo(req.session.username);
+        res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
+    // }
 });
 
 router.get('/login', async function(req, res) {
@@ -159,6 +165,7 @@ router.get("/userInfo", async function(req, res){
 router.get("/editUserInfo", async function(req, res){
     if (req.session && req.session.username && req.session.username.length) {
         let editUser = await getSingleUserInfo(req.query.user);
+        console.log(editUser);
         res.render("../routes/views/editUserInfo", { "userInfo": editUser });
     }
     
@@ -447,7 +454,7 @@ function getSingleUserInfo(username){
               if (err) throw err;
               //res.send(rows);
               conn.end();
-              //console.log(rows);
+            //   console.log("rows ",rows);
               resolve(rows[0]); //Query returns only ONE record
             });
             

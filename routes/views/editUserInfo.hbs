@@ -11,100 +11,97 @@
 	
 	<style>
         html, body {
-    height: 100%;
-}
-
-html {
-    display: table;
-    margin: auto;
-}
-
-body {
-    display: table-cell;
-    vertical-align: middle;
-}
+            height: 100%;
+        }
     </style>
 
 </head>
 
 <body>
     
+    <div class="jumbotron text-center">
+        <h1>Edit {{userInfo.username}}'s Information</h1>
+        <text>This is the Edit Page for users who are logged in</text><br>
+    </div>
+    
     <div class="container py-2">
-    <div class="row my-2">
-        <!-- edit form column -->
-        <div class="col-lg-8 ">
-            <div class="alert alert-info alert-dismissable" id="alert"> <a class="panel-close close" data-dismiss="alert">×</a></div>
-        </div>
-        <div class="col-lg-8 order-lg-1 personal-info" id="editForm">
-            <form id="thisForm" method="POST">
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" name="username" value="{{userInfo.username}}" readonly/>
-                    </div>
-                </div>
+        <div class="row my-2">
+            <!-- edit form column -->
+            <div class="col-lg-8 ">
+                <div class="alert alert-info alert-dismissable" id="alert"> <a class="panel-close close" data-dismiss="alert">×</a></div>
+            </div>
+            <div class="col-lg-8 order-lg-1 personal-info" id="editForm">
+                <form id="thisForm" method="POST">
                     <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Name</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" name="name" value="{{userInfo.name}}"/>
+                        <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" name="username" value="{{userInfo.username}}" readonly/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Age</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" name="age" id="age" value="{{userInfo.age}}"/>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Age</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" name="age" id="age" value="{{userInfo.age}}"/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Height (inches)</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" name="height" id="height" value="{{ userInfo.height }}" />
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Height (inches)</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" name="height" id="height" value="{{ userInfo.height }}" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Weight (lbs)</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" type="text" name ="weight" id="weight" value="{{ userInfo.weight }}" />
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Weight (lbs)</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" name ="weight" id="weight" value="{{ userInfo.weight }}" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Gender</label>
-                    <div class="col-lg-9">
-                        <select name="gender" value="{{ userInfo.gender }}" class="form-control" size="0">
-                            <option name=" ">{{userInfo.gender}} </option>
-                            <option name="P" value="P"> Prefer Not To Specify </option>
-                            <option name="F" value="F"> Female </option>
-                            <option name="M" value="M"> Male </option>
-                            <option name="O" value="O"> Other </option>
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Gender</label>
+                        <div class="col-lg-9">
+                            <select name="gender" value="{{ userInfo.gender }}" class="form-control" size="0">
+                                <option name=" ">{{userInfo.gender}} </option>
+                                <option name="P" value="P"> Prefer Not To Specify*</option>
+                                <option name="F" value="F"> Female </option>
+                                <option name="M" value="M"> Male </option>
+                                <option name="O" value="O"> Other </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-lg-9 ml-auto text-right">
-                        <input type="reset" class="btn btn-outline-secondary" value="Cancel" />
-                        <button type="submit" id="submitButton" class="btn btn-primary" value="Save Changes">Save Changes</button>
-                        <div id="changed">{{message}}</div>
+                    
+                    <div class="form-group row">
+                        <div class="col-lg-9 ml-auto text-right">
+                            <button type="reset" class="btn btn-primary" value="Cancel">Cancel</button>
+                            <button type="submit" id="submitButton" class="btn btn-primary" value="Save Changes">Save Changes</button>
+                            <div id="changed">{{message}}</div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+                <a href = "/userInfo?user={{userInfo.username}}">
+                    <button class="btn btn-primary btn pull-right">
+                        Profile
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
-</div>
+<div>*Prefer not to specify may make the BAC calculation less accurate</div>
 </body>
 
 <script>
 	$(document).ready(function() {
 	    $('#alert').hide();
+	    $('#changed').hide();
 	    $('#submitButton').on('click', function(e) {
 	        if (!isFormValid()) {
 	            e.preventDefault();
 	            $('#alert').show();
 	            $('#changed').hide();
 
+	        }else{
+	            e.preventDefault();
+	            $('#changed').show();   
 	        }
-	        $('#alert').show();
-	        $('#changed').show();
-	        
 	    });
 	});
 	   

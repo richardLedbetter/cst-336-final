@@ -17,7 +17,8 @@
         .inputs{
             width: 100px;
             height: 40px;
-			
+			padding: 5px;
+			margin: 5px;
         }
 		.profile{
 			position: sticky;
@@ -46,41 +47,54 @@
     </div>
 
     <br>
-    <table class = " container middle text-center"> 
-			<tr class = "trace">
-				<th><button id = "beer" class = "inputs ">BEER</button></th>
-				<th><button id = "wine" class = "inputs">WINE</button>	</th>
-			</tr>
-			
-			<tr class = "trace">
-				<th><button id = "shots" class = "inputs">SHOTS</button></th>
-				<th><button id = "misc" class = "inputs">MISC DRINKS</button></th>
-				<th><button id = "mixed" class = "inputs">MIXED DRINKS</button></th>	
-			</tr>
-			<tr class = "trace">
-        		<th><button id = "remove_drink" class = "inputs">REMOVE DRINK</button><th>
-        		<th><button id = "add_drink" class = "inputs">NEW DRINK</button></th>
-        	</tr>
-        	<tr class = "trace">
-        		<th><a href = "/logout"><button id = "logout" class = "inputs">Log Out</button></a></th>
-                <th><a href = "/userInfo?user={{user_data.username}}"><button id = "profile" class = "inputs">Profile {{data.username}}</button></a></th>
-            </tr>
-	</table>
+    <div class="container d-flex justify-content-center" style = "width: 100px;">
+        <div class="row">
+            <div class="col-sm-6">
+                <button id = "beer" class = "inputs btn btn-primary">BEER</button>
+                <br>
+    		    <button id = "wine" class = "inputs btn btn-primary">WINE</button>
+                <br>
+                <button id = "shots" class = "inputs btn btn-primary">SHOTS</button>
+                <br>
+    		    <button id = "misc" class = "inputs btn btn-primary">MISC</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <button id = "mixed" class = "inputs btn btn-primary">MIXED</button>
+                <br>
+                <button id = "smth" class = "inputs btn btn-primary">smth</button>
+                <br>
+                <button id = "add_drink" class = "inputs btn btn-primary">ADD NEW</button>
+                <br>
+                <button id = "remove_drink" class = "inputs btn btn-primary">REMOVE</button>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class = "container d-flex flex-column">
+        <div class = "d-flex flex-column text-center">
+            <a href = "/logout">
+                <button id = "logout" class = "inputs btn btn-primary">
+                    Log Out
+                </button>
+            </a>
+            <br>
+            <a href = "/userInfo?user={{user_data.username}}">
+                <button id = "profile" class = "inputs btn btn-primary">
+                    Profile
+                </button>
+            </a>
+            <br>
+            <a>
+                <button id = "Edit_profile" class = "inputs btn btn-primary">
+                    Edit Profile
+                </button>
+            </a>
+        </div>
+    </div>
 	
-		
-    
-    
-	<br>
-	<selected class = "col-md-4">
-	    <button id = "time" class = "inputs ">Time</button>
-	    
-	   </selected>
-		<br>
-	    
-			
-			
-	<button id = "Edit_profile" class = "profile btn btn-primary btn-lg">Edit Profile</button>
-
+    {{!--Modal Stuff--}}
     <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -101,7 +115,7 @@
         </div>
       </div>
     </div>
-    
+    {{!--End Of Modal Stuff--}}
     
 
 </body>
@@ -110,8 +124,8 @@
     
         /* global $ */
         $(document).ready(function(){
-            $("Edit_profile").on("click",function() {
-                location.href = "/editUserInfo.hbs";
+            $("#Edit_profile").on("click", function() {
+                window.location.href = "/editUserInfo?user={{user_data.username}}";
             })
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
