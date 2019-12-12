@@ -11,14 +11,9 @@ router.get('/', async function(req, res) {
     console.log("username: ", req.session.username);
     if (req.session && req.session.username && req.session.username.length) {
         let username = req.session.username;
-        let user = await getSingleUserInfo(username);
+        //let user = await getSingleUserInfo(username);
         
-        res.redirect(url.format({
-            pathname: '/home',
-            query: {
-                "user": user.username
-            }
-        })); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
+        res.redirect("/home"); // redirect instead of render because otherwise it wasnt entering the get and post, therefore I couldnt pass user info into the next pages
     }
     else {
         delete req.session.username;
@@ -44,9 +39,9 @@ router.get('/index', async function(req, res) {
 router.get('/home', async function(req, res) {
     let data = await getSingleUserInfo(req.session.username);
     res.render('../routes/views/home', {"user": req.session.username,"user_data":data});
-    if(req.session && req.session.username && req.session.username.length) {
+    // if(req.session && req.session.username && req.session.username.length) {
         
-    }
+    // }
     
 });
 
@@ -226,6 +221,11 @@ router.get("/getMisc", async function(req,res){
 	
 });
 
+router.get("/getShots", async function(req,res){
+   let rows = await getShotsList();
+   res.send(rows);
+});
+
 function getMiscList() {
     let conn = dbConnection();
 
@@ -236,6 +236,28 @@ function getMiscList() {
         
            let sql = `SELECT * 
                       FROM misc_drinks`;
+            console.log(sql);        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
+function getShotsList() {
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT * 
+                      FROM shots`;
             console.log(sql);        
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;

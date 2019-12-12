@@ -103,7 +103,7 @@
     </div>
     
     
-
+    {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
 </body>
 <script>
     let time = 0.0;
@@ -112,7 +112,7 @@
         $(document).ready(function(){
             $("Edit_profile").on("click",function() {
                 location.href = "/editUserInfo.hbs";
-            })
+            });
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
                 $("#exampleModalLabel").html("List of Beers");
@@ -124,7 +124,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -142,7 +142,7 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                         $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
@@ -150,7 +150,7 @@
             }); //button
 	
 													   
-            $("#mixdrinks").on("click", function() {
+            $("#mixed").on("click", function() {
                 $("#drinkNames").empty();
                 $("#exampleModalLabel").html("List of Mixed Drinks");
                $.ajax({
@@ -161,16 +161,16 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
                }); //ajax
             }); //button
             
-			$("#shots").on("click", function() {
+			$("#misc").on("click", function() {
                 $("#drinkNames").empty();
-                $("#exampleModalLabel").html("List of Something Drinks");
+                $("#exampleModalLabel").html("List of Misc Drinks");
                $.ajax({
                    method: "GET",
                    url: "/getMisc",
@@ -179,7 +179,25 @@
                        console.log(result);
                        //$("#drinkNames").html(result[0].name);
                       for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<button id=" + result[i].al_content + "type='button' class='btn btn-info beerselect'>" + result[i].name + "</button>" + '<br><br>');
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
+                      }
+                       $("#drinkModal").modal("show");
+                   }
+               }); //ajax
+            }); //button
+            
+            $("#shots").on("click", function() {
+                $("#drinkNames").empty();
+                $("#exampleModalLabel").html("List of Shots");
+               $.ajax({
+                   method: "GET",
+                   url: "/getShots",
+                   dataType: "json",
+                   success: function(result,status) {
+                       console.log(result);
+                       //$("#drinkNames").html(result[0].name);
+                      for(let i = 0; i < result.length; i++) {
+                          $("#drinkNames").append("<div id=" + result[i].name + "><h2>"+ result[i].name  +"</h2></div><button type='button' class='btn btn-secondary editDrink'>Edit</button> <button type='button' class='btn btn-danger deleteDrink'>Delete</button> " + '<br><br>');
                       }
                        $("#drinkModal").modal("show");
                    }
