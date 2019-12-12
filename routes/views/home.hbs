@@ -36,6 +36,12 @@
 		.time{
 		    left:50%;
 		}
+		body{
+		    background-color: darkgray;
+		}
+		.jumbotron{
+		    background-color: lightBlue;
+		}
     </style>
 
 </head>
@@ -45,7 +51,6 @@
         <text>This is the home page for users who are logged in</text><br>
         current BAC is <h2><total></total></h2>
     </div>
-
     <br>
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
@@ -67,7 +72,7 @@
             </div>
         </div>
     </div>
-    <br><br>
+    <br>
     <div class = "container d-flex flex-column">
         <div class = "d-flex flex-column text-center">
             <a href = "/logout">
@@ -75,13 +80,11 @@
                     Log Out
                 </button>
             </a>
-            <br>
             <a href = "/userInfo?user={{user_data.username}}">
                 <button id = "profile" class = "inputs btn btn-primary">
                     Profile
                 </button>
             </a>
-            <br>
             <a>
                 <button id = "Edit_profile" class = "inputs btn btn-primary">
                     Edit Profile
@@ -89,28 +92,29 @@
             </a>
         </div>
     </div>
-	
-    {{!--Modal Stuff--}}
-    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+
+{{!--end of background--}}
+
+{{!--Modal Stuff--}}
+<div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+            <div id="drinkNames"></div>
             
-                <div id="drinkNames"></div>
-                
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
     {{!--End Of Modal Stuff--}}
     
     {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
