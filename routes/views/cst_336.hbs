@@ -161,7 +161,7 @@
 		<br>
 		<weight>
 				Enter Weight 
-		<input id = "weight"></input>
+		<input id= "weight" value="{{data.weight}}"></input>
 		</weight><br><br>
 		{{!--<height>--}}
 		{{!--		Enter Height--}}
@@ -169,8 +169,8 @@
 		{{!--</height><br><br>--}}
 		<gender>
 				Select Gender
-				<select name="gen" id = "gender" value="" size="0">
-                    <option name=" " value=" "> Select </option>
+	            <select name="gender" value="{{ data.gender }}"size="0">
+                    <option name=" ">{{data.gender}} </option>
                     <option name="F" value="F"> Female </option>
                     <option name="M" value="M"> Male </option>
                 </select>
