@@ -192,6 +192,7 @@ router.post("/editUserInfo", async function(req, res){
 router.get("/getBeer", async function(req,res) {
     
     let rows = await getBeerList();
+    console.log("clicked");
     res.send(rows);
     
 });
