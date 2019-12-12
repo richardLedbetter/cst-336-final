@@ -1,49 +1,114 @@
 <head>
     <title> User Info </title>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
 </head>
 <body>
-    <h1> Personal Information </h1>
-    
-    <form method = "POST">
-        Name:   <input type="text" name ="name" value="{{ user.name }}"><br>
-        
-        Age:    <input type="text" name ="age" value="{{ user.age }}"><br>
-        
-        Gender: <select value="{{ user.gender }}" name="gender">
-                    <option name=" ">{{user.gender}} </option>
-                    <option name="P" value="P"> Prefer Not To Specify </option>
-                    <option name="F" value="F"> Female </option>
-                    <option name="M" value="M"> Male </option>
-                    <option name="O" value="O"> Other </option>
-                </select>
-        <br>
-        Height: <input type="text" name ="height" value="{{ user.height }}"><br>
-        
-        Weight: <input type="text" name ="weight" value="{{ user.weight }}"><br>
-        
-        <button onclick="confirmChanges()" href = "./editUserInfo?user={{ user.name }}">
-            Done
-        </button>
-        
-    </form>
-    
-    <a href = "/home">
-        <button>
-            Home
-        </button>
-    </a>
-    <br>
-    <a href = "/userInfo">
-        <button>
-            Profile
-        </button>
-    </a>
+    <div class="container py-2">
+    <div class="row my-2">
+        <!-- edit form column -->
+        <div class="col-lg-4">
+            <h2 class="text-center font-weight-light">User Profile</h2>
+        </div>
+        <div class="col-lg-8 ">
+            <div class="alert alert-info alert-dismissable" id="alert"> <a class="panel-close close" data-dismiss="alert">×</a></div>
+        </div>
+        <div class="col-lg-8 order-lg-1 personal-info" id="editForm">
+            <form id="thisForm" method="POST">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name="username" value="{{userInfo.username}}" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Age</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name="age" id="age" value="{{userInfo.age}}"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Height (inches)</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name="height" id="height" value="{{ userInfo.height }}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Weight (lbs)</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" name ="weight" id="weight" value="{{ userInfo.weight }}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Gender</label>
+                    <div class="col-lg-9">
+                        <select name="gender" value="{{ userInfo.gender }}" class="form-control" size="0">
+                            <option name=" ">{{userInfo.gender}} </option>
+                            <option name="P" value="P"> Prefer Not To Specify </option>
+                            <option name="F" value="F"> Female </option>
+                            <option name="M" value="M"> Male </option>
+                            <option name="O" value="O"> Other </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-9 ml-auto text-right">
+                        <input type="reset" class="btn btn-outline-secondary" value="Cancel" />
+                        <button type="submit" id="submitButton" class="btn btn-primary" value="Save Changes" href = "./editUserInfo?user={{ userInfo.username }}">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 
 <script>
-    function confirmChanged() {
-        if (!confirm("Confirm Changes!")) {
-            event.preventDefault();
-        } 
+	$(document).ready(function() {
+	    $('#alert').hide();
+	    $('#submitButton').on('click', function(e) {
+	        if (!isFormValid()) {
+	            e.preventDefault();
+	            $('#alert').show();
+
+	        }
+	        
+	    });
+	});
+	   
+    function isFormValid() {
+        isValid = true;
+        let age = $("#age").val();
+        let height = $("#height").val();
+        let weight = $("#weight").val();
+        
+        console.log("age: ", age);
+        console.log("height: ", height);
+        console.log("weight: ", weight);
+        
+        if (isNaN(age) || parseInt(age) > 99 || parseInt(age) < 21) {
+            isValid = false;
+            $("#alert").html("Enter valid age");
+        }
+        
+        if (isNaN(height) || parseInt(height) > 86 || parseInt(height) < 50 ) {
+            isValid = false;
+            $("#alert").html("Enter valid height");
+
+        }
+        
+        if (isNaN(weight) || parseInt(weight) > 400 || parseInt(weight) < 100 ) {
+            isValid = false;
+            $("#alert").html("Enter valid weight");
+        }
+        
+        return isValid;
     }
 </script>
