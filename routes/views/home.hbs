@@ -36,11 +36,21 @@
 		.time{
 		    left:50%;
 		}
-		body{
-		    background-color: darkgray;
-		}
+		/*body{*/
+		/*    background-color: darkgray;*/
+		/*}*/
 		.jumbotron{
-		    background-color: lightBlue;
+		    font-family: Arial;
+		    font-weight: bold;
+		    color: white;
+		    background-color: #82D1F6;
+		}
+		.btn-primary{
+		    background-color: #82D1F6 !important;
+		}
+		#beer, #wine, #shots, #mixed, #misc, #add{
+		    height: 200px;
+		    width:200px;
 		}
     </style>
 
@@ -55,21 +65,21 @@
     <div class="container d-flex justify-content-center" style = "width: 100px;">
         <div class="row">
             <div class="col-sm-6">
-                <button id = "beer" class = "inputs btn btn-primary">BEER</button>
+                <input type="image" id = "beer" src="336_BeerButton.png" />
                 <br>
-    		    <button id = "wine" class = "inputs btn btn-primary">WINE</button>
+                <input type="image" id = "wine" src="336_WineButton.png" />
                 <br>
-                <button id = "shots" class = "inputs btn btn-primary">SHOTS</button>
+                <input type="image" id = "shots" src="336_ShotsButton.png" />
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button id = "mixed" class = "inputs btn btn-primary">MIXED</button>
+                <input type="image" id = "mixed" src="336_MixedDrinkButton.png" />
                 <br>
-    		    <button id = "misc" class = "inputs btn btn-primary">MISC</button>
+                <input type="image" id = "misc" src="336_MiscButton.png" />
                 <br>
                 <a href = "/addDrink">
-                <button id = "add_drink" class = "inputs btn btn-primary">ADD NEW</button>
+                    <input type="image" id = "add" src="336_AddDrinkButton.png" />
                 </a>
             </div>
         </div>
@@ -85,11 +95,6 @@
             <a href = "/userInfo?user={{user_data.username}}">
                 <button id = "profile" class = "inputs btn btn-primary">
                     Profile
-                </button>
-            </a>
-            <a>
-                <button id = "Edit_profile" class = "inputs btn btn-primary">
-                    Edit Profile
                 </button>
             </a>
         </div>
@@ -116,27 +121,19 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
-<<<<<<< HEAD
   </div>
-=======
-
     
     {{rows.name}}
+</div>
+{{!--End Of Modal Stuff--}}
 
->>>>>>> da0860b411059069d93244d4aa399b763ddfd080
-    {{!--End Of Modal Stuff--}}
+{{> footer}}
 
-    
-    {{!--"<div id=" + result[i].name + ">"+ result[i].name  +"</div><button type='button' class='btn btn-secondary editDrink'>Edit</button> " --}}
-</body>
 <script>
     let time = 0.0;
     
         /* global $ */
         $(document).ready(function(){
-            $("#Edit_profile").on("click", function() {
-                window.location.href = "/editUserInfo?user={{user_data.username}}";
-            })
             $("#beer").on("click", function() { 
                 $("#drinkNames").empty();
                 $("#exampleModalLabel").html("List of Beers");

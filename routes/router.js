@@ -5,6 +5,9 @@ const session = require('express-session');
 
 const request = require('request');
 
+var hbs = require('hbs');
+hbs.registerPartials(__dirname + '/views/partials');
+
 const url = require('url');
 
 router.use(express.json());
