@@ -94,50 +94,52 @@
 			Login
 		</button><br>
 	</login>
-			<button id ="change_background">
-			change background image
-		</button>
+	<button id ="change_background">
+		change background image
+	</button>
 
-					<form method="POST">
-	                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Type</label><br>
-                    <div class="col-lg-9">
-                        <select name="type" id="type" value="Select type" class="form-control" size="0">
-                            <option name=" "></option>
-                            <option name="beer" value="beers"> Beer </option>
-                            <option name="shots" value="shots"> Shots </option>
-                            <option name="wine" value="wine"> Wine </option>
-							<option name="mixed_drinks" value="mixed_drinks"> Mixed Drinks </option>
-                            <option name="misc_drinks" value="misc_drinks"> Other </option>
-                        </select>
-                    </div>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required">
-                    <input type="password" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required">
-                	<div class="form-group">
-	            <button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
-	        </div>
-                </div>
-                </form>
-          {{image}}hey
-          {{rows}}
-		<bac >
-			current bac is 
-			<total id = "total"><b>___</b></total><b>%</b>
-		</bac>
+	<form method="POST">
+	    <div class="form-group row">
+		    <label class="col-lg-3 col-form-label form-control-label">Type</label><br>
+		    <div class="col-lg-9">
+		        <select name="type" id="type" value="Select type" class="form-control" size="0">
+		            <option name=" "></option>
+		            <option name="beer" value="beers"> Beer </option>
+		            <option name="shots" value="shots"> Shots </option>
+		            <option name="wine" value="wine"> Wine </option>
+					<option name="mixed_drinks" value="mixed_drinks"> Mixed Drinks </option>
+		            <option name="misc_drinks" value="misc_drinks"> Other </option>
+		        </select>
+		    </div>
+		    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink" required="required">
+		    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol" required="required">
+			<div class="form-group">
+				<button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
+			</div>
+		</div>
+	</form>
+	
+      {{image}}
+      {{rows}}
+      
+	<bac >
+		current bac is 
+		<total id = "total"><b>___</b></total><b>%</b>
+	</bac>
 	</h1>
 	<h2 class="container" >
 		<table class = "col" id = "drinks">
 			<tr class="row" >
 				Beer<br>
-				<input id = "beer" size="4"></input>
+				<input id = "beer" size="4" placeholder = 0 maxlength = 3></input>
 			</tr><br>
 			<tr class="row top-buffer">
 				Wine<br>
-				<input id = "wine" size="4"></input>
+				<input id = "wine" size="4" placeholder = 0 maxlength = 3></input>
 			</tr><br>
 			<tr class="row top-buffer">
 				Other<br>
-				<input id = "alcohol" size="4"></input>
+				<input id = "alcohol" size="4" placeholder = 0 maxlength = 3></input>
 			</tr><br>
 			<tr>
 			
@@ -148,11 +150,20 @@
 					add new drink
 				</button >
 		<br>
-		<weight class="row top-buffer">
-			<br>
+		<br>
+		<weight>
 				Enter Weight 
 		<input id = "weight"></input>
-		</weight><br>
+		</weight><br><br>
+		<gender>
+				Select Gender
+				<select name="gender" value="" size="0">
+                    <option name=" "> Select </option>
+                    <option name="P" value="P"> Prefer Not To Specify*</option>
+                    <option name="F" value="F"> Female </option>
+                    <option name="M" value="M"> Male </option>
+                </select>
+		</gender><br><br>
 		<time> 
 			Enter amount of hours since first drink
 			<input id ="time"></input>
@@ -166,19 +177,34 @@
 	wine = 0;
 	other = 0;
 	total = 0;
-	weight = 0;
+	// weight = 0;
 	time = 0;
 	number_of_rows = 1
 	$('#calc').on("click",calc);
     function calc(){
+    	let result = 0;
+    	let weight = 0;
+    	let ethanol = 0;
+    	let oz = 0;
+    	
 		beer = $("#beer").val() *12;   
 		wine = $("#wine").val()*5;
 		other = $("#alcohol").val() *1.5; 
 		weight = $("#weight").val();
+		
+		
+		if($("#"))
+		
 		time = $("#time").val();
-		total = ((beer+wine+other))/weight; 
-		total = total-(time*.017);
-		$("total").text(total);
+		// total = ((beer+wine+other))/weight; 
+		// total = total-(time*.017);
+		
+		oz = beer + wine + other;
+		ethanol = (12 + 5 + 1.5)/3;
+		
+		result = (150/weight)*(ethanol/50)*oz*0.025;
+		
+		$("total").text(result);
     }
     $('#login').on("click",sign_in);
     function sign_in(){
