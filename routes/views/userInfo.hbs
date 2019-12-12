@@ -43,7 +43,7 @@
     
     
     <div class="jumbotron text-center">
-        <h1> Profile {{userInfo.username}} </h1>
+        <h1> Profile <username id = "username">{{userInfo.username}} </username></h1>
         <text>This is the profile page</text>
     </div>
     <div class = "container">
@@ -74,6 +74,30 @@
                 Edit Profile
             </button>
         </a>
+        <beer id = "beer">
+            
+        </beer>
     </div>
 
 {{> footer}}
+<script>
+    get_info_beers();
+    function get_info_beers () {
+    	 $("#drinkNames").empty();
+
+        $.ajax({
+                type: "POST",
+                url: "/liked_beer",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :$("#username").val()
+                }),
+                success: function(result,status) {
+                   console.log(result[0]);
+                   $("#beer").html("favorite beer "+result[0].beer)
+                   }
+            });
+
+    }
+</script>
