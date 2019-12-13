@@ -3,7 +3,7 @@ const router = express.Router();
 const mysql = require('mysql');
 const session = require('express-session');
 
-const request = require('request');
+// const request = require('request');
 
 var hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
