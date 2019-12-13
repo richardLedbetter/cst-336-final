@@ -95,7 +95,45 @@
                 }),
                 success: function(result,status) {
                    console.log(result[0]);
-                   $("#beer").html("favorite beer "+result[0].beer)
+                   $("#beer").html("<br>"+"favorite beer "+result[0].beer+" "+result[0].al_content+"\n");
+                   }
+            });
+
+    }
+    get_info_wine();
+    function get_info_wine () {
+    	 $("#drinkNames").empty();
+
+        $.ajax({
+                type: "POST",
+                url: "/liked_wine",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :$("#username").val()
+                }),
+                success: function(result,status) {
+                   console.log(result[0]);
+                   $("#beer").append("<br>"+"favorite wine "+result[0].wine+" "+result[0].al_content+"\n");
+                   }
+            });
+
+    }
+       get_info_mixed();
+    function get_info_mixed () {
+    	 $("#drinkNames").empty();
+
+        $.ajax({
+                type: "POST",
+                url: "/liked_mixed_drinks",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :$("#username").val()
+                }),
+                success: function(result,status) {
+                   console.log(result[0]);
+                   $("#beer").append("<br> favorite mixed "+result[0].mixed+" "+result[0].al_content+"\n");
                    }
             });
 
