@@ -104,6 +104,42 @@ router.post('/search_types',async function(req,res) {
     
 });
 
+router.post('/liked_beer',async function(req,res){
+    console.log("clicked");
+    let beer = await beer_run(req.body.name);
+    res.send(beer);
+});
+
+function beer_run(name){
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT       beer,
+
+            COUNT(beer) AS value_occurrence 
+            FROM     user_log
+            WHERE username like ? AND beer is not NULL
+            GROUP BY beer
+            ORDER BY value_occurrence DESC
+            LIMIT    1;
+             `;
+                    
+            let params =[name+'%'];
+            
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
 
 function searchdrink(body) {
     let conn = dbConnection();
@@ -1371,5 +1407,9 @@ function getImages(keyword){
     });
     
 }
+
+router.listen(process.env.PORT, process.env.IP, function(){
+console.log("Express server is running...");
+});
 
 module.exports = router;
