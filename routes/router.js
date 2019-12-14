@@ -8,7 +8,6 @@ const request = require('request');
 var hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
-const url = require('url');
 
 router.use(express.json());
 
@@ -118,14 +117,12 @@ function beer_run(name){
            if (err) throw err;
            console.log("Connected!");
         
-           let sql = `SELECT       beer,
-
-            COUNT(beer) AS value_occurrence 
-            FROM     user_log
-            WHERE username like ? AND beer is not NULL
-            GROUP BY beer
-            ORDER BY value_occurrence DESC
-            LIMIT    1;
+           let sql = `SELECT *  FROM user_log
+                LEFT JOIN beers
+                ON user_log.beer = beers.name
+                WHERE username like ? AND beer is not NULL
+                GROUP BY beer
+                ORDER BY COUNT(beer)
              `;
                     
             let params =[name+'%'];
@@ -140,6 +137,81 @@ function beer_run(name){
         });//connect
     });//promise
 }
+
+
+router.post('/liked_wine',async function(req,res){
+    console.log("clicked");
+    let wine = await wine_run(req.body.name);
+    res.send(wine);
+});
+
+function wine_run(name){
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *  FROM user_log
+                LEFT JOIN wine
+                ON user_log.wine = wine.name
+                WHERE username like ? AND wine is not NULL
+                GROUP BY wine
+                ORDER BY COUNT(wine)
+             `;
+                    
+            let params =[name+'%'];
+            
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
+
+
+
+router.post('/liked_mixed_drinks',async function(req,res){
+    console.log("clicked");
+    let mixed = await mix_run(req.body.name);
+    res.send(mixed);
+});
+
+function mix_run(name){
+    let conn = dbConnection();
+
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *  FROM user_log
+                LEFT JOIN mixed_drinks
+                ON user_log.mixed = mixed_drinks.name
+                WHERE username like ? AND wine is not NULL
+                GROUP BY mixed
+                ORDER BY COUNT(mixed)
+             `;
+                    
+            let params =[name+'%'];
+            
+           conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+}
+
 
 function searchdrink(body) {
     let conn = dbConnection();
@@ -1385,7 +1457,6 @@ function registrationCheckUsername(body){
 
 function getImages(keyword){
     
-    
     return new Promise( function(resolve, reject){
         request('https://pixabay.com/api/?key=5589438-47a0bca778bf23fc2e8c5bf3e&q='+keyword,
                  function (error, response, body) {
@@ -1408,8 +1479,6 @@ function getImages(keyword){
     
 }
 
-router.listen(process.env.PORT, process.env.IP, function(){
-console.log("Express server is running...");
-});
+
 
 module.exports = router;
