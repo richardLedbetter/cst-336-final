@@ -220,10 +220,10 @@ function searchdrink(body) {
         conn.connect(function(err) {
            if (err) throw err;
            console.log("Connected!");
-        
+           console.log("body type,", body.type);
            let sql = `SELECT *
-                    FROM `+body.type
-                    +`\n WHERE al_content BETWEEN ? AND ?
+                    FROM `+ body.type
+                    +`\n WHERE (al_content BETWEEN ? AND ?) OR (name LIKE '%%')
                     GROUP BY name
                     HAVING name LIKE ?`;
             console.log(sql);

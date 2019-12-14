@@ -162,7 +162,8 @@
                 success: function(result, status) {
                     console.log("got login status back", result);
                     if (result.successful) {
-                        window.location.href = '/editUserInfo?user=' + $("#login").val();
+                        // window.location.href = '/editUserInfo?user=' + $("#login").val();
+                        window.location.href = '/home';
                     }
                     else {
                         $('#message').html(result.message);

@@ -95,6 +95,7 @@
 			Login
 		</button><br>
 	</login>
+	
 	<button id ="change_background">
 		Change Background Image
 	</button> <br><br>
@@ -121,8 +122,8 @@
       {{image}}
       {{rows}}
 	<bac >
-		current bac is 
-		<total id = "total"><b>___</b></total><b>%</b>
+		<h1>current bac is 
+		<total id = "total"><b>___</b></total><b>%</b></h1>
 	</bac>
 	</h1>
 	<h2 class="container" >
@@ -134,6 +135,10 @@
 			<tr class="row top-buffer">
 				Wine<br>
 				<input id = "wine" size="4" placeholder = 0 maxlength = 3></input>
+			</tr><br>
+			<tr class="row top-buffer">
+				Shots<br>
+				<input id = "shots" size="4" placeholder = 0 maxlength = 3></input>
 			</tr><br>
 			<tr class="row top-buffer">
 				Other<br>
@@ -166,37 +171,53 @@
 			<br><button id = "calc">calculate</button>
 	</h2>
 	</div>
+	<a href = "/home">
+		<button id = "home" type="button"  class='login btn pull-right'>
+			Home
+		</button><br>
+	</a>
 </body>
 <script>
 	let beer = 0;
 	let wine = 0;
+	let shots = 0;
 	let other = 0;
 	let total = 0;
 	let time = 0;
 	let number_of_rows = 1
+	
 	$('#calc').on("click",calc);
     function calc(){
     	let result = 0;
     	let weight = 0;
     	let ethanol = 0;
     	let oz = 0;
+    	
 		beer = $("#beer").val() *12;   
-		wine = $("#wine").val()*5;
-		other = $("#alcohol").val() *1.5; 
+		wine = $("#wine").val() *5;
+		shots = $("#shots").val() *1.5;
+		other = $("#alcohol").val() *8;
 		weight = $("#weight").val();
-		oz = beer + wine + other;
-		if(beer> 0){
+		
+		oz = beer + wine + other + shots;
+		
+		if(beer > 0){
 			ethanol = ethanol + 5;
+		}
+		if(shots > 0){
+			ethanol = ethanol + 40;
 		}
 		if(wine > 0){
 			ethanol = ethanol + 12;
 		}
 		if(other > 0){
-			ethanol = ethanol + 20;
+			ethanol = ethanol + 8;
 		}
+		
 		result = (150/weight)*(ethanol/50)*oz*0.025;
+		
 		time = $("#time").val();
-		if(time > 5){
+		if(time > 7){
 		    result = 0;
 		}else{
 		    for(let i = 0; i < time; i++){
