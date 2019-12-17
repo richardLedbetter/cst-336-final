@@ -1,8 +1,0 @@
-As an adult, I want to know my BAC to avoid any repercussions so I won’t black out or do something I will regret the next day
-As an adult,  I can search for drinks so that I can understand what I am ingesting
-As a friend or acquaintance of a frequent drinker, I can be notified easily when my friend or acquaintance is drunk so I can pick them up and not wait and be worried
-As a user, I can create and enter drinks that are unique to me
-As a user, I  can delete drinks that I no longer ingest as often so that entering data is more efficient
-As a user, I can rely on an automated app that can contact personnel so that I can arrive home safely
-As a user, I can create an account so that the app can calculate based on my own individual features
-As a user, I can save my data so when I load the app, I won’t have to reenter my data

@@ -1,314 +1,196 @@
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
 	<style>
-		.login{
-			color: black;
-			background:grey;
-			top: 0;
-			right: 0;
-			position: fixed;
-		}
-		.home{
-			color: black;
-			background:grey;
-			top: 0;
-			left: 0;
-			position: fixed;
-		}
-		.btn{
-			height: 50px;
-			width: 100px;
-		}
-		.minus{
-			color: black;
-			height: 50px;
-			width: 75px;
-		}
-		button{
-			color: black;
-		}
-		.add{
-			color:black;
-			height: 50px;
-			width: 75px;
-		}
-		body{
-			 background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("/beer_img.jpg");
-			filter: blur(0px);
-			  /* Center and scale the image nicely */
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: cover;
-			background-attachment: fixed;
-		}
-		input{
-			color:black;
-		}
-		.non_background { 
-			filter: blur(0px)!important;
-			 /*background-color: rgb(0,0,0); /* Fallback color */
- 	 	/*	background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
-			  color:white !important;
-			  font-weight: bold;
-			  position: absolute;
-			  top: 50%;
-			  left: 50%;
-			  transform: translate(-50%, -50%);
-			  z-index: 2;
-			  width: 100%;
-			  height: 100%;
-			  padding: 70px;
-			  text-align: center;
-		}
-		tr{
-			color:white!important;
-		}
+		table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#log-inout{
+  background-color:grey;
+ position: fixed;
+ height:40px;
+ width:60px;
+  right: 30px;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+.close {
+  position: fixed;
+  right: 30px;
+  top:-20px;
+  font-size: 80px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
 	</style>
 </head>
 <body>
-		{{!--Modal Stuff--}}
-    <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><h1 id="DrinkOptions"></h1></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-                <div id="drinkNames"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+    	<button  id = "log-inout">Logout</button>
+      <br>
+      
+    	invitation Link	<input id ="link"></input>
+    	<br>
+    	<br>
+    	
+    	<table id = "table">
+    	 <tr>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>Duration</th>
+        <th>Booked by </th>
+        <th>ID</th>
+        <th><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">+</button></th>
+      </tr>
+    
+    </table>
+     
+    <div id="id01" class="modal">
+      <form class="modal-content">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <div class="container">
+      <h1>ADD TIME SLOT</h1>
+      <hr><br>
+      <label for="Date"><b>Date</b></label>
+      <input type="date"  name="Date" id ="Date" required>
+        <br>
+      <label for="Time"><b>Start Time</b></label>
+      <input type="time"  name="Start Time" id="Time" required>
+  <br>
+      <label for="End Time"><b>Duration in hours</b></label>
+      <input type="int" name="End Time" id ="End_Time" required>
+  <br>
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="ADD_button" id = "ADD_button">Add</button>
       </div>
     </div>
-    {{!--End Of Modal Stuff--}}
-	<div class = "background"></div>
-	<div class = "non_background">
-	<login class = "login">
-		<button id = "login" type="button"  class='btn pull-right'>
-			Login
-		</button><br>
-	</login>
-	
-	<button id ="change_background">
-		Change Background Image
-	</button> <br><br>
-	<form method="POST">
-	    <div class="form-group row">
-		    <label class="col-lg-3 col-form-label form-control-label">Type</label><br><br>
-		    <div class="col-lg-9">
-		        <select name="type" id="type" value="Select type" class="form-control" size="0">
-		            <option name=" "></option>
-		            <option name="beer" value="beers"> Beer </option>
-		            <option name="shots" value="shots"> Shots </option>
-		            <option name="wine" value="wine"> Wine </option>
-					<option name="mixed_drinks" value="mixed_drinks"> Mixed Drinks </option>
-		            <option name="misc_drinks" value="misc_drinks"> Other </option>
-		        </select>
-		    </div>
-		    <input type="text" class="form-control" id="name" name="name" placeholder="Name of Drink"> <br><br>
-		    <input type="text" class="form-control" id="per" name="per" placeholder="Percentage of alcohol"> <br><br>
-			<div class="form-group">
-				<button type="submit" id="searchButton" class="btn btn-success btn-lg btn-block">Search</button>
-			</div>
-		</div>
-	</form>
-      {{image}}
-      {{rows}}
-	<bac >
-		<h1>current bac is 
-		<total id = "total"><b>___</b></total><b>%</b></h1>
-	</bac>
-	</h1>
-	<h2 class="container" >
-		<table class = "col" id = "drinks">
-			<tr class="row" >
-				Beer<br>
-				<input id = "beer" size="4" placeholder = 0 maxlength = 3></input>
-			</tr><br>
-			<tr class="row top-buffer">
-				Wine<br>
-				<input id = "wine" size="4" placeholder = 0 maxlength = 3></input>
-			</tr><br>
-			<tr class="row top-buffer">
-				Shots<br>
-				<input id = "shots" size="4" placeholder = 0 maxlength = 3></input>
-			</tr><br>
-			<tr class="row top-buffer">
-				Other<br>
-				<input id = "alcohol" size="4" placeholder = 0 maxlength = 3></input>
-			</tr><br>
-			<tr>
-			</tr>
-		</table>
-		<br>
-		<weight>
-				Enter Weight 
-		<input id= "weight" value="{{data.weight}}"></input>
-		</weight><br><br>
-		{{!--<height>--}}
-		{{!--		Enter Height--}}
-		{{!--<input id = "height"></input>--}}
-		{{!--</height><br><br>--}}
-		<gender>
-				Select Gender
-	            <select name="gender" value="{{ data.gender }}"size="0">
-                    <option name=" ">{{data.gender}} </option>
-                    <option name="F" value="F"> Female </option>
-                    <option name="M" value="M"> Male </option>
-                </select>
-		</gender><br><br>
-		<time> 
-			Enter amount of hours since first drink
-			<input id ="time"></input>
-		</time>
-			<br><button id = "calc">calculate</button>
-	</h2>
-	</div>
-	<a href = "/home">
-		<button id = "home" type="button"  class='login btn pull-right'>
-			Home
-		</button><br>
-	</a>
+    </form>
+      </div>
+
+    <div id="id02" class="modal">
+      <form class="modal-content">
+        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="Remove" id = "remove">Yes, Remove It!</button>
+      </div>
+    </div>
+    </form>
+      </div>
+    
+    
+    
+      
 </body>
-<script>
-	let beer = 0;
-	let wine = 0;
-	let shots = 0;
-	let other = 0;
-	let total = 0;
-	let time = 0;
-	let number_of_rows = 1
 	
-	$('#calc').on("click",calc);
-    function calc(){
-    	let result = 0;
-    	let weight = 0;
-    	let ethanol = 0;
-    	let oz = 0;
-    	
-		beer = $("#beer").val() *12;   
-		wine = $("#wine").val() *5;
-		shots = $("#shots").val() *1.5;
-		other = $("#alcohol").val() *8;
-		weight = $("#weight").val();
-		
-		oz = beer + wine + other + shots;
-		
-		if(beer > 0){
-			ethanol = ethanol + 5;
-		}
-		if(shots > 0){
-			ethanol = ethanol + 40;
-		}
-		if(wine > 0){
-			ethanol = ethanol + 12;
-		}
-		if(other > 0){
-			ethanol = ethanol + 8;
-		}
-		
-		result = (150/weight)*(ethanol/50)*oz*0.025;
-		
-		time = $("#time").val();
-		if(time > 7){
-		    result = 0;
-		}else{
-		    for(let i = 0; i < time; i++){
-    		    result = result - (result * 0.065);
-    		}
-		}
-		
-		$("total").text(result.toPrecision(2));
+<script>
+selected = -1
+	var modal = document.getElementById('add_slot');
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
-    $('#login').on("click",sign_in);
-    function sign_in(){
-    	location.href = "/login";
-    }
-        $('#home').on("click",home);
-    function home(){
-    	location.href = "/home";
-    }
-    $('#change_background').on('click',change_background)
-    function change_background(){
-    	let link = "";
-    	$.ajax({
-                type: "POST",
-                url: "/new_image",
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify({
-			    	"name" :"Beer"
-                }),
-                success: function(result,status) {
-                       console.log(result);
-                       //$("#drinkNames").html(result[0].name);
-                       console.log(result);
-                 	link = result.hits[Math.floor(Math.random() * 20)].largeImageURL;
-                 	console.log(link);
-                 	   t = " linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("+'\"'+link+'\"'+")";
-            		console.log(t);
-    				$("body").css("background", t);
-                   }
-            });
-    }
-	//call add function for new drinks 
-	$('#loginButton').on('click', function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "/login",
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "username": $("#login").val(),
-                    "password": $("#password").val()
-                }),
-                success: function(result, status) {
-                    console.log("got login status back", result);
-                    if (result.successful) {
-                        window.location.href = '/';
-                        return false;
-                    }
-                    else {
-                        // Show an error message or something and stay here
-                        $('#errorMessage').show();
-                        console.log("error");
-                    }
-                }
-            });
-        });
-    $("#searchButton").on('click',function(e) {
-    	e.preventDefault();
-    	 $("#drinkNames").empty();
+    
+    
+   $("#remove").on("click",del)
+    function del(){
+      console.log($("#Time"+selected.toString()).text());
         $.ajax({
                 type: "POST",
-                url: "/search_types",
+                url: "/remove_page",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify({
-                	"type": $("#type").val(),
-			    	"name" :$("#name").val(),
-			    	"per" : $("#per").val()
+			    	      "name" :"admin",
+			    	      "start_date":$("#Date"+selected.toString()).text(),
+			    	      "start_time":$("#Time"+selected.toString()).text()
                 }),
                 success: function(result,status) {
-                	if (status) {
-                       console.log("result:", status);
-                       //$("#drinkNames").html(result[0].name);
-                      for(let i = 0; i < result.length; i++) {
-                          $("#drinkNames").append("<div id=" + i.toString() + "><h2>"+ result[i].name + " - " + result[i].al_content + "%" +"</h2></div>" + '<br><br>');
-                      }
-                       $("#drinkModal").modal("show");
-                	}
-                	else {
-                	}
+                  document.getElementById('id01').style.display='none'
                    }
             });
-    })
+    }
+    
+    
+    $("#ADD_button").on("click",sub)
+    function sub(){
+      
+       $.ajax({
+                type: "POST",
+                url: "/add_page",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	      "name" :"admin",
+			    	      "start_date":$("#Date").val(),
+			    	      "start_time":$("#Time").val(),
+			    	      "duration": $('#End_Time').val()
+                }),
+                success: function(result,status) {
+                  document.getElementById('id01').style.display='none'
+                   }
+            });
+    }
+    function setter(w){
+      console.log("worked:",w);
+      selected =w;
+    }
+    loadpage("admin");
+    function loadpage(name){
+        $.ajax({
+                type: "POST",
+                url: "/load_page",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+			    	"name" :"admin"
+                }),
+                success: function(result,status) {
+                  console.log(result.length);
+                   for( i = 0 ; i <result.length;i++){
+                      $("#table").append(
+                        "<tr >"+"<th id = Date"+i.toString()+">"+result[i].start_date.slice(0, 10)+"</th>"+
+                      "<th id = Time"+i.toString()+">"+result[i].start_time.slice(0, 10) +"</th>"+
+                      "<th>"+result[i].Duration+" hour</th>"+
+                      "<th>"+result[i].booked_by+"</th>"+
+                      "<th><look>"+i+"</look></th>"+
+                      "<th><button onclick = document.getElementById('id02').style.display='block';setter("+i.toString()+")>Delete</button> <button>Details</button></th>"+"</tr>");
+                   //console.log(selected.toString());
+                     
+                   }
+                   
+                   }
+            });
+    }
+    
 </script>
